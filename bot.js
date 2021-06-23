@@ -4,10 +4,10 @@ const client = new Discord.Client();
 const {google} = require('googleapis');
 //const {GoogleAuth} = require('google-auth-library')
 const Sheets = require('./sheets.js')
-
+require('dotenv').config()
 
 const spreadsheetId = "1SA0twJDK9mkc-zwIaSLfDIEfssxd7dMszWRfYwMKnzY";
-const apiKey = ''
+const apiKey = process.env.GOOGLE_API_KEY
 let auth
 let sheets
 
@@ -85,7 +85,7 @@ function bad_signup(msg, reason){
 Sheets.setup((sheet_auth) => {
     auth = sheet_auth
     sheets = google.sheets({version: 'v4', sheet_auth})
-    client.login('')
+    client.login(process.env.BOT_TOKEN)
 
 
 
