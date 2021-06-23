@@ -1,7 +1,3 @@
-const Discord = require('discord.js');
-const {google} = require('googleapis');
-
-
 module.exports = {signup_handler}
 
 function signup_handler(words, msg, apiKey, auth, sheets, spreadsheetId){
