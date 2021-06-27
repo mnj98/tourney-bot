@@ -36,7 +36,7 @@ async function signup_handler(words, msg, client, apiKey, auth, sheets, spreadsh
                     console.log(err)
                     bad_signup(msg, 'backend error')
                 }
-                msg.reply('Signed up!')
+                else msg.reply('Signed up!')
             })
 
         } else bad_signup(msg, 'tier')
