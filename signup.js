@@ -33,14 +33,12 @@ async function signup_handler(words, msg, client, apiKey, auth, sheets, spreadsh
 
 function get_conflicts(player_ids, msg, spreadsheetId, auth, apiKey, sheets){
 
-    /*
-    return Promise.all(player_ids.map(id => {
-        SheetService.get_if_signed_up(id, msg, spreadsheetId, auth, apiKey, sheets)
-    }))*/
 
-    return player_ids.map(id => {
-        SheetService.get_if_signed_up(id, msg, spreadsheetId, auth, apiKey, sheets)
-    })
+    return Promise.all(player_ids.map(id => {
+        return SheetService.get_if_signed_up(id, msg, spreadsheetId, auth, apiKey, sheets)
+    }))
+
+
 
 
 
