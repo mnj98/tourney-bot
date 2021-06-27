@@ -14,39 +14,33 @@ async function signup_handler(words, msg, client, apiKey, auth, sheets, spreadsh
 
 	    console.log(player_ids)
 
-        let already_signed_up = await get_conflicts(player_ids, msg, spreadsheetId, auth, apiKey, sheets)
+        get_conflicts(player_ids, msg, spreadsheetId, auth, apiKey, sheets).then(already_signed_up => {
+            console.log('already signed up: ' + already_signed_up)
 
-        console.log('already signed up: ' + already_signed_up)
-
-        let names = await get_names(player_ids, msg, client)
-
-
-
-
-        let tier = words[2].toLowerCase()
-        if (tier === 'tier1' || tier === 'tier2' || tier === 'tier3') {
-
-            const line = [
-                ['', words[1], names[0], names[1], names[2], names[3], names[4], names[5],
-                    '', '', player_ids[0], player_ids[1], player_ids[2], player_ids[3], player_ids[4], player_ids[5]]
-            ]
-
-            await SheetService.append_line(msg, tier, line, spreadsheetId, auth, apiKey, sheets)
-
-        } else bad_signup(msg, 'tier')
-
-
+            get_names(player_ids, msg, client).then(names => {
+                let tier = words[2].toLowerCase()
+                if (tier === 'tier1' || tier === 'tier2' || tier === 'tier3') {
+                    const line = [
+                        ['', words[1], names[0], names[1], names[2], names[3], names[4], names[5],
+                            '', '', player_ids[0], player_ids[1], player_ids[2], player_ids[3], player_ids[4], player_ids[5]]
+                    ]
+                    SheetService.append_line(msg, tier, line, spreadsheetId, auth, apiKey, sheets)
+                } else bad_signup(msg, 'tier')
+            })
+        })
     }
 }
 
 async function get_conflicts(player_ids, msg, spreadsheetId, auth, apiKey, sheets){
     let conflicts = []
     for(const id of player_ids){
-        const already_signed_up = await SheetService.get_if_signed_up(id, msg, spreadsheetId, auth, apiKey, sheets)
-        if(already_signed_up != 0){
-            console.log(id + ' has alreay signed up with count: ' + already_signed_up)
-            conflicts.push(id)
-        }
+        SheetService.get_if_signed_up(id, msg, spreadsheetId, auth, apiKey, sheets).then(already_signed_up =>{
+            if(already_signed_up != 0){
+                console.log(id + ' has already signed up with count: ' + already_signed_up)
+                conflicts.push(id)
+            }
+        })
+
     }
     return conflicts
 }
