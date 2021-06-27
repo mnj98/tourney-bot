@@ -47,6 +47,7 @@ async function get_if_signed_up(id, msg, spreadsheetId, auth, apiKey, sheets){
             })
         }
     })
+    return -6
 }
 
 async function append_line(msg, tier, values, spreadsheetId, auth, apiKey, sheets){
