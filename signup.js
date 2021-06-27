@@ -27,8 +27,8 @@ async function signup_handler(words, msg, client, apiKey, auth, sheets, spreadsh
                 valueInputOption: 'USER_ENTERED',
                 resource: {
                     values: [
-                        ['', words[1], player_ids[0], player_ids[1], player_ids[2], player_ids[3], player_ids[4], player_ids[5],
-                            '', '', names[0], names[1], names[2], names[3], names[4], names[5]]
+                        ['', words[1], names[0], names[1], names[2], names[3], names[4], names[5],
+                            '', '', player_ids[0], player_ids[1], player_ids[2], player_ids[3], player_ids[4], player_ids[5]]
                     ]
                 }
             }, (err, res) => {
