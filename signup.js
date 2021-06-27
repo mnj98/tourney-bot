@@ -14,8 +14,8 @@ async function signup_handler(words, msg, client, apiKey, auth, sheets, spreadsh
 
 	    console.log(player_ids)
 
-        get_conflicts(player_ids, msg, spreadsheetId, auth, apiKey, sheets).then(already_signed_up => {
-            console.log('already signed up: ' + already_signed_up)
+        get_conflicts(player_ids, msg, spreadsheetId, auth, apiKey, sheets).then(conflict_counts => {
+            console.log('conflict_counts: ' + conflict_counts)
 
             get_names(player_ids, msg, client).then(names => {
                 let tier = words[2].toLowerCase()
@@ -32,6 +32,16 @@ async function signup_handler(words, msg, client, apiKey, auth, sheets, spreadsh
 }
 
 async function get_conflicts(player_ids, msg, spreadsheetId, auth, apiKey, sheets){
+
+    return Promise.all(player_ids.map(id => {
+        SheetService.get_if_signed_up(id, msg, spreadsheetId, auth, apiKey, sheets)
+    }))
+
+
+
+
+
+    /*
     let conflicts = []
     for(const id of player_ids){
         SheetService.get_if_signed_up(id, msg, spreadsheetId, auth, apiKey, sheets).then(already_signed_up =>{
@@ -42,7 +52,7 @@ async function get_conflicts(player_ids, msg, spreadsheetId, auth, apiKey, sheet
         })
 
     }
-    return conflicts
+    return conflicts*/
 }
 
 
