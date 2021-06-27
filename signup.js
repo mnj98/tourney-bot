@@ -11,6 +11,8 @@ async function signup_handler(words, msg, client, apiKey, auth, sheets, spreadsh
         let player_ids = get_player_ids(words, msg)
         if (player_ids.length === 0) return
 
+	console.log(player_ids)
+
         let names = await get_names(player_ids, msg, client)
 
 
@@ -44,12 +46,14 @@ async function signup_handler(words, msg, client, apiKey, auth, sheets, spreadsh
 
 async function get_names(ids, msg, client){
     let names = []
-    for(let id in ids){
+    console.log('ids: ' + ids)
+    ids.forEach(id => {
+        console.log('id: ' + id)
         if(id === '') names.push('')
         else{
             names.push((await client.users.fetch(id)).username)
         }
-    }
+    })
 }
 
 function get_player_ids(words, msg){
@@ -57,7 +61,7 @@ function get_player_ids(words, msg){
 
 
     for(let i = 0; i < 4; i++) {
-        let player = words[3 + i].content.match(/<@![\d]*>/g)
+        let player = words[3 + i].match(/<@![\d]*>/g)
         if (player == null || player.length !== 1) {
             msg.reply('Unknown player: ' + words[3 + i])
             return []
@@ -70,7 +74,7 @@ function get_player_ids(words, msg){
 
     if(words[7] === '') ids.push('')
     else{
-        let player =words[7].content.match(/<@![\d]*>/g)
+        let player =words[7].match(/<@![\d]*>/g)
         if (player == null || player.length !== 1) {
             msg.reply('Unknown player: ' + words[7])
             return []
@@ -81,7 +85,7 @@ function get_player_ids(words, msg){
     }
     if(words[8] === '') ids.push('')
     else{
-        let player =words[8].content.match(/<@![\d]*>/g)
+        let player =words[8].match(/<@![\d]*>/g)
         if (player == null || player.length !== 1) {
             msg.reply('Unknown player: ' + words[8])
             return []
