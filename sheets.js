@@ -9,7 +9,7 @@ const SCOPES = ['https://www.googleapis.com/auth/spreadsheets'];
 // time.
 const TOKEN_PATH = 'token.json';
 
-module.exports = {setup, append_line}
+module.exports = {setup, append_line, get_if_signed_up}
 
 async function setup(callback){
     fs.readFile('secret.json', (err, content) => {
@@ -17,6 +17,36 @@ async function setup(callback){
         // Authorize a client with credentials, then call the Google Sheets API.
         authorize(JSON.parse(content), callback);
     });
+}
+
+async function get_if_signed_up(id, msg, spreadsheetId, auth, apiKey, sheets){
+    await sheets.spreadsheets.values.update({
+        spreadsheetId: spreadsheetId,
+        auth: auth,
+        key: apiKey,
+        range: 'BotLogic!A1',
+        valueInputOption: 'USER_ENTERED',
+        resource: {
+            values: [[id]]
+        }
+    }, async (err, res) =>{
+        if (err) {
+            console.log(err)
+            msg.reply('Backend error :(')
+            return -1
+        }
+        else{
+            await sheets.spreadsheets.values.get({
+                spreadsheetId: spreadsheetId,
+                auth: auth,
+                key: apiKey,
+                range: 'BotLogic!A2'
+            }, (err, res) =>{
+                console.log(res.data.value)
+                return 0
+            })
+        }
+    })
 }
 
 async function append_line(msg, tier, values, spreadsheetId, auth, apiKey, sheets){
