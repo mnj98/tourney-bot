@@ -30,14 +30,14 @@ async function get_if_signed_up(id, msg, spreadsheetId, auth, apiKey, sheets){
             resource: {
                 values: [[id]]
             }
-        }, async (err, res) =>{
+        }, (err, res) =>{
             if (err) {
                 console.log(err)
                 msg.reply('Backend error :(')
                 resolve(-1)
             }
             else{
-                await sheets.spreadsheets.values.get({
+                sheets.spreadsheets.values.get({
                     spreadsheetId: spreadsheetId,
                     auth: auth,
                     key: apiKey,
