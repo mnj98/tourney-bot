@@ -20,34 +20,36 @@ async function setup(callback){
 }
 
 async function get_if_signed_up(id, msg, spreadsheetId, auth, apiKey, sheets){
-    await sheets.spreadsheets.values.update({
-        spreadsheetId: spreadsheetId,
-        auth: auth,
-        key: apiKey,
-        range: 'BotLogic!A1',
-        valueInputOption: 'USER_ENTERED',
-        resource: {
-            values: [[id]]
-        }
-    }, async (err, res) =>{
-        if (err) {
-            console.log(err)
-            msg.reply('Backend error :(')
-            return -1
-        }
-        else{
-            await sheets.spreadsheets.values.get({
-                spreadsheetId: spreadsheetId,
-                auth: auth,
-                key: apiKey,
-                range: 'BotLogic!A2'
-            }, (err, res) =>{
-                console.log('id: ' + id + 'from sheet calc: ' + res.data.values)
-                return 0
-            })
-        }
+    return new Promise((resolve) => {
+        sheets.spreadsheets.values.update({
+            spreadsheetId: spreadsheetId,
+            auth: auth,
+            key: apiKey,
+            range: 'BotLogic!A1',
+            valueInputOption: 'USER_ENTERED',
+            resource: {
+                values: [[id]]
+            }
+        }, async (err, res) =>{
+            if (err) {
+                console.log(err)
+                msg.reply('Backend error :(')
+                resolve(-1)
+            }
+            else{
+                await sheets.spreadsheets.values.get({
+                    spreadsheetId: spreadsheetId,
+                    auth: auth,
+                    key: apiKey,
+                    range: 'BotLogic!A2'
+                }, (err, res) =>{
+                    console.log('id: ' + id + 'from sheet calc: ' + res.data.values)
+                    resolve(res.data.values)
+                })
+            }
+        })
     })
-    return -6
+
 }
 
 async function append_line(msg, tier, values, spreadsheetId, auth, apiKey, sheets){
