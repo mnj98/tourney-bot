@@ -37,8 +37,8 @@ client.on('ready', () => {
 
 client.on('message', msg => {
     
-    console.log(msg.author.id)
-    client.users.fetch(msg.content.match(/\d+/g)[0]).then(usr => console.log(usr.username))
+    //console.log(msg.author.id)
+    //client.users.fetch(msg.content.match(/\d+/g)[0]).then(usr => console.log(usr.username))
     if(msg.channel.id === '852287847696039969'){
         let words = [].concat.apply([], msg.content.split('"').map(function(v,i){
             return i%2 ? v : v.split(' ')
@@ -46,7 +46,7 @@ client.on('message', msg => {
         console.log(words)
 
         if(words[0] === '!signup'){
-            signups.signup_handler(words, msg, apiKey, auth, sheets, signup_spreadsheetId)
+            signups.signup_handler(words, msg, client, apiKey, auth, sheets, signup_spreadsheetId)
 
         }
 
