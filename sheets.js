@@ -42,7 +42,7 @@ async function get_if_signed_up(id, msg, spreadsheetId, auth, apiKey, sheets){
                 key: apiKey,
                 range: 'BotLogic!A2'
             }, (err, res) =>{
-                console.log(res.data.value)
+                console.log('id: ' + id + 'from sheet calc: ' + res.data.values)
                 return 0
             })
         }

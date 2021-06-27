@@ -44,6 +44,7 @@ async function get_conflicts(player_ids, msg, spreadsheetId, auth, apiKey, sheet
     for(const id of player_ids){
         const already_signed_up = await SheetService.get_if_signed_up(id, msg, spreadsheetId, auth, apiKey, sheets)
         if(already_signed_up != 0){
+            console.log(id + ' has alreay signed up with count: ' + already_signed_up)
             conflicts.push(id)
         }
     }
