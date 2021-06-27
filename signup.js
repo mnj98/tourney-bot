@@ -69,7 +69,7 @@ function get_player_ids(words, msg){
             return []
         }
         else{
-            ids.push(player[0].match(/\d+/g))
+            ids.push(player[0].match(/\d+/g)[0])
         }
 
     }
@@ -82,7 +82,7 @@ function get_player_ids(words, msg){
             return []
         }
         else{
-            ids.push(player[0].match(/\d+/g))
+            ids.push(player[0].match(/\d+/g)[0])
         }
     }
     if(words[8] === '') ids.push('')
@@ -93,7 +93,7 @@ function get_player_ids(words, msg){
             return []
         }
         else{
-            ids.push(player[0].match(/\d+/g))
+            ids.push(player[0].match(/\d+/g)[0])
         }
     }
 
