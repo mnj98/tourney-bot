@@ -19,7 +19,7 @@ async function setup(callback){
     });
 }
 
-async function get_if_signed_up(id, msg, spreadsheetId, auth, apiKey, sheets){
+function get_if_signed_up(id, msg, spreadsheetId, auth, apiKey, sheets){
     return new Promise((resolve) => {
         sheets.spreadsheets.values.update({
             spreadsheetId: spreadsheetId,
