@@ -33,6 +33,7 @@ async function signup_handler(words, msg, client, apiKey, auth, sheets, spreadsh
                 }
             }, (err, res) => {
                 if (err) {
+                    console.log(err)
                     bad_signup(msg, 'backend error')
                 }
                 msg.reply('Signed up!')
@@ -54,6 +55,7 @@ async function get_names(ids, msg, client){
             names.push((await client.users.fetch(id)).username)
         }
     }
+    return names
 }
 
 function get_player_ids(words, msg){
