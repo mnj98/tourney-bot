@@ -9,7 +9,7 @@ const SCOPES = ['https://www.googleapis.com/auth/spreadsheets'];
 // time.
 const TOKEN_PATH = 'token.json';
 
-module.exports = {setup}
+module.exports = {setup, append_line}
 
 async function setup(callback){
     fs.readFile('secret.json', (err, content) => {
@@ -18,6 +18,26 @@ async function setup(callback){
         authorize(JSON.parse(content), callback);
     });
 }
+
+async function append_line(msg, tier, values, spreadsheetId, auth, apiKey, sheets){
+    await sheets.spreadsheets.values.append({
+        spreadsheetId: spreadsheetId,
+        auth: auth,
+        key: apiKey,
+        range: tier + '!A:P',
+        valueInputOption: 'USER_ENTERED',
+        resource: {
+            values: values
+        }
+    }, (err, res) => {
+        if (err) {
+            console.log(err)
+            msg.reply('Backend error :(')
+        }
+        else msg.reply('Signed up!')
+    })
+}
+
 
 // Load client secrets from a local file.
 /*
