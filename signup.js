@@ -47,13 +47,13 @@ async function signup_handler(words, msg, client, apiKey, auth, sheets, spreadsh
 async function get_names(ids, msg, client){
     let names = []
     console.log('ids: ' + ids)
-    ids.forEach(id => {
+    for (const id of ids) {
         console.log('id: ' + id)
         if(id === '') names.push('')
         else{
             names.push((await client.users.fetch(id)).username)
         }
-    })
+    }
 }
 
 function get_player_ids(words, msg){
