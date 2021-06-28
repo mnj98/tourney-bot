@@ -4,8 +4,6 @@ module.exports = {signup_handler}
 async function signup_handler(words, msg, client, apiKey, auth, sheets, spreadsheetId) {
     if (words.length <= 6 || words.length > 9) bad_signup(msg, 'syntax')
     else {
-
-
         words.push('')
         words.push('')
 
@@ -18,10 +16,7 @@ async function signup_handler(words, msg, client, apiKey, auth, sheets, spreadsh
             //return
         }
 
-	    console.log(player_ids)
-
         get_conflicts(player_ids, msg, spreadsheetId, auth, apiKey, sheets).then(conflict_counts => {
-            console.log('conflict_counts: ' + conflict_counts)
 
             const conflicts = determine_conflicts(conflict_counts[0], player_ids)
 
@@ -30,7 +25,7 @@ async function signup_handler(words, msg, client, apiKey, auth, sheets, spreadsh
                 //return
             }
 
-            get_names(player_ids, msg, client).then(names => {
+            get_names(player_ids, msg).then(names => {
                 let tier = words[2].toLowerCase()
                 if (tier === 'tier1' || tier === 'tier2' || tier === 'tier3') {
                     const line = [
@@ -63,7 +58,6 @@ function notify_conflicts(ids, msg){
 function determine_conflicts(conflict_counts, player_ids){
     let already_signed_up = []
     for(let i = 0; i < conflict_counts.length; i++){
-        console.log('conf count ' + conflict_counts[i])
         if(conflict_counts[i] > 0 && player_ids[i]) already_signed_up.push('<@!' + player_ids[i] + '>')
     }
     return already_signed_up
@@ -73,12 +67,9 @@ function get_conflicts(player_ids, msg, spreadsheetId, auth, apiKey, sheets){
     return SheetService.get_if_signed_up(player_ids, msg, spreadsheetId, auth, apiKey, sheets)
 }
 
-
-async function get_names(ids, msg, client){
+async function get_names(ids, msg){
     let names = []
-    console.log('ids: ' + ids)
     for (const id of ids) {
-        console.log('id: ' + id)
         if(id === '') names.push('')
         else{
             const member = await msg.guild.member(id)
@@ -101,9 +92,7 @@ function get_player_ids(words, msg){
         else{
             ids.push(player[0].match(/\d+/g)[0])
         }
-
     }
-
     if(words[7] === '') ids.push('')
     else{
         let player =words[7].match(/<@![\d]*>/g)
@@ -126,13 +115,11 @@ function get_player_ids(words, msg){
             ids.push(player[0].match(/\d+/g)[0])
         }
     }
-
     return ids
 }
 
 function get_duplicate_ids(ids){
     const no_duplicates = [...new Set(ids)]
-
     let duplicates = [...ids]
     no_duplicates.forEach((item) => {
         const i = duplicates.indexOf(item)
@@ -140,8 +127,6 @@ function get_duplicate_ids(ids){
     })
     return Array.from(new Set(duplicates)).map(id => id ? '<@!' + id + '>' : '').filter(id => id)
 }
-
-
 
 function bad_signup(msg, reason){
     msg.reply('Incorrect ' + reason + ',\nuse: !signup \"team name\" TierX player1 player2 player3 player4')
