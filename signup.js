@@ -49,7 +49,8 @@ function notify_conflicts(ids, msg){
 function determine_conflicts(conflict_counts, player_ids){
     let already_signed_up = []
     for(let i = 0; i < conflict_counts.length; i++){
-        if(conflict_counts[i] >= 0) already_signed_up.push('<@!' + player_ids[i] + '>')
+        console.log('conf count ' + conflict_counts[i])
+        if(conflict_counts[i] > 0 && player_ids[i]) already_signed_up.push('<@!' + player_ids[i] + '>')
     }
     return already_signed_up
 }
