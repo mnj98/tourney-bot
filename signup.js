@@ -56,9 +56,7 @@ function determine_conflicts(conflict_counts, player_ids){
 }
 
 function get_conflicts(player_ids, msg, spreadsheetId, auth, apiKey, sheets){
-    return Promise.all(player_ids.map(id => {
-        return SheetService.get_if_signed_up(id, msg, spreadsheetId, auth, apiKey, sheets)
-    }))
+    return SheetService.get_if_signed_up(player_ids, msg, spreadsheetId, auth, apiKey, sheets)
 }
 
 

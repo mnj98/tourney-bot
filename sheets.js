@@ -19,16 +19,16 @@ async function setup(callback){
     });
 }
 
-function get_if_signed_up(id, msg, spreadsheetId, auth, apiKey, sheets){
+function get_if_signed_up(ids, msg, spreadsheetId, auth, apiKey, sheets){
     return new Promise((resolve) => {
         sheets.spreadsheets.values.update({
             spreadsheetId: spreadsheetId,
             auth: auth,
             key: apiKey,
-            range: 'BotLogic!A1',
+            range: 'BotLogic!A1:F1',
             valueInputOption: 'USER_ENTERED',
             resource: {
-                values: [[id]]
+                values: [ids]
             }
         }, (err, res) =>{
             if (err) {
@@ -41,9 +41,9 @@ function get_if_signed_up(id, msg, spreadsheetId, auth, apiKey, sheets){
                     spreadsheetId: spreadsheetId,
                     auth: auth,
                     key: apiKey,
-                    range: 'BotLogic!A2'
+                    range: 'BotLogic!A2:F2'
                 }, (err, res) =>{
-                    console.log('id: ' + id + 'from sheet calc: ' + res.data.values)
+                    console.log('from sheet calc: ' + res.data.values)
                     resolve(res.data.values)
                 })
             }
