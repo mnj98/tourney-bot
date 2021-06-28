@@ -81,38 +81,39 @@ async function get_names(ids, msg){
 
 function get_player_ids(words, msg){
     let ids = []
-
+    const id_str_regex = /<@!?\d+>/g
+    const id_num_regex = /\d+/g
 
     for(let i = 0; i < 4; i++) {
-        let player = words[3 + i].match(/<@![\d]*>/g)
+        let player = words[3 + i].match(id_str_regex)
         if (player == null || player.length !== 1) {
             msg.reply('Unknown player: ' + words[3 + i])
             return []
         }
         else{
-            ids.push(player[0].match(/\d+/g)[0])
+            ids.push(player[0].match(id_num_regex)[0])
         }
     }
     if(words[7] === '') ids.push('')
     else{
-        let player =words[7].match(/<@![\d]*>/g)
+        let player =words[7].match(id_str_regex)
         if (player == null || player.length !== 1) {
             msg.reply('Unknown player: ' + words[7])
             return []
         }
         else{
-            ids.push(player[0].match(/\d+/g)[0])
+            ids.push(player[0].match(id_num_regex)[0])
         }
     }
     if(words[8] === '') ids.push('')
     else{
-        let player =words[8].match(/<@![\d]*>/g)
+        let player =words[8].match(id_str_regex)
         if (player == null || player.length !== 1) {
             msg.reply('Unknown player: ' + words[8])
             return []
         }
         else{
-            ids.push(player[0].match(/\d+/g)[0])
+            ids.push(player[0].match(id_num_regex)[0])
         }
     }
     return ids
