@@ -17,6 +17,13 @@ async function signup_handler(words, msg, client, apiKey, auth, sheets, spreadsh
         get_conflicts(player_ids, msg, spreadsheetId, auth, apiKey, sheets).then(conflict_counts => {
             console.log('conflict_counts: ' + conflict_counts)
 
+            const conflicts = determine_conflicts(conflict_counts, player_ids)
+
+            if(conflicts.length > 0){
+                notify_conflicts(conflicts, msg)
+                //return
+            }
+
             get_names(player_ids, msg, client).then(names => {
                 let tier = words[2].toLowerCase()
                 if (tier === 'tier1' || tier === 'tier2' || tier === 'tier3') {
@@ -31,31 +38,26 @@ async function signup_handler(words, msg, client, apiKey, auth, sheets, spreadsh
     }
 }
 
+function notify_conflicts(ids, msg){
+    let reply = 'Sorry but'
+    ids.forEach(id => {
+        reply = reply + ' ' + id
+    })
+    msg.reply(reply + (ids.length > 1 ? ' is' : ' are') + ' already on a team. (We can ignore that since the bot is in development :) )')
+}
+
+function determine_conflicts(conflict_counts, player_ids){
+    let already_signed_up = []
+    for(let i = 0; i < conflict_counts.length; i++){
+        if(conflict_counts[i] >= 0) already_signed_up.push('<@!' + player_ids[i] + '>')
+    }
+    return already_signed_up
+}
+
 function get_conflicts(player_ids, msg, spreadsheetId, auth, apiKey, sheets){
-
-
     return Promise.all(player_ids.map(id => {
         return SheetService.get_if_signed_up(id, msg, spreadsheetId, auth, apiKey, sheets)
     }))
-
-
-
-
-
-
-
-    /*
-    let conflicts = []
-    for(const id of player_ids){
-        SheetService.get_if_signed_up(id, msg, spreadsheetId, auth, apiKey, sheets).then(already_signed_up =>{
-            if(already_signed_up != 0){
-                console.log(id + ' has already signed up with count: ' + already_signed_up)
-                conflicts.push(id)
-            }
-        })
-
-    }
-    return conflicts*/
 }
 
 
