@@ -17,7 +17,7 @@ async function signup_handler(words, msg, client, apiKey, auth, sheets, spreadsh
         get_conflicts(player_ids, msg, spreadsheetId, auth, apiKey, sheets).then(conflict_counts => {
             console.log('conflict_counts: ' + conflict_counts)
 
-            const conflicts = determine_conflicts(conflict_counts, player_ids)
+            const conflicts = determine_conflicts(conflict_counts[0], player_ids)
 
             if(conflicts.length > 0){
                 notify_conflicts(conflicts, msg)
@@ -68,7 +68,7 @@ async function get_names(ids, msg, client){
         if(id === '') names.push('')
         else{
             const member = await msg.guild.member(id)
-            names.push(member ? member.nickname : id)
+            names.push(member.nickname ? member.nickname : member.user.username)
         }
     }
     return names
