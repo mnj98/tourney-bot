@@ -139,7 +139,7 @@ function get_duplicate_ids(ids){
         duplicates = duplicates.slice(0, i).concat(duplicates.slice(i + 1, duplicates.length))
     })
 
-    return Array.from(new Set(duplicates)).map(id => '<@!' + id + '>')
+    return Array.from(new Set(duplicates)).map(id => id ? '<@!' + id + '>' : '')
 }
 
 
