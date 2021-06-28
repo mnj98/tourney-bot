@@ -12,6 +12,12 @@ async function signup_handler(words, msg, client, apiKey, auth, sheets, spreadsh
         let player_ids = get_player_ids(words, msg)
         if (player_ids.length === 0) return
 
+        const duplicates = get_duplicate_ids(player_ids)
+        if(duplicates.length > 0){
+            notify_duplicates(duplicates, msg)
+            //return
+        }
+
 	    console.log(player_ids)
 
         get_conflicts(player_ids, msg, spreadsheetId, auth, apiKey, sheets).then(conflict_counts => {
@@ -38,12 +44,20 @@ async function signup_handler(words, msg, client, apiKey, auth, sheets, spreadsh
     }
 }
 
+function notify_duplicates(ids, msg){
+    let reply = 'Sorry but'
+    ids.forEach(id => {
+        reply = reply + ' ' + id
+    })
+    msg.reply(reply + ' can\'t be on the same team twice. (We can ignore that since the bot is in development :) )')
+}
+
 function notify_conflicts(ids, msg){
     let reply = 'Sorry but'
     ids.forEach(id => {
         reply = reply + ' ' + id
     })
-    msg.reply(reply + (ids.length > 1 ? ' is' : ' are') + ' already on a team. (We can ignore that since the bot is in development :) )')
+    msg.reply(reply + (ids.length > 1 ? ' are' : ' is') + ' already on a team. (We can ignore that since the bot is in development :) )')
 }
 
 function determine_conflicts(conflict_counts, player_ids){
@@ -114,6 +128,18 @@ function get_player_ids(words, msg){
     }
 
     return ids
+}
+
+function get_duplicate_ids(ids){
+    const no_duplicates = [...new Set(ids)]
+
+    let duplicates = [...ids]
+    no_duplicates.forEach((item) => {
+        const i = duplicates.indexOf(item)
+        duplicates = duplicates.slice(0, i).concat(duplicates.slice(i + 1, duplicates.length))
+    })
+
+    return Array.from(new Set(duplicates)).map(id => '<@!' + id + '>')
 }
 
 
