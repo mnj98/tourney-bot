@@ -49,6 +49,9 @@ client.on('message', msg => {
             signups.signup_handler(words, msg, client, apiKey, auth, sheets, signup_spreadsheetId)
 
         }
+        if(words[0] === '!roster'){
+            msg.reply('https://docs.google.com/spreadsheets/d/1SA0twJDK9mkc-zwIaSLfDIEfssxd7dMszWRfYwMKnzY/edit#gid=0')
+        }
 
     }
 
