@@ -84,16 +84,19 @@ function get_player_ids(words, msg){
     const id_str_regex = /<@!?\d+>/g
     const id_num_regex = /\d+/g
 
-    for(let i = 0; i < 4; i++) {
-        let player = words[3 + i].match(id_str_regex)
-        if (player == null || player.length !== 1) {
-            msg.reply('Unknown player: ' + words[3 + i])
-            return []
+    for(let i = 0; i < 6; i++) {
+        if(words[i + 3] || i < 4) {
+            let player = words[i + 3].match(id_str_regex)
+            if (player == null || player.length !== 1) {
+                msg.reply('Unknown player: ' + words[i + 3])
+                return []
+            } else {
+                ids.push(player[0].match(id_num_regex)[0])
+            }
         }
-        else{
-            ids.push(player[0].match(id_num_regex)[0])
-        }
+        else ids.push('')
     }
+    /*
     if(words[7] === '') ids.push('')
     else{
         let player =words[7].match(id_str_regex)
@@ -115,7 +118,7 @@ function get_player_ids(words, msg){
         else{
             ids.push(player[0].match(id_num_regex)[0])
         }
-    }
+    }*/
     return ids
 }
 
