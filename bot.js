@@ -9,13 +9,17 @@ require('dotenv').config()
 const signup_channel_id = '852287847696039969'
 const server_id = '852287847696039966'
 
-client.on('ready', () => {
+client.on('ready', async() => {
     console.log(`Logged in as ${client.user.tag}!`)
+    const commands = await client.api.applications(client.user.id).guilds(server_id).commands.get()
+    console.log(commands)
+
+    /*
     new WOKCommands(client, {
         commandsDir: 'commands',
         testServers: [server_id],
         showWarns: false
-    })
+    })*/
 
 })
 
