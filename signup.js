@@ -1,7 +1,7 @@
 const SheetService = require('./sheets.js')
 module.exports = {signup_handler}
 
-async function signup_handler(words, msg, client, apiKey, auth, sheets, spreadsheetId) {
+async function signup_handler(words, msg) {
     if (words.length <= 6 || words.length > 9) bad_signup(msg, 'syntax')
     else {
         words.push('')
@@ -17,8 +17,8 @@ async function signup_handler(words, msg, client, apiKey, auth, sheets, spreadsh
             //return
         }
 
-        get_conflicts(player_ids, msg, spreadsheetId, auth, apiKey, sheets).then(conflict_counts => {
-            const conflicts = determine_conflicts(conflict_counts[0], player_ids)
+        SheetService.get_num_signed_up(player_ids, msg).then(conflict_counts => {
+            const conflicts = determine_conflicts(conflict_counts, player_ids)
 
             if(conflicts.length > 0){
                 notify_conflicts(conflicts, msg)
@@ -33,7 +33,7 @@ async function signup_handler(words, msg, client, apiKey, auth, sheets, spreadsh
                         ['', words[1], names[0], names[1], names[2], names[3], names[4], names[5],
                             '', '', player_ids[0], player_ids[1], player_ids[2], player_ids[3], player_ids[4], player_ids[5]]
                     ]
-                    SheetService.append_line(msg, tier, line, spreadsheetId, auth, apiKey, sheets)
+                    SheetService.append_line(msg, tier, line)
                 } else bad_signup(msg, 'tier')
             })
         })
@@ -62,10 +62,6 @@ function determine_conflicts(conflict_counts, player_ids){
         if(conflict_counts[i] > 0 && player_ids[i]) already_signed_up.push('<@!' + player_ids[i] + '>')
     }
     return already_signed_up
-}
-
-function get_conflicts(player_ids, msg, spreadsheetId, auth, apiKey, sheets){
-    return SheetService.get_if_signed_up(player_ids, msg, spreadsheetId, auth, apiKey, sheets)
 }
 
 async function get_names(ids, msg){
