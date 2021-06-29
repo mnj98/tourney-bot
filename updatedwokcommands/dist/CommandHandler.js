@@ -443,6 +443,7 @@ var CommandHandler = /** @class */ (function () {
                                 .split(/[>\]] [<\[]/);
                             for (a = 0; a < split.length; ++a) {
                                 item = split[a];
+				console.log(item)
                                 options.push({
                                     name: item.replace(/ /g, "-"),
                                     description: item,
