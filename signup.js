@@ -13,15 +13,16 @@ async function signup_handler(words, msg, client, apiKey, auth, sheets, spreadsh
         const duplicates = get_duplicate_ids(player_ids)
         if(duplicates.length > 0){
             notify_duplicates(duplicates, msg)
+            //Uncomment return for production
             //return
         }
 
         get_conflicts(player_ids, msg, spreadsheetId, auth, apiKey, sheets).then(conflict_counts => {
-
             const conflicts = determine_conflicts(conflict_counts[0], player_ids)
 
             if(conflicts.length > 0){
                 notify_conflicts(conflicts, msg)
+                //Uncomment return for production
                 //return
             }
 
@@ -90,35 +91,11 @@ function get_player_ids(words, msg){
             if (player == null || player.length !== 1) {
                 msg.reply('Unknown player: ' + words[i + 3])
                 return []
-            } else {
-                ids.push(player[0].match(id_num_regex)[0])
-            }
+            } else ids.push(player[0].match(id_num_regex)[0])
+
         }
         else ids.push('')
     }
-    /*
-    if(words[7] === '') ids.push('')
-    else{
-        let player =words[7].match(id_str_regex)
-        if (player == null || player.length !== 1) {
-            msg.reply('Unknown player: ' + words[7])
-            return []
-        }
-        else{
-            ids.push(player[0].match(id_num_regex)[0])
-        }
-    }
-    if(words[8] === '') ids.push('')
-    else{
-        let player =words[8].match(id_str_regex)
-        if (player == null || player.length !== 1) {
-            msg.reply('Unknown player: ' + words[8])
-            return []
-        }
-        else{
-            ids.push(player[0].match(id_num_regex)[0])
-        }
-    }*/
     return ids
 }
 
