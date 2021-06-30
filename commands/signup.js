@@ -12,6 +12,6 @@ module.exports = {
     argTypes: [3, 3, 9, 9, 9, 9, 9, 9],
     callback: async (input) => {
         console.log(input)
-        return await signup_handler.signup_handler(input.args)
+        return await signup_handler.signup_handler(input.args, input.guild)
     }
 }

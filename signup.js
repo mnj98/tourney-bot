@@ -1,7 +1,7 @@
 const SheetService = require('./sheets.js')
 module.exports = {signup_handler}
 
-async function signup_handler(args) {
+async function signup_handler(args, guild) {
     return new Promise(resolve => {
         args.push('')
         args.push('')
@@ -17,7 +17,7 @@ async function signup_handler(args) {
 
             if(conflicts.length > 0) resolve(notify_conflicts(conflicts))
 
-            get_names(player_ids).then(names => {
+            get_names(player_ids, guild).then(names => {
                 let tier = args[1].toLowerCase()
                 if (tier === 'tier1' || tier === 'tier2' || tier === 'tier3') {
                     const line = [
@@ -56,17 +56,13 @@ function determine_conflicts(conflict_counts, player_ids){
     return already_signed_up
 }
 
-async function get_names(ids){
+async function get_names(ids, guild){
     let names = []
     for (const id of ids) {
         if(id === '') names.push('')
         else{
-            console.log('id: ' + id)
-            const guild = await global.client.guilds.fetch(global.server_id)  //await msg.guild.member(id)
-            console.log('guild: ' + guild)
-            const player = await guild.member(id).fetch(true)
-            console.log('player: ' + player)
-            if(!player) names.push('Harry Potter')//TODO:fix this and find out why it sometimes doesn't work
+
+            const player = guild.member(id)
             else names.push(player.nickname ? player.nickname : player.user.username)
         }
     }
