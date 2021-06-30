@@ -1,1 +1,3 @@
 node_modules
+run_bot.sh
+stop_bot.sh

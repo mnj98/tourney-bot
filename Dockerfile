@@ -9,4 +9,6 @@ RUN npm install
 
 COPY . /usr/src/bot/
 
+RUN cp CommandHandler.js ./node_modules/wokcommands/dist/CommandHandler.js
+
 CMD ["node", "bot.js"]
