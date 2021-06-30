@@ -62,7 +62,7 @@ async function get_names(ids, guild){
         if(id === '') names.push('')
         else{
 
-            const player = guild.member(id)
+            const player = await guild.member(id)
             names.push(player.nickname ? player.nickname : player.user.username)
         }
     }
