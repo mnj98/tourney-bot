@@ -11,7 +11,7 @@ async function signup_handler(args, guild) {
         const duplicates = get_duplicate_ids(player_ids)
         if(duplicates.length > 0) resolve(notify_duplicates(duplicates))
 
-        SheetService.get_num_signed_up(player_ids).then(conflict_counts => {
+        SheetService.get_num_signed_up(player_ids.filter(id => id)).then(conflict_counts => {
             if(typeof conflict_counts === "string") resolve(conflict_counts)
             const conflicts = determine_conflicts(conflict_counts, player_ids)
 
