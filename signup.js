@@ -62,9 +62,11 @@ async function get_names(ids){
         if(id === '') names.push('')
         else{
             console.log(id)
-            const member = await global.client.guilds.fetch(global.server_id).member(id)  //await msg.guild.member(id)
+            const guild = await global.client.guilds.fetch(global.server_id)  //await msg.guild.member(id)
             //console.log(member)
-            names.push(member.nickname ? member.nickname : member.user.username)
+            const player = await guild.member(id)
+            console.log(player)
+            names.push(player.nickname ? player.nickname : player.user.username)
         }
     }
     return names
