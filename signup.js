@@ -66,7 +66,7 @@ async function get_names(ids){
             console.log('guild: ' + guild)
             const player = await guild.member(id)
             console.log('player: ' + player)
-            if(!player) names.push('Harry Potter')
+            if(!player) names.push('Harry Potter')//TODO:fix this and find out why it sometimes doesn't work
             else names.push(player.nickname ? player.nickname : player.user.username)
         }
     }
