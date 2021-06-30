@@ -64,7 +64,7 @@ async function get_names(ids){
             console.log('id: ' + id)
             const guild = await global.client.guilds.fetch(global.server_id)  //await msg.guild.member(id)
             console.log('guild: ' + guild)
-            const player = await guild.member(id)
+            const player = await guild.member(id).fetch(true)
             console.log('player: ' + player)
             if(!player) names.push('Harry Potter')//TODO:fix this and find out why it sometimes doesn't work
             else names.push(player.nickname ? player.nickname : player.user.username)
