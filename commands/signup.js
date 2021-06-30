@@ -10,7 +10,8 @@ module.exports = {
     maxArgs: 8,
     expectedArgs: '<team name> <tier> <player1> <player2> <player3> <player4> [sub1] [sub2]',
     argTypes: [3, 3, 9, 9, 9, 9, 9, 9],
-    callback: async ({args}) => {
-        return await signup_handler.signup_handler(args)
+    callback: async (input) => {
+        console.log(input)
+        return await signup_handler.signup_handler(input.args)
     }
 }
