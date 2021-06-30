@@ -1,23 +1,22 @@
 const Discord = require('discord.js');
-client = new Discord.Client();
+global.client = new Discord.Client();
 const {google} = require('googleapis');
 const Sheets = require('./sheets.js')
-const signups = require('./signup.js')
 const WOKCommands = require('./updatedwokcommands')
 require('dotenv').config()
 
-const signup_channel_id = '852287847696039969'
-const server_id = '852287847696039966'
+//const signup_channel_id = '852287847696039969'
+global.server_id = '852287847696039966'
 
-client.on('ready', async() => {
-    console.log(`Logged in as ${client.user.tag}!`)
-    const commands = await client.api.applications(client.user.id).guilds(server_id).commands.get()
+global.client.on('ready', async() => {
+    console.log(`Logged in as ${global.client.user.tag}!`)
+    const commands = await global.client.api.applications(global.client.user.id).guilds(global.server_id).commands.get()
     console.log(commands)
 
 
-    new WOKCommands(client, {
+    new WOKCommands(global.client, {
         commandsDir: 'commands',
-        testServers: [server_id],
+        testServers: [global.server_id],
         showWarns: false
     })
 
@@ -44,14 +43,6 @@ Sheets.setup((sheet_auth) => {
     global.auth = sheet_auth
     global.sheets = google.sheets({version: 'v4', sheet_auth})
     global.client.login(process.env.BOT_TOKEN)
-
 })
-
-function get_words(msg){
-    return [].concat.apply([], msg.content.split('"').map((v,i) => {
-        return i%2 ? v : v.split(' ')
-    })).filter(Boolean)
-}
-
 
 

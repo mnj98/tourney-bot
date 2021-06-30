@@ -15,7 +15,7 @@ async function setup(callback){
     });
 }
 
-function get_num_signed_up(ids, msg){
+function get_num_signed_up(ids){
     return new Promise((resolve) => {
         global.sheets.spreadsheets.values.update({
             spreadsheetId: signup_spreadsheetId,
@@ -29,8 +29,7 @@ function get_num_signed_up(ids, msg){
         }, (err, res) =>{
             if (err) {
                 console.log(err)
-                msg.reply('Backend error :(')
-                resolve(-1)
+                resolve('Backend error :(')
             }
             else{
                 global.sheets.spreadsheets.values.get({
@@ -46,22 +45,24 @@ function get_num_signed_up(ids, msg){
     })
 }
 
-async function append_line(msg, tier, values){
-    await global.sheets.spreadsheets.values.append({
-        spreadsheetId: signup_spreadsheetId,
-        auth: global.auth,
-        key: process.env.GOOGLE_API_KEY,
-        range: tier + '!A:P',
-        valueInputOption: 'USER_ENTERED',
-        resource: {
-            values: values
-        }
-    }, (err, res) => {
-        if (err) {
-            console.log(err)
-            msg.reply('Backend error :(')
-        }
-        else msg.reply('Signed up!')
+function append_line(tier, values){
+    return new Promise(resolve => {
+        global.sheets.spreadsheets.values.append({
+            spreadsheetId: signup_spreadsheetId,
+            auth: global.auth,
+            key: process.env.GOOGLE_API_KEY,
+            range: tier + '!A:P',
+            valueInputOption: 'USER_ENTERED',
+            resource: {
+                values: values
+            }
+        }, (err, res) => {
+            if (err) {
+                console.log(err)
+                resolve('Backend error :(')
+            }
+            else resolve('Signed up!')
+        })
     })
 }
 

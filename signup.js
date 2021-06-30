@@ -1,59 +1,51 @@
 const SheetService = require('./sheets.js')
 module.exports = {signup_handler}
 
-async function signup_handler(words, msg) {
-    if (words.length <= 6 || words.length > 9) bad_signup(msg, 'syntax')
-    else {
-        words.push('')
-        words.push('')
+async function signup_handler(args) {
+    return new Promise(resolve => {
+        args.push('')
+        args.push('')
+        let player_ids = args.slice(2)
 
-        let player_ids = get_player_ids(words, msg)
-        if (player_ids.length === 0) return
 
         const duplicates = get_duplicate_ids(player_ids)
-        if(duplicates.length > 0){
-            notify_duplicates(duplicates, msg)
-            //Uncomment return for production
-            //return
-        }
+        if(duplicates.length > 0) resolve(notify_duplicates(duplicates))
 
-        SheetService.get_num_signed_up(player_ids, msg).then(conflict_counts => {
+        SheetService.get_num_signed_up(player_ids).then(conflict_counts => {
+            if(typeof conflict_counts === "string") resolve(conflict_counts)
             const conflicts = determine_conflicts(conflict_counts, player_ids)
 
-            if(conflicts.length > 0){
-                notify_conflicts(conflicts, msg)
-                //Uncomment return for production
-                //return
-            }
+            if(conflicts.length > 0) resolve(notify_conflicts(conflicts))
 
-            get_names(player_ids, msg).then(names => {
-                let tier = words[2].toLowerCase()
+            get_names(player_ids).then(names => {
+                let tier = args[1].toLowerCase()
                 if (tier === 'tier1' || tier === 'tier2' || tier === 'tier3') {
                     const line = [
-                        ['', words[1], names[0], names[1], names[2], names[3], names[4], names[5],
+                        ['', args[0], names[0], names[1], names[2], names[3], names[4], names[5],
                             '', '', player_ids[0], player_ids[1], player_ids[2], player_ids[3], player_ids[4], player_ids[5]]
                     ]
-                    SheetService.append_line(msg, tier, line)
-                } else bad_signup(msg, 'tier')
+                    SheetService.append_line(tier, line).then(msg => resolve(msg))
+                } else resolve(bad_signup('tier'))
             })
         })
-    }
+
+    })
 }
 
-function notify_duplicates(ids, msg){
+function notify_duplicates(ids){
     let reply = 'Sorry but'
     ids.forEach(id => {
         reply = reply + ' ' + id
     })
-    msg.reply(reply + ' can\'t be on the same team twice. (We can ignore that since the bot is in development :) )')
+    return reply + ' can\'t be on the same team twice. (We can ignore that since the bot is in development :) )'
 }
 
-function notify_conflicts(ids, msg){
+function notify_conflicts(ids){
     let reply = 'Sorry but'
     ids.forEach(id => {
         reply = reply + ' ' + id
     })
-    msg.reply(reply + (ids.length > 1 ? ' are' : ' is') + ' already on a team. (We can ignore that since the bot is in development :) )')
+    return reply + (ids.length > 1 ? ' are' : ' is') + ' already on a team.)'
 }
 
 function determine_conflicts(conflict_counts, player_ids){
@@ -64,35 +56,16 @@ function determine_conflicts(conflict_counts, player_ids){
     return already_signed_up
 }
 
-async function get_names(ids, msg){
+async function get_names(ids){
     let names = []
     for (const id of ids) {
         if(id === '') names.push('')
         else{
-            const member = await msg.guild.member(id)
+            const member = await global.client.guilds.fetch(global.server_id)//await msg.guild.member(id)
             names.push(member.nickname ? member.nickname : member.user.username)
         }
     }
     return names
-}
-
-function get_player_ids(words, msg){
-    let ids = []
-    const id_str_regex = /<@!?\d+>/g
-    const id_num_regex = /\d+/g
-
-    for(let i = 0; i < 6; i++) {
-        if(words[i + 3] || i < 4) {
-            let player = words[i + 3].match(id_str_regex)
-            if (player == null || player.length !== 1) {
-                msg.reply('Unknown player: ' + words[i + 3])
-                return []
-            } else ids.push(player[0].match(id_num_regex)[0])
-
-        }
-        else ids.push('')
-    }
-    return ids
 }
 
 function get_duplicate_ids(ids){
@@ -105,6 +78,6 @@ function get_duplicate_ids(ids){
     return Array.from(new Set(duplicates)).map(id => id ? '<@!' + id + '>' : '').filter(id => id)
 }
 
-function bad_signup(msg, reason){
-    msg.reply('Incorrect ' + reason + ',\nuse: !signup \"team name\" TierX player1 player2 player3 player4')
+function bad_signup(reason){
+    return 'Incorrect ' + reason + ',\nuse: !signup \"team name\" TierX player1 player2 player3 player4'
 }
