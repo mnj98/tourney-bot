@@ -1,6 +1,7 @@
 const signup = require('../src/signup.js')
 const Discord = require('discord.js')
 
+const logo_url = 'https://cdn.discordapp.com/icons/567836553192144953/0e1ec53afc4e455fec638418461b4bb6.png'
 
 module.exports = {
     slash: true,
@@ -18,7 +19,7 @@ module.exports = {
 
             return new Discord.MessageEmbed()
                 .setTitle(':white_check_mark:')
-                .setImage('../logo.jpg')
+                .setImage(logo_url)
         }
         catch(err){
             return 'Signup failed: ' + err
