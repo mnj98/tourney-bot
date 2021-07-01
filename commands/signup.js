@@ -1,4 +1,4 @@
-const signup_handler = require('../src/signup.js')
+const signup = require('../src/signup.js')
 
 
 module.exports = {
@@ -11,11 +11,11 @@ module.exports = {
     expectedArgs: '<team name> <tier> <player1> <player2> <player3> <player4> [sub1] [sub2]',
     argTypes: [3, 3, 9, 9, 9, 9, 9, 9],
     callback: async input => {
-        await signup_handler.signup_handler(input.args, input.guild).then(response =>{
-            return response
-        }).catch(err => {
-            return 'Signup Failed: ' + err
-        })
-
+        try{
+            return await signup.signup_handler(input.args, input.guild)
+        }
+        catch(err){
+            return 'Signup failed: ' + err
+        }
     }
 }

@@ -15,18 +15,21 @@ function signup_handler(args, guild) {
                 const conflicts = determine_conflicts(player_counts, player_ids)
                 if(conflicts.length > 0) reject(notify_conflicts(conflicts))
 
-                SheetService.append_line(tier, [
-                    ['', args[0],
-                        names[0], names[1], names[2], names[3],
-                        names[4] ? names[4] : '', names[5] ? names[5] : '',
-                        '', '', player_ids[0], player_ids[1], player_ids[2],
-                        player_ids[3], player_ids[4] ? player_ids[4] : '',
-                        player_ids[5] ? player_ids[5] : ''
-                    ]
-                ]).then(msg => resolve(msg)).catch(err => reject(err))
+                SheetService.append_line(tier, get_line(args, names, player_ids)).then(msg => {
+                    resolve(msg)
+                }).catch(err => reject(err))
             }).catch(err => reject(err))
         }).catch(err => reject(err))
     })
+}
+
+function get_line(args, names, player_ids){
+    return [['', args[0],
+            names[0], names[1], names[2], names[3],
+            names[4] ? names[4] : '', names[5] ? names[5] : '',
+            '', '', player_ids[0], player_ids[1], player_ids[2],
+            player_ids[3], player_ids[4] ? player_ids[4] : '',
+            player_ids[5] ? player_ids[5] : '']]
 }
 
 function notify_duplicates(ids){
