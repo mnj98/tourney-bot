@@ -25,7 +25,16 @@ module.exports = {
                 fields.push({
                     name: 'Player ' + (i + 1),
                     value: player_names[i],
-                    inline: true
+                    inline: true,
+
+                })
+            }
+            for(let i = 0; i < 6; i++){
+                fields.push({
+                    name: 'crap ' + i,
+                    value: 'pee ' + i,
+                    inline: true,
+
                 })
             }
             for(let i = 4; i < 6; i++){
