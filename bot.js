@@ -2,7 +2,7 @@ const Discord = require('discord.js');
 global.client = new Discord.Client();
 const {google} = require('googleapis');
 const Sheets = require('./sheets.js')
-const WOKCommands = require('wokcommands')
+const WOKCommands = require('./WOKCommands')
 require('dotenv').config()
 
 //const signup_channel_id = '852287847696039969'
