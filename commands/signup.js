@@ -31,7 +31,7 @@ module.exports = {
                 .setTitle(':x::x: Signup Failed :x::x:')
                 .setFooter('Try Again')
                 .addField('Reason', err + '')
-                .setImage(defeat_url)
+                .setThumbnail(defeat_url)
                 .setColor('RED')
         }
     }
