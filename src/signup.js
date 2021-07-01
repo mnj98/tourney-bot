@@ -69,7 +69,7 @@ function get_names(ids, guild){
             resolve(players.map(player => {
                  console.log(player.nickname)
 		console.log(player.user)
-                  player.nickname ? player.nickname : player.user.username}))
+                  return player.nickname ? player.nickname : player.user.username}))
         }).catch(err => reject(err))
     })
 }
