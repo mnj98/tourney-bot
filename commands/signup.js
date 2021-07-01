@@ -1,8 +1,8 @@
 const signup = require('../src/signup.js')
 const Discord = require('discord.js')
 
-const logo_url = 'https://cdn.discordapp.com/icons/567836553192144953/0e1ec53afc4e455fec638418461b4bb6.png'
-const defeat_url = 'https://steamuserimages-a.akamaihd.net/ugc/945081401927185683/CB91EF4403EB150B138F02822C1BEFB578024CC1/?imw=500&imh=500'
+const logo_url = 'https://raw.githubusercontent.com/mnj98/tourney-bot/master/logo.jpg'
+const defeat_url = 'https://raw.githubusercontent.com/mnj98/tourney-bot/master/loss.png'
 const check = ':white_check_mark:'
 
 module.exports = {
