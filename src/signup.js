@@ -4,19 +4,19 @@ module.exports = {signup_handler}
 function signup_handler(args, guild) {
     return new Promise((resolve, reject) => {
         const tier = args[1].toLowerCase()
-        if (tier !== 'tier1' || tier !== 'tier2' || tier !== 'tier3') reject(bad_signup('tier'))
+        if (tier !== 'tier1' || tier !== 'tier2' || tier !== 'tier3') return reject(bad_signup('tier'))
         let player_ids = args.slice(2)
 
         const duplicates = get_duplicate_ids(player_ids)
-        if(duplicates.length > 0) reject(notify_duplicates(duplicates))
+        if(duplicates.length > 0) return reject(notify_duplicates(duplicates))
 
         get_names(player_ids, guild).then(names => {
             SheetService.get_num_signed_up(player_ids).then(player_counts => {
                 const conflicts = determine_conflicts(player_counts, player_ids)
-                if(conflicts.length > 0) reject(notify_conflicts(conflicts))
+                if(conflicts.length > 0) return reject(notify_conflicts(conflicts))
 
                 SheetService.append_line(tier, get_line(args, names, player_ids)).then(msg => {
-                    resolve(msg)
+                    return resolve(msg)
                 }).catch(err => reject(err))
             }).catch(err => reject(err))
         }).catch(err => reject(err))
