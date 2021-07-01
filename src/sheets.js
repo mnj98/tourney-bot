@@ -54,7 +54,7 @@ function append_line(tier, values){
                 console.log(err)
                 resolve('Backend error :(')
             }
-            else resolve('Signed up!')
+            else resolve()
         })
     })
 }

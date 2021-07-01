@@ -1,4 +1,5 @@
 const signup = require('../src/signup.js')
+const Discord = require('discord.js')
 
 
 module.exports = {
@@ -13,7 +14,11 @@ module.exports = {
     callback: async input => {
         if(input.interaction.channel_id !== global.signup_channel_id) return 'Please use the signup channel'
         try{
-            return await signup.signup_handler(input.args, input.guild)
+            const player_names = await signup.signup_handler(input.args, input.guild)
+
+            return new Discord.MessageEmbed()
+                .setTitle(':white_check_mark:')
+                .setImage('../logo.jpg')
         }
         catch(err){
             return 'Signup failed: ' + err

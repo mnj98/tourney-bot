@@ -15,8 +15,8 @@ function signup_handler(args, guild) {
                 const conflicts = determine_conflicts(player_counts, player_ids)
                 if(conflicts.length > 0) return reject(notify_conflicts(conflicts))
 
-                SheetService.append_line(tier, get_line(args, names, player_ids)).then(msg => {
-                    return resolve(msg)
+                SheetService.append_line(tier, get_line(args, names, player_ids)).then(() => {
+                    return resolve(names)
                 }).catch(err => reject(err))
             }).catch(err => reject(err))
         }).catch(err => reject(err))
