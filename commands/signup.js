@@ -16,8 +16,7 @@ module.exports = {
     callback: async input => {
         if(input.interaction.channel_id !== global.signup_channel_id) return 'Please use the signup channel'
         try{
-            const [player_names, team_name] = await signup.signup_handler(input.args, input.guild)
-            let fields = get_fields(player_names, team_name)
+            let fields = get_fields(await signup.signup_handler(input.args, input.guild))
 
             return new Discord.MessageEmbed()
                 .setTitle(check + check + ' Signup Successful ' + check + check)
@@ -32,11 +31,20 @@ module.exports = {
     }
 }
 
-function get_fields(player_names, team_name){
-    let fields = [{
-        name: 'Team',
-        value: team_name
-    }]
+function get_fields(response){
+    const [player_names, team_name, tier] = response
+    let fields = [
+        {
+            name: 'Team',
+            value: team_name,
+            inline: true
+        },
+        {
+            name: 'Tier',
+            value: tier,
+            inline: true
+        }, {name: '\u200b', value: '\u200b', inline: true}]
+
     for(let i = 0; i < 2; i++){
         fields.push({
             name: 'Player ' + (i + 1),
@@ -44,7 +52,9 @@ function get_fields(player_names, team_name){
             inline: true
         })
     }
+
     fields.push({name: '\u200b', value: '\u200b', inline: true})
+
     for(let i = 2; i < 4; i++){
         fields.push({
             name: 'Player ' + (i + 1),
@@ -52,7 +62,9 @@ function get_fields(player_names, team_name){
             inline: true
         })
     }
+
     fields.push({name: '\u200b', value: '\u200b', inline: true})
+
     for(let i = 4; i < 6; i++){
         if(player_names[i]) fields.push({
             name: 'Sub ' + (i - 3),
