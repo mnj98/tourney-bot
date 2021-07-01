@@ -1,19 +1,8 @@
-const fs = require('fs');
-const sheet_setup = require('./sheets_setup.js')
-
-module.exports = {setup, append_line, get_num_signed_up}
-
+module.exports = {append_line, get_num_signed_up}
 
 
 const signup_spreadsheetId = "1SA0twJDK9mkc-zwIaSLfDIEfssxd7dMszWRfYwMKnzY"
 
-async function setup(callback){
-    fs.readFile('secret.json', (err, content) => {
-        if (err) return console.log('Error loading client secret file:', err);
-        // Authorize a client with credentials, then call the Google Sheets API.
-        sheet_setup.authorize(JSON.parse(content), callback);
-    });
-}
 
 function get_num_signed_up(ids){
     return new Promise((resolve) => {

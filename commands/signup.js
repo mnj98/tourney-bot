@@ -1,4 +1,4 @@
-const signup_handler = require('../signup.js')
+const signup_handler = require('../src/signup.js')
 
 
 module.exports = {
