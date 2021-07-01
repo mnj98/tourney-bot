@@ -4,7 +4,7 @@ module.exports = {signup_handler}
 function signup_handler(args, guild) {
     return new Promise((resolve, reject) => {
         const tier = args[1].toLowerCase()
-        if (tier !== 'tier1' && tier !== 'tier2' && tier !== 'tier3') return reject(bad_signup('tier'))
+        if (tier !== 'tier1' && tier !== 'tier2' && tier !== 'tier3') return reject('Invalid Tier')
         let player_ids = args.slice(2)
 
         const duplicates = get_duplicate_ids(player_ids)
@@ -73,8 +73,4 @@ function get_duplicate_ids(ids){
         duplicates = duplicates.slice(0, i).concat(duplicates.slice(i + 1, duplicates.length))
     })
     return Array.from(new Set(duplicates)).map(id => id ? '<@!' + id + '>' : '').filter(id => id)
-}
-
-function bad_signup(reason){
-    return 'Incorrect ' + reason + ',\nuse: !signup \"team name\" TierX player1 player2 player3 player4'
 }
