@@ -38,7 +38,7 @@ module.exports = {
             return new Discord.MessageEmbed()
                 .setTitle(check + check + ' Signup Successful ' + check + check)
                 .setImage(logo_url)
-                .setFooter('Contact TOs if you want to change your timeslot')
+                .setFooter('Contact TOs if you want to change your timeslot or resign TTTTTTTTTTTTTTTTTTTTTTTTT')
                 .addFields(fields)
                 .setColor('GREEN')
         }
