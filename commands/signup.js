@@ -38,7 +38,7 @@ module.exports = {
 }
 
 function get_fields(response){
-    const [player_names, team_name, tier] = response
+    const [ids, team_name, tier] = response
     let fields = [
         {
             name: 'Team',
@@ -54,7 +54,7 @@ function get_fields(response){
     for(let i = 0; i < 2; i++){
         fields.push({
             name: 'Player ' + (i + 1),
-            value: player_names[i],
+            value: ids[i],
             inline: true
         })
     }
@@ -64,7 +64,7 @@ function get_fields(response){
     for(let i = 2; i < 4; i++){
         fields.push({
             name: 'Player ' + (i + 1),
-            value: player_names[i],
+            value: ids[i],
             inline: true
         })
     }
@@ -72,9 +72,9 @@ function get_fields(response){
     fields.push({name: '\u200b', value: '\u200b', inline: true})
 
     for(let i = 4; i < 6; i++){
-        if(player_names[i]) fields.push({
+        if(ids[i]) fields.push({
             name: 'Sub ' + (i - 3),
-            value: player_names[i],
+            value: ids[i],
             inline: true
         })
     }

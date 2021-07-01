@@ -16,7 +16,7 @@ function signup_handler(args, guild) {
                 if(conflicts.length > 0) return reject(notify_conflicts(conflicts))
 
                 SheetService.append_line(tier, get_line(args, names, player_ids)).then(() => {
-                    return resolve([names, args[0], tier])
+                    return resolve([player_ids.map(id => '<@' + id + '>'), args[0], tier])
                 }).catch(err => reject(err))
             }).catch(err => reject(err))
         }).catch(err => reject(err))
@@ -51,7 +51,7 @@ function notify_conflicts(ids){
 function determine_conflicts(conflict_counts, player_ids){
     let already_signed_up = []
     for(let i = 0; i < conflict_counts.length; i++){
-        if(conflict_counts[i] > 0 && player_ids[i]) already_signed_up.push('<@!' + player_ids[i] + '>')
+        if(conflict_counts[i] > 0 && player_ids[i]) already_signed_up.push('<@' + player_ids[i] + '>')
     }
     return already_signed_up
 }
@@ -72,5 +72,5 @@ function get_duplicate_ids(ids){
         const i = duplicates.indexOf(item)
         duplicates = duplicates.slice(0, i).concat(duplicates.slice(i + 1, duplicates.length))
     })
-    return Array.from(new Set(duplicates)).map(id => id ? '<@!' + id + '>' : '').filter(id => id)
+    return Array.from(new Set(duplicates)).map(id => id ? '<@' + id + '>' : '').filter(id => id)
 }
