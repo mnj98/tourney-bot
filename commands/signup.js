@@ -20,12 +20,12 @@ module.exports = {
             let fields = [{
                 name: 'Team',
                 value: team_name
-            }]
+            }, {name: '\u200b', value: '\u200b'}]
             for(let i = 0; i < 4; i++){
                 fields.push({
                     name: 'Player ' + (i + 1),
                     value: player_names[i],
-                    inline: i === 2
+                    inline: true
                 })
             }
             for(let i = 4; i < 6; i++){
