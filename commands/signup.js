@@ -28,7 +28,7 @@ module.exports = {
                     inline: true
                 })
             }
-            fields.push({name: '\u200b', value: '\u200b'})
+
             for(let i = 2; i < 4; i++){
                 fields.push({
                     name: 'Player ' + (i + 1),
@@ -36,10 +36,12 @@ module.exports = {
                     inline: true
                 })
             }
+            fields.push({name: '\u200b', value: '\u200b', inline: true})
             for(let i = 4; i < 6; i++){
                 if(player_names[i]) fields.push({
                     name: 'Sub ' + (i - 3),
-                    value: player_names[i]
+                    value: player_names[i],
+                    inline: true
                 })
             }
 
