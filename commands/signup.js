@@ -25,7 +25,7 @@ module.exports = {
                 fields.push({
                     name: 'Player ' + (i + 1),
                     value: player_names[i],
-                    inline: i % 2 === 1
+                    inline: i === 2
                 })
             }
             for(let i = 4; i < 6; i++){
