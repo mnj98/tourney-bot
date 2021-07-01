@@ -4,7 +4,7 @@ module.exports = {signup_handler}
 function signup_handler(args, guild) {
     return new Promise((resolve, reject) => {
         const tier = args[1].toLowerCase()
-        if (tier !== 'tier1' || tier !== 'tier2' || tier !== 'tier3') return reject(bad_signup('tier'))
+        if (tier !== 'tier1' && tier !== 'tier2' && tier !== 'tier3') return reject(bad_signup('tier'))
         let player_ids = args.slice(2)
 
         const duplicates = get_duplicate_ids(player_ids)
