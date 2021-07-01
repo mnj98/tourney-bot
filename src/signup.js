@@ -1,7 +1,7 @@
 const SheetService = require('./sheets.js')
 module.exports = {signup_handler}
 
-async function signup_handler(args, guild) {
+function signup_handler(args, guild) {
     return new Promise((resolve, reject) => {
         const tier = args[1].toLowerCase()
         if (tier !== 'tier1' || tier !== 'tier2' || tier !== 'tier3') reject(bad_signup('tier'))
