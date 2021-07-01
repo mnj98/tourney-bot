@@ -37,7 +37,7 @@ function notify_duplicates(ids){
     ids.forEach(id => {
         reply = reply + ' ' + id
     })
-    return reply + ' can\'t be on the same team twice. (We can ignore that since the bot is in development :) )'
+    return reply + ' can\'t be on the same team twice.'
 }
 
 function notify_conflicts(ids){
@@ -45,7 +45,7 @@ function notify_conflicts(ids){
     ids.forEach(id => {
         reply = reply + ' ' + id
     })
-    return reply + (ids.length > 1 ? ' are' : ' is') + ' already on a team.)'
+    return reply + (ids.length > 1 ? ' are' : ' is') + ' already on a team.'
 }
 
 function determine_conflicts(conflict_counts, player_ids){
