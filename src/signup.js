@@ -16,8 +16,9 @@ async function signup_handler(args, guild) {
             const conflicts = determine_conflicts(conflict_counts, player_ids)
 
             if(conflicts.length > 0) resolve(notify_conflicts(conflicts))
-
-            get_names(player_ids, guild).then(names => {
+		console.log('ids: ' + player_ids.filter(id => id))
+            get_names(player_ids.filter(id => id), guild).then(names => {
+		console.log('names: ' + names)
                 let tier = args[1].toLowerCase()
                 if (tier === 'tier1' || tier === 'tier2' || tier === 'tier3') {
                     const line = [
@@ -63,9 +64,13 @@ function get_names(ids, guild){
             if(id === '') names.push('')
             else names.push(guild.members.fetch(id))
         }
-        Promise.all(names).then(players =>
-            resolve(players.map(player => player.nickname ? player.nickname : player.user.username))
-        ).catch(err => reject(err))
+        Promise.all(names).then(players => {
+            //console.log(players)
+            resolve(players.map(player => {
+                 console.log(player.nickname)
+		console.log(player.user)
+                  player.nickname ? player.nickname : player.user.username}))
+        }).catch(err => reject(err))
     })
 }
 

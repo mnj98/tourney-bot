@@ -11,6 +11,8 @@ module.exports = {
     expectedArgs: '<team name> <tier> <player1> <player2> <player3> <player4> [sub1] [sub2]',
     argTypes: [3, 3, 9, 9, 9, 9, 9, 9],
     callback: async (input) => {
-        return await signup_handler.signup_handler(input.args, input.guild)
+        const response = await signup_handler.signup_handler(input.args, input.guild)
+        console.log('response: ' + response + ' type: ' + typeof response)
+        return 'no'
     }
 }
