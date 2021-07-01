@@ -25,16 +25,7 @@ module.exports = {
                 fields.push({
                     name: 'Player ' + (i + 1),
                     value: player_names[i],
-                    inline: true,
-
-                })
-            }
-            for(let i = 0; i < 6; i++){
-                fields.push({
-                    name: 'crap ' + i,
-                    value: 'pee ' + i,
-                    inline: true,
-
+                    inline: i % 2 === 0
                 })
             }
             for(let i = 4; i < 6; i++){
@@ -47,7 +38,7 @@ module.exports = {
             return new Discord.MessageEmbed()
                 .setTitle(check + check + ' Signup Successful ' + check + check)
                 .setImage(logo_url)
-                .setFooter('Contact TOs if you want to change your timeslot or resign TTTTTTTTTTTTTTTTTTTTTTTTT')
+                .setFooter('Contact TOs if you want to change your timeslot or resign')
                 .addFields(fields)
                 .setColor('GREEN')
         }
