@@ -5,7 +5,7 @@ const signup_spreadsheetId = "1SA0twJDK9mkc-zwIaSLfDIEfssxd7dMszWRfYwMKnzY"
 
 
 function get_num_signed_up(ids){
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
         global.sheets.spreadsheets.values.update({
             spreadsheetId: signup_spreadsheetId,
             auth: global.auth,
@@ -18,7 +18,7 @@ function get_num_signed_up(ids){
         }, (err, res) =>{
             if (err) {
                 console.log(err)
-                resolve('Backend error :(')
+                reject(err)
             }
             else{
                 global.sheets.spreadsheets.values.get({
@@ -27,7 +27,11 @@ function get_num_signed_up(ids){
                     key: process.env.GOOGLE_API_KEY,
                     range: 'BotLogic!A2:F2'
                 }, (err, res) =>{
-                    resolve(res.data.values[0])
+                    if(err){
+                        console.log(err)
+                        reject(err)
+                    }
+                    else resolve(res.data.values[0])
                 })
             }
         })

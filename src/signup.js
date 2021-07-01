@@ -2,34 +2,30 @@ const SheetService = require('./sheets.js')
 module.exports = {signup_handler}
 
 async function signup_handler(args, guild) {
-    return new Promise(resolve => {
-        args.push('')
-        args.push('')
+    return new Promise((resolve, reject) => {
+        const tier = args[1].toLowerCase()
+        if (tier !== 'tier1' || tier !== 'tier2' || tier !== 'tier3') reject(bad_signup('tier'))
         let player_ids = args.slice(2)
 
-
         const duplicates = get_duplicate_ids(player_ids)
-        if(duplicates.length > 0) resolve(notify_duplicates(duplicates))
+        if(duplicates.length > 0) reject(notify_duplicates(duplicates))
 
-        SheetService.get_num_signed_up(player_ids.filter(id => id)).then(conflict_counts => {
-            if(typeof conflict_counts === "string") resolve(conflict_counts)
-            const conflicts = determine_conflicts(conflict_counts, player_ids)
+        get_names(player_ids, guild).then(names => {
+            SheetService.get_num_signed_up(player_ids).then(player_counts => {
+                const conflicts = determine_conflicts(player_counts, player_ids)
+                if(conflicts.length > 0) reject(notify_conflicts(conflicts))
 
-            if(conflicts.length > 0) resolve(notify_conflicts(conflicts))
-		console.log('ids: ' + player_ids.filter(id => id))
-            get_names(player_ids.filter(id => id), guild).then(names => {
-		console.log('names: ' + names)
-                let tier = args[1].toLowerCase()
-                if (tier === 'tier1' || tier === 'tier2' || tier === 'tier3') {
-                    const line = [
-                        ['', args[0], names[0], names[1], names[2], names[3], names[4], names[5],
-                            '', '', player_ids[0], player_ids[1], player_ids[2], player_ids[3], player_ids[4], player_ids[5]]
+                SheetService.append_line(tier, [
+                    ['', args[0],
+                        names[0], names[1], names[2], names[3],
+                        names[4] ? names[4] : '', names[5] ? names[5] : '',
+                        '', '', player_ids[0], player_ids[1], player_ids[2],
+                        player_ids[3], player_ids[4] ? player_ids[4] : '',
+                        player_ids[5] ? player_ids[5] : ''
                     ]
-                    SheetService.append_line(tier, line).then(msg => resolve(msg))
-                } else resolve(bad_signup('tier'))
-            }).catch(err => resolve(err))
-        }).catch(err => resolve(err))
-
+                ]).then(msg => resolve(msg)).catch(err => reject(err))
+            }).catch(err => reject(err))
+        }).catch(err => reject(err))
     })
 }
 
@@ -59,17 +55,9 @@ function determine_conflicts(conflict_counts, player_ids){
 
 function get_names(ids, guild){
     return new Promise((resolve, reject) => {
-        let names = []
-        for (const id of ids) {
-            if(id === '') names.push('')
-            else names.push(guild.members.fetch(id))
-        }
-        Promise.all(names).then(players => {
-            //console.log(players)
+        Promise.all(ids.map(id => guild.members.fetch(id))).then(players => {
             resolve(players.map(player => {
-                 console.log(player.nickname)
-		console.log(player.user)
-                  return player.nickname ? player.nickname : player.user.username}))
+                return player.nickname ? player.nickname : player.user.username}))
         }).catch(err => reject(err))
     })
 }
