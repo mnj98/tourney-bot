@@ -26,8 +26,8 @@ async function signup_handler(args, guild) {
                     ]
                     SheetService.append_line(tier, line).then(msg => resolve(msg))
                 } else resolve(bad_signup('tier'))
-            })
-        })
+            }).catch(err => resolve(err))
+        }).catch(err => resolve(err))
 
     })
 }
@@ -56,17 +56,17 @@ function determine_conflicts(conflict_counts, player_ids){
     return already_signed_up
 }
 
-async function get_names(ids, guild){
-    let names = []
-    for (const id of ids) {
-        if(id === '') names.push('')
-        else{
-
-            const player = await guild.members.fetch(id)
-            names.push(player.nickname ? player.nickname : player.user.username)
+function get_names(ids, guild){
+    return new Promise((resolve, reject) => {
+        let names = []
+        for (const id of ids) {
+            if(id === '') names.push('')
+            else names.push(guild.members.fetch(id))
         }
-    }
-    return names
+        Promise.all(names).then(players =>
+            resolve(players.map(player => player.nickname ? player.nickname : player.user.username))
+        ).catch(err => reject(err))
+    })
 }
 
 function get_duplicate_ids(ids){
