@@ -20,8 +20,16 @@ module.exports = {
             let fields = [{
                 name: 'Team',
                 value: team_name
-            }, {name: '\u200b', value: '\u200b'}]
-            for(let i = 0; i < 4; i++){
+            }]
+            for(let i = 0; i < 2; i++){
+                fields.push({
+                    name: 'Player ' + (i + 1),
+                    value: player_names[i],
+                    inline: true
+                })
+            }
+            fields.push({name: '\u200b', value: '\u200b'})
+            for(let i = 2; i < 4; i++){
                 fields.push({
                     name: 'Player ' + (i + 1),
                     value: player_names[i],
@@ -37,7 +45,7 @@ module.exports = {
 
             return new Discord.MessageEmbed()
                 .setTitle(check + check + ' Signup Successful ' + check + check)
-                .setImage(logo_url)
+                .setThumbnail(logo_url)
                 .setFooter('Contact TOs if you want to change your timeslot or resign')
                 .addFields(fields)
                 .setColor('GREEN')
