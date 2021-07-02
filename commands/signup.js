@@ -4,6 +4,7 @@ const Discord = require('discord.js')
 const logo_url = 'https://raw.githubusercontent.com/mnj98/tourney-bot/master/logo.jpg'
 const defeat_url = 'https://raw.githubusercontent.com/mnj98/tourney-bot/master/loss.png'
 const check = ':white_check_mark:'
+const x = ':x:'
 
 module.exports = {
     slash: true,
@@ -15,9 +16,9 @@ module.exports = {
     expectedArgs: '<team name> <tier> <player1> <player2> <player3> <player4> [sub1] [sub2]',
     argTypes: [3, 3, 9, 9, 9, 9, 9, 9],
     callback: async input => {
-        if(input.interaction.channel_id !== global.signup_channel_id) return 'Please use the signup channel'
+        if(input.interaction.channel_id !== process.env.signup_channel_id) return 'Please use the signup channel'
         try{
-            let fields = get_fields(await signup.signup_handler(input.args, input.guild))
+            const fields = get_fields(await signup.signup_handler(input.args, input.guild))
 
             return new Discord.MessageEmbed()
                 .setTitle(check + check + ' Signup Successful ' + check + check)
@@ -28,7 +29,7 @@ module.exports = {
         }
         catch(err){
             return new Discord.MessageEmbed()
-                .setTitle(':x::x: Signup Failed :x::x:')
+                .setTitle(x + x + ' Signup Failed ' + x + x)
                 .setFooter('Try Again')
                 .addField('Reason', err + '')
                 .setThumbnail(defeat_url)
