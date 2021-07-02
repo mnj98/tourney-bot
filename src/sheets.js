@@ -2,9 +2,9 @@ module.exports = {append_line, get_num_signed_up}
 
 function get_num_signed_up(ids){
     return new Promise((resolve, reject) => {
-        GLOBAL.sheets.spreadsheets.values.update({
+        global.sheets.spreadsheets.values.update({
             spreadsheetId: process.env.signup_spreadsheetId,
-            auth: GLOBAL.auth,
+            auth: global.auth,
             key: process.env.GOOGLE_API_KEY,
             range: 'BotLogic!A1:F1',
             valueInputOption: 'USER_ENTERED',
@@ -17,9 +17,9 @@ function get_num_signed_up(ids){
                 reject(err)
             }
             else{
-                GLOBAL.sheets.spreadsheets.values.get({
+                global.sheets.spreadsheets.values.get({
                     spreadsheetId: process.env.signup_spreadsheetId,
-                    auth: GLOBAL.auth,
+                    auth: global.auth,
                     key: process.env.GOOGLE_API_KEY,
                     range: 'BotLogic!A2:F2'
                 }, (err, res) =>{
@@ -36,9 +36,9 @@ function get_num_signed_up(ids){
 
 function append_line(tier, values){
     return new Promise((resolve, reject) => {
-        GLOBAL.sheets.spreadsheets.values.append({
+        global.sheets.spreadsheets.values.append({
             spreadsheetId: process.env.signup_spreadsheetId,
-            auth: GLOBAL.auth,
+            auth: global.auth,
             key: process.env.GOOGLE_API_KEY,
             range: tier + '!A:P',
             valueInputOption: 'USER_ENTERED',
