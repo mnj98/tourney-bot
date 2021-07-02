@@ -5,7 +5,7 @@ const sheets_setup = require('./sheets_setup.js')
 const WOKCommands = require('../CommandHandler')
 require('dotenv').config()
 
-global.signup_channel_id = '852287847696039969'
+global.signup_channel_id = '860309288529428480'
 global.server_id = '852287847696039966'
 
 global.client.on('ready', async() => {
