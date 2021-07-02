@@ -21,8 +21,8 @@ client.on('ready', () => {
 
 
 sheets_setup.setup((sheet_auth) => {
-    process.env.auth = sheet_auth
-    process.env.sheets = google.sheets({version: 'v4', sheet_auth})
+    GLOBAL.auth = sheet_auth
+    GLOBAL.sheets = google.sheets({version: 'v4', sheet_auth})
     client.login(process.env.BOT_TOKEN)
 })
 
