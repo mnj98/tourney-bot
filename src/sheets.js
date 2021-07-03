@@ -1,4 +1,4 @@
-module.exports = {append_line, get_num_signed_up}
+module.exports = {append_line, get_num_signed_up, get_team_names}
 
 function get_num_signed_up(ids){
     return new Promise((resolve, reject) => {
@@ -51,6 +51,29 @@ function append_line(tier, values){
                 reject(err)
             }
             else resolve()
+        })
+    })
+}
+
+
+function get_team_names(){
+    return new Promise((resolve, reject) => {
+        global.sheets.spreadsheets.values.get({
+            spreadsheetId: process.env.signup_spreadsheetId,
+            auth: global.auth,
+            key: process.env.GOOGLE_API_KEY,
+            range: 'BotLogic!A4'
+        }, (err, res) => {
+            if(err){
+                console.log(err)
+                reject(err)
+            }
+            else{
+                if(res.data){
+                    resolve(res.data)
+                }
+                else reject('no data')
+            }
         })
     })
 }
