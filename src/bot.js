@@ -12,6 +12,10 @@ process.env.signup_spreadsheetId = '1SA0twJDK9mkc-zwIaSLfDIEfssxd7dMszWRfYwMKnzY
 client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`)
 
+    client.guilds.fetch(process.env.server_id).then(guild => {
+        guild.members.fetch().then(() => console.log('cached members :)'))
+    })
+
     new WOKCommands(client, {
         commandsDir: '../commands',
         testServers: [process.env.server_id],
@@ -24,9 +28,7 @@ sheets_setup.setup((sheet_auth) => {
     global.auth = sheet_auth
     global.sheets = google.sheets({version: 'v4', sheet_auth})
     client.login(process.env.BOT_TOKEN)
-    client.guilds.fetch(process.env.server_id).then(guild => {
-        guild.members.fetch().then(() => console.log('cached members :)'))
-    })
+
 })
 
 
