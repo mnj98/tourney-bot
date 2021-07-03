@@ -24,6 +24,9 @@ sheets_setup.setup((sheet_auth) => {
     global.auth = sheet_auth
     global.sheets = google.sheets({version: 'v4', sheet_auth})
     client.login(process.env.BOT_TOKEN)
+    client.guilds.fetch(process.env.server_id).then(guild => {
+        guild.members.fetch().then(() => console.log('cached members :)'))
+    })
 })
 
 
