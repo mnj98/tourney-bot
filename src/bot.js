@@ -8,11 +8,6 @@ process.env.signup_channel_id = '860309288529428480'
 process.env.server_id = '852287847696039966'
 process.env.signup_spreadsheetId = '1SA0twJDK9mkc-zwIaSLfDIEfssxd7dMszWRfYwMKnzY'
 
-const intents = new Discord.Intents([
-    Discord.Intents.NON_PRIVILEGED, // include all non-privileged intents, would be better to specify which ones you actually need
-    "GUILD_MEMBERS", // lets you request guild members (i.e. fixes the issue)
-]);
-//const client = new Discord.Client({ ws: { intents } });
 const client = new Discord.Client()
 
 client.on('ready', /*async*/ () => {
