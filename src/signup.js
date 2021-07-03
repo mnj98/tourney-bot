@@ -60,12 +60,22 @@ function determine_conflicts(conflict_counts, player_ids){
 
 function get_names(ids, guild){
     return new Promise((resolve, reject) => {
+        guild.members.fetch({user: ids}).then(players => {
+            resolve(players.map(player => {
+                return player.nickname ? player.nickname : player.user.username}))
+        }).catch(reject)
+    })
+}
+
+/*
+function get_names(ids, guild){
+    return new Promise((resolve, reject) => {
         Promise.all(ids.map(id => guild.members.fetch(id))).then(players => {
             resolve(players.map(player => {
                 return player.nickname ? player.nickname : player.user.username}))
         }).catch(err => reject(err))
     })
-}
+}*/
 
 function get_duplicate_ids(ids){
     const no_duplicates = [...new Set(ids)]

@@ -14,11 +14,11 @@ const intents = new Discord.Intents([
 ]);
 const client = new Discord.Client({ ws: { intents } });
 
-client.on('ready', async () => {
+client.on('ready', /*async*/ () => {
 
-    const guild = await client.guilds.fetch(process.env.server_id)
-    const members = await guild.members.fetch()
-    console.log('cached members :) ' + members)
+    //const guild = await client.guilds.fetch(process.env.server_id)
+    //const members = await guild.members.fetch()
+    //console.log('cached members :) ' + members)
     console.log(`Logged in as ${client.user.tag}!`)
 
     new WOKCommands(client, {
