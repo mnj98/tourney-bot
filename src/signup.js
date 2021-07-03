@@ -7,7 +7,7 @@ function signup_handler(args, guild) {
         const team_name = args[0]
 
         SheetService.get_team_names().then(team_names =>{
-            if(team_names.includes(team_name.toLowerCase())) return reject('Team name \"' + team_name)
+            if(team_names.includes(team_name.toLowerCase())) return reject('Team name \"' + team_name + '\" is alreay in use')
 
             const tier = args[1].toLowerCase()
             if (tier !== 'tier1' && tier !== 'tier2' && tier !== 'tier3') return reject('Invalid Tier')
