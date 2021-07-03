@@ -69,10 +69,10 @@ function get_team_names(){
                 reject(err)
             }
             else{
-                if(res.data){
-                    resolve(res.data)
+                if(res.data.values){
+                    resolve(res.data.values[0].split('\n'))
                 }
-                else reject('no data')
+                else resolve([])
             }
         })
     })
