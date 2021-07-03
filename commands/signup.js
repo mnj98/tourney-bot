@@ -20,20 +20,24 @@ module.exports = {
         try{
             const fields = get_fields(await signup.signup_handler(input.args, input.guild))
 
-            return new Discord.MessageEmbed()
+            const res = new Discord.MessageEmbed()
                 .setTitle(check + check + ' Signup Successful ' + check + check)
                 .setThumbnail(logo_url)
                 .setFooter('Contact TOs if you want to change your timeslot or resign')
                 .addFields(fields)
                 .setColor('GREEN')
+            console.log(res)
+            return res
         }
         catch(err){
-            return new Discord.MessageEmbed()
+            const res = new Discord.MessageEmbed()
                 .setTitle(x + x + ' Signup Failed ' + x + x)
                 .setFooter('Try Again')
                 .addField('Reason', err + '')
                 .setThumbnail(defeat_url)
                 .setColor('RED')
+            console.log(res)
+            return res
         }
     }
 }
