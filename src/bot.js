@@ -1,9 +1,6 @@
 const Discord = require('discord.js');
 const {google} = require('googleapis');
 const sheets_setup = require('./sheets_setup.js')
-
-const sh = require('./sheets.js')
-
 const WOKCommands = require('../CommandHandler')
 require('dotenv').config()
 
@@ -15,10 +12,6 @@ const client = new Discord.Client()
 
 client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`)
-
-    sh.get_team_names().then(console.log).catch(console.log)
-
-
 
     new WOKCommands(client, {
         commandsDir: '../commands',

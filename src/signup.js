@@ -4,29 +4,37 @@ module.exports = {signup_handler}
 function signup_handler(args, guild) {
     return new Promise((resolve, reject) => {
 
-        const tier = args[1].toLowerCase()
-        if (tier !== 'tier1' && tier !== 'tier2' && tier !== 'tier3') return reject('Invalid Tier')
+        const team_name = args[0]
 
-        const player_ids = args.slice(2)
-        const duplicates = get_duplicate_ids(player_ids)
-        if(duplicates.length > 0) return reject(notify_duplicates(duplicates))
+        SheetService.get_team_names().then(team_names =>{
+            if(team_names.includes(team_name.toLowerCase())) return reject('Team name \"' + team_name)
 
-        get_names(player_ids, guild).then(names => {
-            SheetService.get_num_signed_up(player_ids).then(player_counts => {
+            const tier = args[1].toLowerCase()
+            if (tier !== 'tier1' && tier !== 'tier2' && tier !== 'tier3') return reject('Invalid Tier')
 
-                const conflicts = determine_conflicts(player_counts, player_ids)
-                if(conflicts.length > 0) return reject(notify_conflicts(conflicts))
+            const player_ids = args.slice(2)
+            const duplicates = get_duplicate_ids(player_ids)
+            if(duplicates.length > 0) return reject(notify_duplicates(duplicates))
 
-                SheetService.append_line(tier, get_line(args, names, player_ids)).then(() => {
-                    return resolve([player_ids.map(id => '<@' + id + '>'), args[0], tier])
-                }).catch(err => reject(err))
-            }).catch(err => reject(err))
-        }).catch(err => reject(err))
+            get_names(player_ids, guild).then(names => {
+                SheetService.get_num_signed_up(player_ids).then(player_counts => {
+
+                    const conflicts = determine_conflicts(player_counts, player_ids)
+                    if(conflicts.length > 0) return reject(notify_conflicts(conflicts))
+
+                    SheetService.append_line(tier, get_line(team_name, names, player_ids)).then(() => {
+                        return resolve([player_ids.map(id => '<@' + id + '>'), team_name, tier])
+                    }).catch(reject)
+                }).catch(reject)
+            }).catch(reject)
+        }).catch(reject)
+
+
     })
 }
 
-function get_line(args, names, player_ids){
-    return [['', args[0],
+function get_line(team_name, names, player_ids){
+    return [['', team_name,
             names[0], names[1], names[2], names[3],
             names[4] ? names[4] : '', names[5] ? names[5] : '',
             '', '', player_ids[0], player_ids[1], player_ids[2],
