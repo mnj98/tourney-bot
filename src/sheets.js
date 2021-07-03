@@ -70,7 +70,7 @@ function get_team_names(){
             }
             else{
                 if(res.data.values){
-                    resolve(res.data.values[0].split('\n'))
+                    resolve(res.data.values[0][0].split('\n'))
                 }
                 else resolve([])
             }
