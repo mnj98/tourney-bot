@@ -10,11 +10,7 @@ process.env.signup_spreadsheetId = '1SA0twJDK9mkc-zwIaSLfDIEfssxd7dMszWRfYwMKnzY
 
 const client = new Discord.Client()
 
-client.on('ready', /*async*/ () => {
-
-    //const guild = await client.guilds.fetch(process.env.server_id)
-    //const members = await guild.members.fetch()
-    //console.log('cached members :) ' + members)
+client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`)
 
     new WOKCommands(client, {
