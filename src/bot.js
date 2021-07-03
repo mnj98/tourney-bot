@@ -10,16 +10,19 @@ process.env.server_id = '852287847696039966'
 process.env.signup_spreadsheetId = '1SA0twJDK9mkc-zwIaSLfDIEfssxd7dMszWRfYwMKnzY'
 
 client.on('ready', () => {
-    console.log(`Logged in as ${client.user.tag}!`)
+
 
     client.guilds.fetch(process.env.server_id).then(guild => {
-        guild.members.fetch().then(() => console.log('cached members :)'))
-    })
+        guild.members.fetch().then(() => {
+            console.log('cached members :)')
+            console.log(`Logged in as ${client.user.tag}!`)
 
-    new WOKCommands(client, {
-        commandsDir: '../commands',
-        testServers: [process.env.server_id],
-        showWarns: false
+            new WOKCommands(client, {
+                commandsDir: '../commands',
+                testServers: [process.env.server_id],
+                showWarns: false
+            })
+        })
     })
 })
 
