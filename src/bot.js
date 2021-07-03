@@ -9,21 +9,21 @@ process.env.signup_channel_id = '860309288529428480'
 process.env.server_id = '852287847696039966'
 process.env.signup_spreadsheetId = '1SA0twJDK9mkc-zwIaSLfDIEfssxd7dMszWRfYwMKnzY'
 
-client.on('ready', () => {
+client.on('ready', async () => {
 
 
-    client.guilds.fetch(process.env.server_id).then(guild => {
-        guild.members.fetch().then(() => {
-            console.log('cached members :)')
-            console.log(`Logged in as ${client.user.tag}!`)
+    const guild = await client.guilds.fetch(process.env.server_id)
+    const members = await guild.members.fetch()
+    console.log('cached members :) ' + members)
+    console.log(`Logged in as ${client.user.tag}!`)
 
-            new WOKCommands(client, {
-                commandsDir: '../commands',
-                testServers: [process.env.server_id],
-                showWarns: false
-            })
-        })
+    new WOKCommands(client, {
+        commandsDir: '../commands',
+        testServers: [process.env.server_id],
+        showWarns: false
     })
+
+
 })
 
 
