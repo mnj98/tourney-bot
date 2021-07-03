@@ -18,7 +18,9 @@ module.exports = {
     callback: async input => {
         if(input.interaction.channel_id !== process.env.signup_channel_id) return 'Please use the signup channel'
         try{
+            const b4 = new Date()
             const fields = get_fields(await signup.signup_handler(input.args, input.guild))
+            console.log(new Date().valueOf() - b4.valueOf())
 
             return new Discord.MessageEmbed()
                 .setTitle(check + check + ' Signup Successful ' + check + check)
