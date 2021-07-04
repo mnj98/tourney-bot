@@ -21,7 +21,7 @@ function get_formatted_timer_data(day){
                 teams.push([data[6][i][0], data[7][i][0], data[8][i]])
             }
 
-            return teams.filter(team => team[1].toLowerCase() === day.toLowerCase())
+            return resolve(teams.filter(team => team[1].toLowerCase() === day.toLowerCase()))
         }).catch(reject)
     })
 
