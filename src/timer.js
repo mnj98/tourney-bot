@@ -2,6 +2,8 @@ const SheetService = require('./sheets.js')
 
 module.exports = {get_formatted_timer_data}
 
+
+
 function get_formatted_timer_data(day){
     return new Promise((resolve, reject) => {
         SheetService.get_timer_data().then(data => {
@@ -21,8 +23,9 @@ function get_formatted_timer_data(day){
                 teams.push([data[6][i][0], data[7][i][0], data[8][i]])
             }
 
-            return resolve(teams.filter(team => team[1].toLowerCase() === day.toLowerCase()))
+            return resolve(teams.filter(team =>
+                team[1].toLowerCase() === day.toLowerCase()
+            ).map(team => [team[0], team[2]]))
         }).catch(reject)
     })
-
 }

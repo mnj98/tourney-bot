@@ -4,8 +4,6 @@ const sheets_setup = require('./sheets_setup.js')
 const WOKCommands = require('../CommandHandler')
 require('dotenv').config()
 
-const timer = require('./timer.js')
-
 process.env.signup_channel_id = '860309288529428480'
 process.env.server_id = '852287847696039966'
 process.env.signup_spreadsheetId = '1SA0twJDK9mkc-zwIaSLfDIEfssxd7dMszWRfYwMKnzY'
@@ -30,8 +28,6 @@ client.on('ready', () => {
         testServers: [process.env.server_id],
         showWarns: false
     })
-
-    timer.get_formatted_timer_data('day1').then(console.log).catch(console.log)
 })
 
 
