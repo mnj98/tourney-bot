@@ -6,6 +6,7 @@ module.exports = {start_timers, update_time}
 function start_timers(day, time){
     get_formatted_timer_data(day).then(teams => {
         teams.forEach(team => {
+            console.log(team[0])
             Stopwatch.get(team[0].toLowerCase(), {seconds: time}).on('end', () => time_up(team)).start()
         })
     }).catch(err => handle_err(err))
