@@ -85,15 +85,15 @@ function get_timer_data(){
             auth: global.auth,
             key: process.env.GOOGLE_API_KEY,
             ranges: [
-                'Tier1!B2:B1000',
-                'Tier1!I2:I1000',
-                'Tier1!K2:P1000',
-                'Tier2!B2:B1000',
-                'Tier2!I2:I1000',
-                'Tier2!K2:P1000',
-                'Tier3!B2:B1000',
-                'Tier3!I2:I1000',
-                'Tier3!K2:P1000'
+                process.env.T1_NAMES,
+                process.env.T1_TIMES,
+                process.env.T1_IDS,
+                process.env.T2_NAMES,
+                process.env.T2_TIMES,
+                process.env.T2_IDS,
+                process.env.T3_NAMES,
+                process.env.T3_TIMES,
+                process.env.T3_IDS
             ]
         }, (err, res) => {
             if(err){
