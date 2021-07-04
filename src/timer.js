@@ -6,14 +6,12 @@ module.exports = {start_timers, update_time}
 function start_timers(day, time){
     get_formatted_timer_data(day).then(teams => {
         teams.forEach(team => {
-            //console.log(team[0])
             Stopwatch.get(team[0].toLowerCase(), {seconds: time}).on('end', () => time_up(team)).start()
         })
     }).catch(err => handle_err(err))
 }
 
 function update_time(team, time){
-    console.log(team)
     Stopwatch.get(team.toLowerCase(), {seconds: 3}).seconds += time
 }
 
@@ -23,15 +21,14 @@ function handle_err(err){
 
 
 function time_up(team){
-    //global.client.channels.fetch(process.env.notification_channel_id).then(channel =>{
+    global.client.channels.fetch(process.env.notification_channel_id).then(channel =>{
         let response = 'Team ' + team[0] + ', your time is up.'
 
         team[1].forEach(id => {
             response += ' <@' + id + '>'
         })
-    console.log(response)
-        //channel.send(response)
-    //})
+        channel.send(response)
+    })
 }
 
 
