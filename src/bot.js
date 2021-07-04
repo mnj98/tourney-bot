@@ -34,8 +34,8 @@ global.client.on('ready', () => {
     console.log('starting timers')
     timer.start_timers('day1', 10)
     const t = 'Team2'
-    console.log(t)
-    setTimeout(() => timer.update_time(t, -3),4000)
+    //console.log(t)
+    setTimeout(() => timer.update_time(t, 10),4000)
 })
 
 
