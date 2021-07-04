@@ -31,9 +31,9 @@ global.client.on('ready', () => {
         testServers: [process.env.server_id],
         showWarns: false
     })
-
+    console.log('starting timers')
     timer.start_timers('day1', 10)
-    setTimeout(timer.update_time('Team2', -3),100)
+    setTimeout(timer.update_time('Team2', -3),4000)
 })
 
 
