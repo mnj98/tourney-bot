@@ -31,7 +31,7 @@ client.on('ready', () => {
         showWarns: false
     })
 
-    timer.get_formatted_timer_data('day1').then(console.log).then(console.log)
+    timer.get_formatted_timer_data('day1').then(console.log).catch(console.log)
 })
 
 

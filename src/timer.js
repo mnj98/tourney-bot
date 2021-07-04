@@ -7,7 +7,7 @@ function get_formatted_timer_data(day){
         SheetService.get_timer_data().then(data => {
             const num_teams_t1 = data[0] ? data[0].length : 0
             const num_teams_t2 = data[3] ? data[3].length : 0
-            const num_teams_t3 = data[6] ? data[3].length : 0
+            const num_teams_t3 = data[6] ? data[6].length : 0
 
             let teams = []
 
