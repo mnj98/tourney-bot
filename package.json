@@ -15,7 +15,7 @@
     "express": "^4.17.1",
     "googleapis": "^39.2.0",
     "mongoose": "^5.13.0",
-    "timer-node": "^5.0.5"
+    "stopwatch": "^0.2.0"
   },
   "devDependencies": {
     "google-auth-library": "^7.1.2"
