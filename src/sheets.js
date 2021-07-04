@@ -101,7 +101,7 @@ function get_timer_data(){
                 reject(err)
             }
             else{
-                resolve(res.data)
+                resolve(res.data.valueRanges.map(range => range.values))
             }
         })
     })
