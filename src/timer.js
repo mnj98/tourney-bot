@@ -13,7 +13,8 @@ function start_timers(day, time){
 }
 
 function update_time(team, time){
-    Stopwatch.get(team.toLowerCase()).seconds += time
+    console.log(team)
+    Stopwatch.get(team.toLowerCase(), {seconds: 3}).seconds += time
 }
 
 function handle_err(err){
