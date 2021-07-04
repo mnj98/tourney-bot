@@ -4,13 +4,19 @@ const Stopwatch = require('stopwatch')
 module.exports = {start_timers, update_time}
 
 function start_timers(day, time){
-    get_formatted_timer_data(day).forEach(team => {
-        Stopwatch.get(team[0].toLowerCase(), {seconds: time}).on('end', time_up(team)).start()
-    })
+    get_formatted_timer_data(day).then(teams => {
+        teams.forEach(team => {
+            Stopwatch.get(team[0].toLowerCase(), {seconds: time}).on('end', time_up(team)).start()
+        })
+    }).catch(err => handle_err(err))
 }
 
 function update_time(team, time){
     Stopwatch.get(team.toLowerCase()).seconds += time
+}
+
+function handle_err(err){
+    console.log(err)
 }
 
 
