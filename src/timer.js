@@ -41,6 +41,7 @@ function get_teams_and_ids(day){
 }
 
 function get_timer_info(day){
+    console.log('test')
     return new Promise((resolve, reject) => {
         get_teams(day).then(teams => {
             const data = teams.map(team => {
