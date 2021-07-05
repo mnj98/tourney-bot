@@ -44,6 +44,7 @@ function get_timer_info(day){
     return new Promise((resolve, reject) => {
         get_teams(day).then(teams => {
             return resolve(teams.map(team => {
+                console.log(team)
                 const timer = Stopwatch.get(team, {seconds:3})
 
                 const time = new Date(timer.seconds * 1000)
