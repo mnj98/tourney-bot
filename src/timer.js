@@ -1,10 +1,11 @@
 const SheetService = require('./sheets.js')
-const Stopwatch = require('stopwatch')
+const Stopwatch = require('./stopwatch.js')
 
 module.exports = {start_timers, update_time, get_timer_info}
 
 function start_timers(day, time, client){
     get_teams_and_ids(day).then(teams => {
+        Stopwatch.clear_watches()
         teams.forEach(team => {
             Stopwatch.get(team[0].toLowerCase(), {seconds: time * 60}).on('end', () => time_up(team, client)).start()
         })
