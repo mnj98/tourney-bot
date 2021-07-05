@@ -18,7 +18,7 @@ module.exports = {
             let response = 'Tournament Clock Information:\n'
 
             info.forEach(item => {
-                response += 'Team ' + item.name + ' has ' + (item.has_completed ?
+                response += 'Team ' + item.name + ' has ' + (!item.has_completed ?
                     (item.time_left + 'left') : 'run out of time') + '\n'
             })
             return response

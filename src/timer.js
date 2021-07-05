@@ -46,7 +46,7 @@ function get_timer_info(day){
         get_teams(day).then(teams => {
             const data = teams.map(team => {
                 console.log(team)
-                const timer = Stopwatch.get(team, {seconds:3})
+                const timer = Stopwatch.get(team.toLowerCase(), {seconds:4})
 
                 const time = new Date(timer.seconds * 1000)
                     .toISOString().substr(11, 8).split(':')
