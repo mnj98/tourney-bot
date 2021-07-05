@@ -1,5 +1,5 @@
 const timer = require('../src/timer.js')
-const check_if = require("../src/check_role.js");
+const check_if = require('../src/check_role.js');
 
 module.exports = {
     slash: true,
