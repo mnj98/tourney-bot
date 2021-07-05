@@ -13,13 +13,14 @@ module.exports = {
         if(!check_if.is_admin(input)) return 'You do not have permissions for this command'
 
         try{
+            console.log('why is this not running')
             const info = await timer.get_timer_info(input.args[0])
 
             let response = 'Tournament Clock Information:\n'
 
             info.forEach(item => {
-                response += 'Team ' + item.name + ' has **' + (!item.has_completed ?
-                    (item.time_left + '**left') : '**run out of time') + '\n'
+                response += 'Team ' + item.name + ' has ' + (!item.has_completed ?
+                    ('**' + item.time_left + '**left') : 'run out of time') + '\n'
             })
             return response
         }catch(err){
