@@ -47,6 +47,11 @@ function get_timer_info(day){
             return resolve(teams.map(team => {
 
                 const timer = Stopwatch.get(team.toLowerCase())
+                if(!timer.started()) return {
+                    name: team,
+                    time_left: '',
+                    has_completed: true
+                }
 
                 const time = new Date(timer.seconds * 1000)
                     .toISOString().substr(11, 8).split(':')
