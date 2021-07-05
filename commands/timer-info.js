@@ -11,7 +11,6 @@ module.exports = {
     argTypes: [3],
     callback: async (input) => {
         if(!check_if.is_admin(input)) return 'You do not have permissions for this command'
-        setTimeout(() => {return 'timeout, try again'}, 2800)
 
         try{
             const s = new Date()
