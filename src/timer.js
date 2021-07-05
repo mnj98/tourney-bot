@@ -4,9 +4,7 @@ const Stopwatch = require('stopwatch')
 module.exports = {start_timers, update_time, get_timer_info}
 
 function start_timers(day, time, client){
-    const s = new Date()
     get_teams_and_ids(day).then(teams => {
-        console.log(new Date().valueOf() - s.valueOf())
         teams.forEach(team => {
             Stopwatch.get(team[0].toLowerCase(), {seconds: time * 60}).on('end', () => time_up(team, client)).start()
         })
