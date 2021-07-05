@@ -41,11 +41,11 @@ function get_teams_and_ids(day){
 }
 
 function get_timer_info(day){
-    console.log('test')
+
     return new Promise((resolve, reject) => {
         get_teams(day).then(teams => {
-            const data = teams.map(team => {
-                console.log(team)
+            return resolve(teams.map(team => {
+
                 const timer = Stopwatch.get(team.toLowerCase(), {seconds:4})
 
                 const time = new Date(timer.seconds * 1000)
@@ -56,12 +56,9 @@ function get_timer_info(day){
                     time_left: time[0] + 'h ' + time[1] + 'm ' + time[2] + 's ',
                     has_completed: !timer.started()
                 }
-            })
-            console.log(data)
-            return resolve(data)
+            }))
         }).catch(reject)
     })
-
 }
 
 function get_teams(day){
