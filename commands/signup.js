@@ -1,5 +1,6 @@
 const signup = require('../src/signup.js')
 const Discord = require('discord.js')
+const check_if = require('../src/check_role.js')
 
 const logo_url = 'https://raw.githubusercontent.com/mnj98/tourney-bot/master/logo.jpg'
 const defeat_url = 'https://raw.githubusercontent.com/mnj98/tourney-bot/master/loss.png'
