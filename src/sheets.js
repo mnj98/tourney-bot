@@ -1,5 +1,15 @@
 module.exports = {append_line, get_num_signed_up, get_team_names, get_timer_data}
 
+const T1_NAMES = 'Tier1!B2:B300'
+const T1_TIMES = 'Tier1!I2:I300'
+const T1_IDS = 'Tier1!K2:P300'
+const T2_NAMES = 'Tier2!B2:B300'
+const T2_TIMES = 'Tier2!I2:I300'
+const T2_IDS = 'Tier2!K2:P300'
+const T3_NAMES = 'Tier3!B2:B300'
+const T3_TIMES = 'Tier3!I2:I300'
+const T3_IDS = 'Tier3!K2:P300'
+
 function get_num_signed_up(ids){
     return new Promise((resolve, reject) => {
         global.sheets.spreadsheets.values.update({
@@ -85,15 +95,15 @@ function get_timer_data(){
             auth: global.auth,
             key: process.env.GOOGLE_API_KEY,
             ranges: [
-                process.env.T1_NAMES,
-                process.env.T1_TIMES,
-                process.env.T1_IDS,
-                process.env.T2_NAMES,
-                process.env.T2_TIMES,
-                process.env.T2_IDS,
-                process.env.T3_NAMES,
-                process.env.T3_TIMES,
-                process.env.T3_IDS
+                T1_NAMES,
+                T1_TIMES,
+                T1_IDS,
+                T2_NAMES,
+                T2_TIMES,
+                T2_IDS,
+                T3_NAMES,
+                T3_TIMES,
+                T3_IDS
             ]
         }, (err, res) => {
             if(err){

@@ -16,9 +16,10 @@ function update_time(team, time){
 }
 
 function handle_err(err){
-    console.log(err)
+    global.client.channels.fetch(process.env.notification_channel_id).then(channel =>{
+        channel.send('Failure: ' + err)
+    })
 }
-
 
 function time_up(team){
     global.client.channels.fetch(process.env.notification_channel_id).then(channel =>{
@@ -30,8 +31,6 @@ function time_up(team){
         channel.send(response)
     })
 }
-
-
 
 function get_formatted_timer_data(day){
     return new Promise((resolve, reject) => {
