@@ -12,7 +12,7 @@ function start_timers(day, time, client){
 }
 
 function update_time(team, time){
-    Stopwatch.get(team.toLowerCase()).seconds += (time * 60)
+    Stopwatch.get(team.toLowerCase(), {}).seconds += (time * 60)
 }
 
 function handle_err(err, client){
@@ -46,7 +46,7 @@ function get_timer_info(day){
         get_teams(day).then(teams => {
             return resolve(teams.map(team => {
 
-                const timer = Stopwatch.get(team.toLowerCase())
+                const timer = Stopwatch.get(team.toLowerCase(), {})
                 if(!timer.started()) return {
                     name: team,
                     time_left: '',
