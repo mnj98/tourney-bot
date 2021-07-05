@@ -12,7 +12,7 @@ function start_timers(day, time, client){
 }
 
 function update_time(team, time){
-    Stopwatch.get(team.toLowerCase(), {seconds: 3}).seconds += (time * 60)
+    Stopwatch.get(team.toLowerCase()).seconds += (time * 60)
 }
 
 function handle_err(err, client){
@@ -46,7 +46,7 @@ function get_timer_info(day){
         get_teams(day).then(teams => {
             return resolve(teams.map(team => {
 
-                const timer = Stopwatch.get(team.toLowerCase(), {seconds:4})
+                const timer = Stopwatch.get(team.toLowerCase())
 
                 const time = new Date(timer.seconds * 1000)
                     .toISOString().substr(11, 8).split(':')
