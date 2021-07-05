@@ -3,26 +3,26 @@ const Stopwatch = require('stopwatch')
 
 module.exports = {start_timers, update_time}
 
-function start_timers(day, time){
+function start_timers(day, time, client){
     get_formatted_timer_data(day).then(teams => {
         teams.forEach(team => {
-            Stopwatch.get(team[0].toLowerCase(), {seconds: time}).on('end', () => time_up(team)).start()
+            Stopwatch.get(team[0].toLowerCase(), {seconds: time}).on('end', () => time_up(team, client)).start()
         })
-    }).catch(err => handle_err(err))
+    }).catch(err => handle_err(err, client))
 }
 
 function update_time(team, time){
     Stopwatch.get(team.toLowerCase(), {seconds: 3}).seconds += time
 }
 
-function handle_err(err){
-    global.client.channels.fetch(process.env.notification_channel_id).then(channel =>{
+function handle_err(err, client){
+    client.channels.fetch(process.env.notification_channel_id).then(channel =>{
         channel.send('Failure: ' + err)
     })
 }
 
-function time_up(team){
-    global.client.channels.fetch(process.env.notification_channel_id).then(channel =>{
+function time_up(team, client){
+    client.channels.fetch(process.env.notification_channel_id).then(channel =>{
         let response = 'Team ' + team[0] + ', your time is up.'
 
         team[1].forEach(id => {
