@@ -22,7 +22,7 @@ module.exports = {
             })
             return response
         }catch(err){
-            return 'Error :('
+            return 'Error :( ' + err
         }
 
     }
