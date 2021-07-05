@@ -11,6 +11,5 @@ module.exports = {
 
         stopwatch.clear_watches()
         return 'Cleared'
-
     }
 }
