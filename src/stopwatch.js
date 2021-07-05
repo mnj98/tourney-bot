@@ -56,6 +56,8 @@ Stopwatch.prototype.restart = function() {
     this.start();
 };
 
+
+//TODO: fix this clusterfuck
 module.exports = {
     Stopwatch : Stopwatch,
     get: function(id, options) {
