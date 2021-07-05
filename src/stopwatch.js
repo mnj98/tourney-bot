@@ -15,9 +15,9 @@ function Stopwatch(id, options) {
 }
 
 function clear_watches(){
-    stopwatches.forEach(watch =>{
-        if(watch.timer) clearInterval(watch.timer)
-    })
+    for(let key in stopwatches){
+        if(stopwatches[key].timer) clearInterval((stopwatches[key].timer))
+    }
     stopwatches = {}
 }
 
