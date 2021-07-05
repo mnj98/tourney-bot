@@ -1,4 +1,5 @@
 const timer = require('../src/timer.js')
+const check_if = require("../src/check_role.js");
 
 module.exports = {
     slash: true,
@@ -9,7 +10,7 @@ module.exports = {
     expectedArgs: '<team> <minutes>',
     argTypes: [3, 4],
     callback: (input) => {
-        if(input.interaction.channel_id !== process.env.signup_channel_id) return 'Please use the signup channel'
+        if(!check_if.is_admin(input)) return 'You do not have permissions for this command'
         timer.update_time(input.args[0], input.args[1])
         return 'Time added'
     }

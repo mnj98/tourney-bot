@@ -1,18 +1,18 @@
 const SheetService = require('./sheets.js')
 const Stopwatch = require('stopwatch')
 
-module.exports = {start_timers, update_time}
+module.exports = {start_timers, update_time, get_timer_info}
 
 function start_timers(day, time, client){
-    get_formatted_timer_data(day).then(teams => {
+    get_teams_and_ids(day).then(teams => {
         teams.forEach(team => {
-            Stopwatch.get(team[0].toLowerCase(), {seconds: time}).on('end', () => time_up(team, client)).start()
+            Stopwatch.get(team[0].toLowerCase(), {seconds: time * 60}).on('end', () => time_up(team, client)).start()
         })
     }).catch(err => handle_err(err, client))
 }
 
 function update_time(team, time){
-    Stopwatch.get(team.toLowerCase(), {seconds: 3}).seconds += time
+    Stopwatch.get(team.toLowerCase(), {seconds: 3}).seconds += (time * 60)
 }
 
 function handle_err(err, client){
@@ -29,6 +29,42 @@ function time_up(team, client){
             response += ' <@' + id + '>'
         })
         channel.send(response)
+    })
+}
+
+function get_teams_and_ids(day){
+    return new Promise((resolve, reject) =>{
+        get_formatted_timer_data(day).then(data => {
+            return resolve(data.map(team => [team[0], team[2]]))
+        }).catch(reject)
+    })
+}
+
+function get_timer_info(day){
+    return new Promise((resolve, reject) => {
+        get_teams(day).then(teams => {
+            return resolve(teams.map(team => {
+                const timer = Stopwatch.get(team, {seconds:3})
+
+                const time = new Date(timer.seconds * 1000)
+                    .toISOString().substr(11, 8).split(':')
+
+                return {
+                    name: team,
+                    time_left: time[0] + 'h ' + time[1] + 'm ' + time[2] + 's ',
+                    has_completed: !timer.started()
+                }
+            }))
+        }).catch(reject)
+    })
+
+}
+
+function get_teams(day){
+    return new Promise((resolve, reject) =>{
+        get_formatted_timer_data(day).then(data => {
+            return resolve(data.map(team => team[0]))
+        }).catch(reject)
     })
 }
 
@@ -53,7 +89,7 @@ function get_formatted_timer_data(day){
 
             return resolve(teams.filter(team =>
                 team[1].toLowerCase() === day.toLowerCase()
-            ).map(team => [team[0], team[2]]))
+            ))
         }).catch(reject)
     })
 }
