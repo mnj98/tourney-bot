@@ -13,6 +13,7 @@ module.exports = {
         if(!check_if.is_admin(input)) return 'You do not have permissions for this command'
 
         try{
+            console.log('other test')
             const info = await timer.get_timer_info(input.args[0])
             let response = 'Tournament Clock Information:\n'
 
