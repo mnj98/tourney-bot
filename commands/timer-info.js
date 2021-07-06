@@ -51,7 +51,7 @@ function get_fields(teams){
     return add_spaces(teams.map(team => {
         return {
             name: team.name,
-            value: (!team.has_completed ? ('**' + team.time_left + '**') : '**is out of time**'),
+            value: (!team.has_completed ? (team.time_left + '') : 'is out of time'),
             inline: true
         }
     }))
