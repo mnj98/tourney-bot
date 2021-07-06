@@ -52,7 +52,6 @@ function get_timer_info(day){
                 if(timer){
                     const time = new Date(timer.seconds * 1000)
                     .toISOString().substr(11, 8).split(':')
-                console.log(timer.completed)
 
                     return {
                         name: team,
@@ -61,9 +60,7 @@ function get_timer_info(day){
                     }
                 }
                 else return timer
-
-                
-            }).filter(team => team))
+            }).filter(_ => _))
         }).catch(reject)
     })
 }
@@ -71,7 +68,7 @@ function get_timer_info(day){
 function get_teams(day){
     return new Promise((resolve, reject) =>{
         get_formatted_timer_data(day).then(data => {
-            return resolve(data.map(team => team[0]))
+            return resolve(data.map(_ => _[0]))
         }).catch(reject)
     })
 }
