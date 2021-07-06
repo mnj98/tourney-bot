@@ -2,6 +2,8 @@ const timer = require('../src/timer.js')
 const check_if = require('../src/check_role.js');
 const Discord = require('discord.js')
 
+const face = ':face_with_spiral_eyes:'
+const clock = ':hourglass:'
 
 module.exports = {
     slash: true,
@@ -14,21 +16,34 @@ module.exports = {
     callback: async (input) => {
         if(!check_if.is_admin(input)) return 'You do not have permissions for this command'
 
-        console.log(input)
-
         try{
             const embeds = split_into_25s(await timer.get_timer_info(input.args[0])).map(teams => {
                 return new Discord.MessageEmbed()
-                    .setTitle(':hourglass::hourglass: ' + 'Tournament Clock Information' + ':hourglass::hourglass: ')
+                    .setTitle(clock + clock + 'Tournament Clock Information' + clock + clock)
                     .setColor('YELLOW')
                     .addFields(get_fields(teams))
             })
 
-            return 't'
+            switch (embeds.length){
+                case 0: {
+                    return new Discord.MessageEmbed()
+                        .setTitle(face + face + ' No Timers ' + face + face)
+                        .setColor('LIGHT_GREY')
+                        .addField('\u200b', ':person_shrugging:')
+                }
+                case 1: {
+                    return embeds[0]
+                }
+                default: {
+                    for(let i = 0; i < embeds.length - 1; i++){
+                        input.channel.send(embeds[i])
+                    }
+                    return embeds[embeds.length - 1]
+                }
+            }
         }catch(err){
             return 'Error :(  ' + err
         }
-
     }
 }
 
