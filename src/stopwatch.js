@@ -1,12 +1,21 @@
-//From https://github.com/emerleite/node-stopwatch
-//Edited for my needs
-
+/**
+ * From https://github.com/emerleite/node-stopwatch
+ * Edited for my needs
+ */
 
 let EventEmitter = require('events').EventEmitter;
 let stopwatches = {};
 
+/**
+ * Creates stopwatch and adds it to stopwatches dictionary
+ * @param id, the key for the dictionary
+ * @param options, allows you to define number of seconds
+ *      ex: {seconds: 10}, don't mess with any other options,
+ *      it will probably mess up functionality if you do
+ *      I.E. making seconds mean something other than seconds
+ * @constructor
+ */
 function Stopwatch(id, options) {
-    
     EventEmitter.call(this);
 
     this.id = id;
@@ -15,9 +24,11 @@ function Stopwatch(id, options) {
     this.timer = null;
     this.completed = false
     stopwatches[id] = this
-    
 }
 
+/**
+ * Stops intervals and resets stopwatches
+ */
 function clear_watches(){
     for(let key in stopwatches){
         if(stopwatches[key].timer) clearInterval((stopwatches[key].timer))
@@ -27,11 +38,10 @@ function clear_watches(){
 
 Stopwatch.prototype.__proto__ = EventEmitter.prototype;
 
-Stopwatch.prototype.stop = function() {
-    clearInterval(this.timer);
-    this.timer = null;
-};
-
+/**
+ * Starts a timer
+ * @returns {boolean}
+ */
 Stopwatch.prototype.start = function() {
     if (this.has_started()) { return false; }
 
@@ -40,30 +50,32 @@ Stopwatch.prototype.start = function() {
     self.timer = setInterval(function () {
         self.emit('tick', self.seconds);
 
+        //decrement seconds
         if (--self.seconds < 0) {
             self.stop();
             self.completed = true
             self.emit('end');
         }
     }, self.interval);
-
     return true;
 };
 
+/**
+ * Returns if the timer has started
+ * @returns {boolean}
+ */
 Stopwatch.prototype.has_started = function() {
     return !!this.timer;
 };
 
-Stopwatch.prototype.restart = function() {
-    this.stop();
-    this.removeAllListeners('tick');
-    this.removeAllListeners('end');
-    this.start();
-};
-
+/**
+ * Returns the timer or undefined if it doesn't exist
+ * @param id
+ * @returns {*}
+ */
 function get(id) {
-        return stopwatches[id];
-    }
+    return stopwatches[id];
+}
 
 module.exports = {
     Stopwatch : Stopwatch,

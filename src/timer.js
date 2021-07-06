@@ -1,27 +1,52 @@
+/**
+ * Handles timer functions
+ */
+
 const SheetService = require('./sheets.js')
 const Stopwatch = require('./stopwatch.js')
 
 module.exports = {start_timers, update_time, get_timer_info}
 
+/**
+ * Starts all timers on timeslot day with time minutes
+ * @param day, the timeslot
+ * @param time, number of minutes
+ * @param client
+ */
 function start_timers(day, time, client){
+    //Team names and ids of teams with timeslot day
     get_teams_and_ids(day).then(teams => {
+        //resets all timers
+        //TODO: Make it so that you can start different timers when others are running
         Stopwatch.clear_watches()
+        //Create and start the timers
+        //On event 'end' run time up
         teams.forEach(team => {
             new Stopwatch.Stopwatch(team[0].toLowerCase(), {seconds: time * 60}).on('end', () => time_up(team, client)).start()
         })
-    }).catch(err => handle_err(err, client))
+        return 'Timers started'
+    }).catch(err => 'Failure ' + err)
 }
 
+/**
+ * Change the time based on the input
+ * @param team
+ * @param time
+ */
 function update_time(team, time){
-    Stopwatch.get(team.toLowerCase()).seconds += (time * 60)
+    const timer = Stopwatch.get(team.toLowerCase())
+    if(timer){
+        timer.seconds += (time * 60)
+        return 'Time for ' + team + ' updated by ' + time
+    }
+    else return 'Unrecognized team'
 }
 
-function handle_err(err, client){
-    client.channels.fetch(process.env.notification_channel_id).then(channel =>{
-        channel.send('Failure: ' + err)
-    })
-}
-
+/**
+ * Notifies a team when their time is up
+ * @param team
+ * @param client
+ */
 function time_up(team, client){
     client.channels.fetch(process.env.notification_channel_id).then(channel =>{
         let response = 'Team ' + team[0] + ', your time is up.'
@@ -33,6 +58,11 @@ function time_up(team, client){
     })
 }
 
+/**
+ * Pull team name and ids out of formatted timer data
+ * @param day
+ * @returns {Promise<unknown>}
+ */
 function get_teams_and_ids(day){
     return new Promise((resolve, reject) =>{
         get_formatted_timer_data(day).then(data => {
@@ -41,12 +71,17 @@ function get_teams_and_ids(day){
     })
 }
 
+/**
+ * Gets timer info from the timers marked
+ * @param day
+ * @returns {Promise<unknown>}
+ */
 function get_timer_info(day){
-
     return new Promise((resolve, reject) => {
         get_teams(day).then(teams => {
+            //With team names from day timeslot make an array of objects
+            //with fields [name, time_left, has_completed]
             return resolve(teams.map(team => {
-
                 const timer = Stopwatch.get(team.toLowerCase())
                 
                 if(timer){
@@ -59,12 +94,19 @@ function get_timer_info(day){
                         has_completed: timer.completed
                     }
                 }
+                //returns undefined
                 else return timer
+            //filter out undefined
             }).filter(_ => _))
         }).catch(reject)
     })
 }
 
+/**
+ * Gets team info from formatted data
+ * @param day
+ * @returns {Promise<unknown>}
+ */
 function get_teams(day){
     return new Promise((resolve, reject) =>{
         get_formatted_timer_data(day).then(data => {
@@ -73,9 +115,22 @@ function get_teams(day){
     })
 }
 
+/**
+ * Uses sheets.js to get the info needed for timers
+ * Then formats it from the weird way it is returned from google sheets
+ * @param day
+ * @returns {Promise<unknown>} an array of teams from day timeslot
+ */
 function get_formatted_timer_data(day){
     return new Promise((resolve, reject) => {
         SheetService.get_timer_data().then(data => {
+
+            //data is formatted as a 3d array
+            //First 3 are tier 1
+            //Second 3 are tier2
+            //Third 3 are tier3
+
+            //This code basically just flattens all that correctly
             const num_teams_t1 = data[0] ? data[0].length : 0
             const num_teams_t2 = data[3] ? data[3].length : 0
             const num_teams_t3 = data[6] ? data[6].length : 0

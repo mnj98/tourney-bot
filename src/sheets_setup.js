@@ -1,3 +1,8 @@
+/**
+ * This is setup / authentication code for google sheets api
+ * Taken from https://developers.google.com/sheets/api/quickstart/nodejs
+ */
+
 const fs = require('fs');
 const readline = require('readline');
 const {google} = require('googleapis');
@@ -9,9 +14,8 @@ const SCOPES = ['https://www.googleapis.com/auth/spreadsheets'];
 // time.
 const TOKEN_PATH = './token.json';
 
-
+//The function I wrote and call in bot.js
 module.exports = {setup}
-
 function setup(callback){
     fs.readFile('./secret.json', (err, content) => {
         if (err) return console.log('Error loading client secret file:', err);

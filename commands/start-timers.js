@@ -11,7 +11,6 @@ module.exports = {
     argTypes: [3, 4],
     callback: (input) => {
         if(!check_if.is_admin(input)) return 'You do not have permissions for this command'
-        timer.start_timers(input.args[0], input.args[1], input.client)
-        return 'Timers started'
+        return timer.start_timers(input.args[0], input.args[1], input.client)
     }
 }

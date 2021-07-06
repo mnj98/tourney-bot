@@ -8,7 +8,6 @@ module.exports = {
     description: 'Clears all timers',
     callback: async (input) => {
         if(!check_if.is_admin(input)) return 'You do not have permissions for this command'
-
         stopwatch.clear_watches()
         return 'Cleared'
     }
