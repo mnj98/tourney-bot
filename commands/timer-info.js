@@ -48,12 +48,27 @@ module.exports = {
 }
 
 function get_fields(teams){
-    return teams.map(team => {
+    return add_spaces(teams.map(team => {
         return {
             name: team.name,
-            value: (!team.has_completed ? ('**' + team.time_left + '**left') : '**run out of time**')
+            value: (!team.has_completed ? ('**' + team.time_left + '**') : '**is out of time**'),
+            inline: true
         }
-    })
+    }))
+}
+
+function add_spaces(array){
+    let pos = 2, interval = 3
+
+    while(pos < array.length){
+        array.splice(
+            pos,
+            0,
+            {name: '\u200b', value: '\u200b', inline: true}
+        )
+        pos += interval
+    }
+    return array
 }
 
 function split_into_25s(timers){
