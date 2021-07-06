@@ -9,8 +9,13 @@ module.exports = {
     minArgs: 2,
     expectedArgs: '<time slot> <minutes>',
     argTypes: [3, 4],
-    callback: (input) => {
+    callback: async input => {
         if(!check_if.is_admin(input)) return 'You do not have permissions for this command'
-        return timer.start_timers(input.args[0], input.args[1], input.client)
+        try {
+            return timer.start_timers(input.args[0], input.args[1], input.client)
+        }
+        catch(err){
+            return err
+        }
     }
 }

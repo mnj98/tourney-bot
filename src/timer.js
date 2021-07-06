@@ -14,18 +14,17 @@ module.exports = {start_timers, update_time, get_timer_info}
  * @param client
  */
 function start_timers(day, time, client){
-    //Team names and ids of teams with timeslot day
-    get_teams_and_ids(day).then(teams => {
-        //resets all timers
-        //TODO: Make it so that you can start different timers when others are running
-        Stopwatch.clear_watches()
-        //Create and start the timers
-        //On event 'end' run time up
-        teams.forEach(team => {
-            new Stopwatch.Stopwatch(team[0].toLowerCase(), {seconds: time * 60}).on('end', () => time_up(team, client)).start()
-        })
-        return 'Timers started'
-    }).catch(err => 'Failure ' + err)
+    return new Promise((resolve, reject) => {
+        //Team names and ids of teams with timeslot day
+        get_teams_and_ids(day).then(teams => {
+            //Create and start the timers
+            //On event 'end' run time up
+            teams.forEach(team => {
+                new Stopwatch.Stopwatch(team[0].toLowerCase(), {seconds: time * 60}).on('end', () => time_up(team, client)).start()
+            })
+            resolve('Timers started')
+        }).catch(err => reject('Failure ' + err))
+    })
 }
 
 /**
@@ -65,20 +64,19 @@ function time_up(team, client){
  */
 function get_teams_and_ids(day){
     return new Promise((resolve, reject) =>{
-        get_formatted_timer_data(day).then(data => {
+        get_formatted_timer_data_by_day(day).then(data => {
             return resolve(data.map(team => [team[0], team[2]]))
         }).catch(reject)
     })
 }
 
 /**
- * Gets timer info from the timers marked
- * @param day
+ * Gets timer info
  * @returns {Promise<unknown>}
  */
-function get_timer_info(day){
+function get_timer_info(){
     return new Promise((resolve, reject) => {
-        get_teams(day).then(teams => {
+        get_teams().then(teams => {
             //With team names from day timeslot make an array of objects
             //with fields [name, time_left, has_completed]
             return resolve(teams.map(team => {
@@ -107,21 +105,15 @@ function get_timer_info(day){
  * @param day
  * @returns {Promise<unknown>}
  */
-function get_teams(day){
+function get_teams(){
     return new Promise((resolve, reject) =>{
-        get_formatted_timer_data(day).then(data => {
+        get_formatted_timer_data().then(data => {
             return resolve(data.map(_ => _[0]))
         }).catch(reject)
     })
 }
 
-/**
- * Uses sheets.js to get the info needed for timers
- * Then formats it from the weird way it is returned from google sheets
- * @param day
- * @returns {Promise<unknown>} an array of teams from day timeslot
- */
-function get_formatted_timer_data(day){
+function get_formatted_timer_data(){
     return new Promise((resolve, reject) => {
         SheetService.get_timer_data().then(data => {
 
@@ -147,7 +139,21 @@ function get_formatted_timer_data(day){
                 teams.push([data[6][i][0], data[7][i][0], data[8][i]])
             }
 
-            return resolve(teams.filter(team =>
+            return resolve(teams)
+        }).catch(reject)
+    })
+}
+
+/**
+ * Uses sheets.js to get the info needed for timers
+ * Then formats it from the weird way it is returned from google sheets
+ * @param day
+ * @returns {Promise<unknown>} an array of teams from day timeslot
+ */
+function get_formatted_timer_data_by_day(day){
+    return new Promise((resolve, reject) => {
+        get_formatted_timer_data().then(teams => {
+            resolve(teams.filter(team =>
                 team[1].toLowerCase() === day.toLowerCase()
             ))
         }).catch(reject)

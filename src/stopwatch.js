@@ -3,8 +3,8 @@
  * Edited for my needs
  */
 
-let EventEmitter = require('events').EventEmitter;
-let stopwatches = {};
+let EventEmitter = require('events').EventEmitter
+let stopwatches = {}
 
 /**
  * Creates stopwatch and adds it to stopwatches dictionary
@@ -16,14 +16,25 @@ let stopwatches = {};
  * @constructor
  */
 function Stopwatch(id, options) {
-    EventEmitter.call(this);
+    if(get(id)) remove(id)
 
-    this.id = id;
-    this.seconds = options.seconds || 10;
-    this.interval = (options.interval || options.interval == 0) ? options.interval : 1000;
-    this.timer = null;
+    EventEmitter.call(this)
+
+    this.id = id
+    this.seconds = options.seconds || 10
+    this.interval = (options.interval || options.interval == 0) ? options.interval : 1000
+    this.timer = null
     this.completed = false
     stopwatches[id] = this
+}
+
+/**
+ * Removes the stopwatch with given id
+ * @param id
+ */
+function remove(id){
+    if(stopwatches[id].timer) clearInterval(stopwatches[id].timer)
+    delete stopwatches[id]
 }
 
 /**
@@ -31,42 +42,49 @@ function Stopwatch(id, options) {
  */
 function clear_watches(){
     for(let key in stopwatches){
-        if(stopwatches[key].timer) clearInterval((stopwatches[key].timer))
+        remove(key)
     }
-    stopwatches = {}
 }
 
-Stopwatch.prototype.__proto__ = EventEmitter.prototype;
+Stopwatch.prototype.__proto__ = EventEmitter.prototype
 
 /**
  * Starts a timer
  * @returns {boolean}
  */
 Stopwatch.prototype.start = function() {
-    if (this.has_started()) { return false; }
+    if (this.has_started()) {return false}
 
-    let self = this;
+    let self = this
 
     self.timer = setInterval(function () {
-        self.emit('tick', self.seconds);
+        self.emit('tick', self.seconds)
 
         //decrement seconds
         if (--self.seconds < 0) {
-            self.stop();
+            self.stop()
             self.completed = true
-            self.emit('end');
+            self.emit('end')
         }
-    }, self.interval);
-    return true;
-};
+    }, self.interval)
+    return true
+}
 
 /**
  * Returns if the timer has started
  * @returns {boolean}
  */
 Stopwatch.prototype.has_started = function() {
-    return !!this.timer;
-};
+    return !!this.timer
+}
+
+/**
+ * Stops a timer
+ */
+Stopwatch.prototype.stop = function() {
+    clearInterval(this.timer)
+    this.timer = null
+}
 
 /**
  * Returns the timer or undefined if it doesn't exist
@@ -74,11 +92,11 @@ Stopwatch.prototype.has_started = function() {
  * @returns {*}
  */
 function get(id) {
-    return stopwatches[id];
+    return stopwatches[id]
 }
 
 module.exports = {
     Stopwatch : Stopwatch,
     get,
     clear_watches
-};
+}

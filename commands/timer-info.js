@@ -10,9 +10,6 @@ module.exports = {
     testOnly: true,
     name: 'timer-info',
     description: 'Gets info about running timers',
-    minArgs: 1,
-    expectedArgs: '<time slot>',
-    argTypes: [3],
     /**
      * Runs when a correctly formatted timer-info command is issued
      @param input
@@ -32,7 +29,7 @@ module.exports = {
                 //embeds have a limit of 25 fields,
                 //and with padding 16 is all I can get away with
             //then map that 2d array into 1d array of embeds
-            const embeds = split_into_16s(await timer.get_timer_info(input.args[0])).map(teams => {
+            const embeds = split_into_16s(await timer.get_timer_info()).map(teams => {
                 return new Discord.MessageEmbed()
                     .setTitle(clock + clock + 'Tournament Clock Information' + clock + clock)
                     .setColor('YELLOW')
@@ -47,7 +44,9 @@ module.exports = {
                     return new Discord.MessageEmbed()
                         .setTitle(face + face + ' No Timers ' + face + face)
                         .setColor('LIGHT_GREY')
-                        .addField('\u200b', ':person_shrugging:')
+                        .addFields([{name:'\u200b', value:':person_shrugging:', inline: true},
+                            {name:'\u200b', value:':person_shrugging:', inline: true},
+                            {name:'\u200b', value:':person_shrugging:', inline: true}])
                 }
                 //Only 1 embed
                 case 1: {
@@ -56,10 +55,10 @@ module.exports = {
                 //More than 1 embed
                     //Just due to networking these embeds can appear in any order in the server
                 default: {
-                    for(let i = 0; i < embeds.length - 1; i++){
+                    for(let i = 1; i < embeds.length; i++){
                         input.channel.send(embeds[i])
                     }
-                    return embeds[embeds.length - 1]
+                    return embeds[0]
                 }
             }
         }catch(err){
@@ -78,7 +77,7 @@ function get_fields(teams){
     return add_spaces(teams.map(team => {
         return {
             name: team.name,
-            value: (!team.has_completed ? (team.time_left + '') : 'is out of time'),
+            value: (!team.has_completed ? (team.time_left + '') : '**is out of time**'),
             inline: true
         }
     }))
