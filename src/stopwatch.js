@@ -6,12 +6,16 @@ let EventEmitter = require('events').EventEmitter;
 let stopwatches = {};
 
 function Stopwatch(id, options) {
+    
     EventEmitter.call(this);
 
     this.id = id;
     this.seconds = options.seconds || 10;
     this.interval = (options.interval || options.interval == 0) ? options.interval : 1000;
     this.timer = null;
+    this.completed = false
+    stopwatches[id] = this
+    
 }
 
 function clear_watches(){
@@ -29,7 +33,7 @@ Stopwatch.prototype.stop = function() {
 };
 
 Stopwatch.prototype.start = function() {
-    if (this.started()) { return false; }
+    if (this.has_started()) { return false; }
 
     let self = this;
 
@@ -38,6 +42,7 @@ Stopwatch.prototype.start = function() {
 
         if (--self.seconds < 0) {
             self.stop();
+            self.completed = true
             self.emit('end');
         }
     }, self.interval);
@@ -45,7 +50,7 @@ Stopwatch.prototype.start = function() {
     return true;
 };
 
-Stopwatch.prototype.started = function() {
+Stopwatch.prototype.has_started = function() {
     return !!this.timer;
 };
 
@@ -56,19 +61,12 @@ Stopwatch.prototype.restart = function() {
     this.start();
 };
 
+function get(id) {
+        return stopwatches[id];
+    }
 
-//TODO: fix this clusterfuck
 module.exports = {
     Stopwatch : Stopwatch,
-    get: function(id, options) {
-        if (!stopwatches[id]) {
-            stopwatches[id] = new Stopwatch(id, options);
-            stopwatches[id].on('end', function() {
-                stopwatches[id] = null;
-                delete stopwatches[id];
-            });
-        }
-        return stopwatches[id];
-    },
+    get,
     clear_watches
 };

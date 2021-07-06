@@ -7,13 +7,13 @@ function start_timers(day, time, client){
     get_teams_and_ids(day).then(teams => {
         Stopwatch.clear_watches()
         teams.forEach(team => {
-            Stopwatch.get(team[0].toLowerCase(), {seconds: time * 60}).on('end', () => time_up(team, client)).start()
+            new Stopwatch.Stopwatch(team[0].toLowerCase(), {seconds: time * 60}).on('end', () => time_up(team, client)).start()
         })
     }).catch(err => handle_err(err, client))
 }
 
 function update_time(team, time){
-    Stopwatch.get(team.toLowerCase(), {}).seconds += (time * 60)
+    Stopwatch.get(team.toLowerCase()).seconds += (time * 60)
 }
 
 function handle_err(err, client){
@@ -47,22 +47,23 @@ function get_timer_info(day){
         get_teams(day).then(teams => {
             return resolve(teams.map(team => {
 
-                const timer = Stopwatch.get(team.toLowerCase(), {})
-                if(!timer.started()) return {
-                    name: team,
-                    time_left: '',
-                    has_completed: true
-                }
-
-                const time = new Date(timer.seconds * 1000)
+                const timer = Stopwatch.get(team.toLowerCase())
+                
+                if(timer){
+                    const time = new Date(timer.seconds * 1000)
                     .toISOString().substr(11, 8).split(':')
+                console.log(timer.completed)
 
-                return {
-                    name: team,
-                    time_left: time[0] + 'h ' + time[1] + 'm ' + time[2] + 's ',
-                    has_completed: !timer.started()
+                    return {
+                        name: team,
+                        time_left: time[0] + 'h ' + time[1] + 'm ' + time[2] + 's ',
+                        has_completed: timer.completed
+                    }
                 }
-            }))
+                else return timer
+
+                
+            }).filter(team => team))
         }).catch(reject)
     })
 }
