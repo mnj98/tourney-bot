@@ -12,7 +12,7 @@ module.exports = {
     callback: async input => {
         if(!check_if.is_admin(input)) return 'You do not have permissions for this command'
         try {
-            return timer.start_timers(input.args[0], input.args[1], input.client)
+            return await timer.start_timers(input.args[0], input.args[1], input.client)
         }
         catch(err){
             return err
