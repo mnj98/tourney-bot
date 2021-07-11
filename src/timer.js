@@ -4,6 +4,7 @@
 
 const SheetService = require('./sheets.js')
 const Stopwatch = require('./stopwatch.js')
+const Similarity = require('string-similarity')
 
 module.exports = {start_timers, update_time, get_timer_info}
 
@@ -19,10 +20,13 @@ function start_timers(day, time, client){
         get_teams_and_ids(day).then(teams => {
             //Create and start the timers
             //On event 'end' run time up
-            teams.forEach(team => {
-                new Stopwatch.Stopwatch(team[0].toLowerCase(), {seconds: time * 60}).on('end', () => time_up(team, client)).start()
-            })
-            resolve()
+            if(teams.length === 0) reject('No teams scheduled for \'' + time + '\'')
+            else {
+                teams.forEach(team => {
+                    new Stopwatch.Stopwatch(team[0].toLowerCase(), {seconds: time * 60}).on('end', () => time_up(team, client)).start()
+                })
+                resolve()
+            }
         }).catch(err => reject('Failure ' + err))
     })
 }
@@ -33,14 +37,23 @@ function start_timers(day, time, client){
  * @param time
  */
 function update_time(team, time){
-    const timer = Stopwatch.get(team.toLowerCase())
-    let success
-    if(timer){
-        timer.seconds += (time * 60)
-        success = true
-    }
-    else success = false
-    return {team: team, time: time, success: success}
+    return new Promise((resolve, reject) => {
+        get_teams().then(team_names => {
+            const closest_team = Similarity.findBestMatch(
+                team.toLowerCase(), team_names.map(_ => _.toLowerCase())
+            ).bestMatch
+
+            //Arbitrary threshold for similarity is 0.2, most matches are > 0.5
+            if(closest_team.rating < 0.2) reject('Unknown team name: ' + team)
+            else {
+                const timer = Stopwatch.get(closest_team.target)
+                if (timer) {
+                    timer.seconds += (time * 60)
+                    resolve({team: team, time: time})
+                } else reject('No timer for team: ' + team)
+            }
+        }).catch(reject)
+    })
 }
 
 /**

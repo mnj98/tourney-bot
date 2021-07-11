@@ -2,7 +2,7 @@
  * Google sheets functions.
  */
 
-module.exports = {append_line, get_num_signed_up, get_team_names, get_timer_data}
+module.exports = {append_line, get_num_signed_up, get_team_names, get_timer_data, get_maps}
 
 const T1_NAMES = 'Tier1!B2:B300'
 const T1_TIMES = 'Tier1!I2:I300'
@@ -26,7 +26,7 @@ function get_num_signed_up(ids){
     return new Promise((resolve, reject) => {
         //First populate id row with ids
         global.sheets.spreadsheets.values.update({
-            spreadsheetId: process.env.signup_spreadsheetId,
+            spreadsheetId: process.env.signup_spreadsheetID,
             auth: global.auth,
             key: process.env.GOOGLE_API_KEY,
             range: 'BotLogic!A1:F1',
@@ -43,7 +43,7 @@ function get_num_signed_up(ids){
                 //Once ids are populated, read the count
                 //the count is calculated by a spreadsheet function
                 global.sheets.spreadsheets.values.get({
-                    spreadsheetId: process.env.signup_spreadsheetId,
+                    spreadsheetId: process.env.signup_spreadsheetID,
                     auth: global.auth,
                     key: process.env.GOOGLE_API_KEY,
                     range: 'BotLogic!A2:F2'
@@ -71,7 +71,7 @@ function append_line(tier, values){
     return new Promise((resolve, reject) => {
         //appends values to tier page
         global.sheets.spreadsheets.values.append({
-            spreadsheetId: process.env.signup_spreadsheetId,
+            spreadsheetId: process.env.signup_spreadsheetID,
             auth: global.auth,
             key: process.env.GOOGLE_API_KEY,
             range: tier + '!A:P',
@@ -103,7 +103,7 @@ function get_team_names(){
         //This cell contains all of the team names separated by new lines
         //This is calculated by a spreadsheet function
         global.sheets.spreadsheets.values.get({
-            spreadsheetId: process.env.signup_spreadsheetId,
+            spreadsheetId: process.env.signup_spreadsheetID,
             auth: global.auth,
             key: process.env.GOOGLE_API_KEY,
             range: 'BotLogic!A4'
@@ -135,7 +135,7 @@ function get_timer_data(){
     //Returns a promise that can fail
     return new Promise((resolve, reject) => {
         global.sheets.spreadsheets.values.batchGet({
-            spreadsheetId: process.env.signup_spreadsheetId,
+            spreadsheetId: process.env.signup_spreadsheetID,
             auth: global.auth,
             key: process.env.GOOGLE_API_KEY,
             //ranges defined above
@@ -158,6 +158,27 @@ function get_timer_data(){
             else{
                 //pull just the data
                 resolve(res.data.valueRanges.map(range => range.values))
+            }
+        })
+    })
+}
+
+function get_maps(){
+    console.log('b4')
+    return new Promise((resolve, reject) =>{
+        console.log('in')
+        global.sheets.spreadsheets.values.get({
+            spreadsheetId: process.env.score_spreadsheetID,
+            auth: global.auth,
+            key: process.env.GOOGLE_API_KEY,
+            range: 'Tables!A2:A100'
+        }, (err, res) => {
+            if(err){
+                console.log(err)
+                reject(err)
+            }
+            else{
+                resolve(res.data)
             }
         })
     })

@@ -19,6 +19,7 @@ function signup_handler(args, guild) {
     return new Promise((resolve, reject) => {
 
         const team_name = args[0]
+        if(team_name.length <= 1) return reject('Team name too short')
 
         //Make sure that a team name has not been used already
         SheetService.get_team_names().then(team_names =>{

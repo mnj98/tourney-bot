@@ -29,7 +29,7 @@ module.exports = {
         }
         catch(err){
             return new Discord.MessageEmbed()
-                .setTitle(x + x + ' Signup Failed ' + x + x)
+                .setTitle(x + x + ' Timer Error ' + x + x)
                 .setFooter('Try Again')
                 .addField('Reason', err + '')
                 .setThumbnail(defeat_url)
