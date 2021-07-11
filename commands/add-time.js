@@ -22,7 +22,7 @@ module.exports = {
 
             return new Discord.MessageEmbed()
                 .setTitle(clock + clock + ' Time Successfully Updated ' + clock + clock)
-                .addField('Team', response.name, true)
+                .addField('Team', response.team, true)
                 .addField('Amount', response.time + ' minutes', true)
                 .addField('\u200b', '\u200b', true)
                 .setColor('GREEN')

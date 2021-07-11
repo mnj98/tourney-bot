@@ -20,7 +20,7 @@ function start_timers(day, time, client){
         get_teams_and_ids(day).then(teams => {
             //Create and start the timers
             //On event 'end' run time up
-            if(teams.length === 0) reject('No teams scheduled for \'' + time + '\'')
+            if(teams.length === 0) reject('No teams scheduled for \'' + day + '\'')
             else {
                 teams.forEach(team => {
                     new Stopwatch.Stopwatch(team[0].toLowerCase(), {seconds: time * 60}).on('end', () => time_up(team, client)).start()
@@ -49,8 +49,8 @@ function update_time(team, time){
                 const timer = Stopwatch.get(closest_team.target)
                 if (timer) {
                     timer.seconds += (time * 60)
-                    resolve({team: team, time: time})
-                } else reject('No timer for team: ' + team)
+                    resolve({team: closest_team.target, time: time})
+                } else reject('No timer for team: ' + closest_team.target)
             }
         }).catch(reject)
     })
