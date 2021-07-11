@@ -22,7 +22,7 @@ function start_timers(day, time, client){
             teams.forEach(team => {
                 new Stopwatch.Stopwatch(team[0].toLowerCase(), {seconds: time * 60}).on('end', () => time_up(team, client)).start()
             })
-            resolve('Timers started')
+            resolve()
         }).catch(err => reject('Failure ' + err))
     })
 }
@@ -34,11 +34,13 @@ function start_timers(day, time, client){
  */
 function update_time(team, time){
     const timer = Stopwatch.get(team.toLowerCase())
+    let success
     if(timer){
         timer.seconds += (time * 60)
-        return 'Time for ' + team + ' updated by ' + time
+        success = true
     }
-    else return 'Unrecognized team'
+    else success = false
+    return {team: team, time: time, success: success}
 }
 
 /**

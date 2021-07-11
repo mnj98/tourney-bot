@@ -1,6 +1,5 @@
 const signup = require('../src/signup.js')
 const Discord = require('discord.js')
-const check_if = require('../src/check_role.js')
 
 const logo_url = 'https://raw.githubusercontent.com/mnj98/tourney-bot/master/logo.jpg'
 const defeat_url = 'https://raw.githubusercontent.com/mnj98/tourney-bot/master/loss.png'
@@ -31,7 +30,6 @@ module.exports = {
     callback: async input => {
         //Check if you have the correct role and are using the correct channel
             //Perhaps the roll requirement will be removed after testing
-        if(!check_if.is_admin(input)) return 'You do not have permissions for this command'
         if(input.interaction.channel_id !== process.env.signup_channel_id) return 'Please use the signup channel'
 
         //If there are no errors with signup

@@ -1,5 +1,11 @@
 const timer = require('../src/timer.js')
-const check_if = require('../src/check_role.js')
+const role = require('../src/check_role.js')
+const Discord = require('discord.js')
+
+const defeat_url = 'https://raw.githubusercontent.com/mnj98/tourney-bot/master/loss.png'
+const x = ':x:'
+const check = ':white_check_mark:'
+const rat = ':rat:'
 
 module.exports = {
     slash: true,
@@ -10,12 +16,24 @@ module.exports = {
     expectedArgs: '<time slot> <minutes>',
     argTypes: [3, 4],
     callback: async input => {
-        if(!check_if.is_admin(input)) return 'You do not have permissions for this command'
+        if(!role.is_admin(input)) return role.respond()
         try {
-            return await timer.start_timers(input.args[0], input.args[1], input.client)
+            await timer.start_timers(input.args[0], input.args[1], input.client)
+            return new Discord.MessageEmbed()
+                .setTitle(check + check + ' Timers Started ' + check + check)
+                .setFooter('Here we go!!')
+                .addField('\u200b', rat, true)
+                .addField('\u200b', rat, true)
+                .addField('\u200b', rat, true)
+                .setColor('GREEN')
         }
         catch(err){
-            return err
+            return new Discord.MessageEmbed()
+                .setTitle(x + x + ' Signup Failed ' + x + x)
+                .setFooter('Try Again')
+                .addField('Reason', err + '')
+                .setThumbnail(defeat_url)
+                .setColor('RED')
         }
     }
 }

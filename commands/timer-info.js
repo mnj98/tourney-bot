@@ -1,9 +1,10 @@
 const timer = require('../src/timer.js')
-const check_if = require('../src/check_role.js');
+const role = require('../src/check_role.js');
 const Discord = require('discord.js')
 
 const face = ':face_with_spiral_eyes:'
 const clock = ':hourglass:'
+const shrug = ':person_shrugging:'
 
 module.exports = {
     slash: true,
@@ -21,7 +22,7 @@ module.exports = {
      */
     callback: async input => {
         //must be a specific role (TOs)
-        if(!check_if.is_admin(input)) return 'You do not have permissions for this command'
+        if(!role.is_admin(input)) return role.respond()
 
         //If getting the timers goes well
         try{
@@ -45,8 +46,8 @@ module.exports = {
                         .setTitle(face + face + ' No Timers ' + face + face)
                         .setColor('LIGHT_GREY')
                         .addFields([{name:'\u200b', value:':person_shrugging:', inline: true},
-                            {name:'\u200b', value:':person_shrugging:', inline: true},
-                            {name:'\u200b', value:':person_shrugging:', inline: true}])
+                            {name:'\u200b', value: shrug, inline: true},
+                            {name:'\u200b', value: shrug, inline: true}])
                 }
                 //Only 1 embed
                 case 1: {
