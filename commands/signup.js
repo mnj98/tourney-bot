@@ -1,5 +1,6 @@
 const signup = require('../src/signup.js')
 const Discord = require('discord.js')
+const fields = require('../src/fields.js')
 
 const logo_url = 'https://raw.githubusercontent.com/mnj98/tourney-bot/master/logo.jpg'
 const defeat_url = 'https://raw.githubusercontent.com/mnj98/tourney-bot/master/loss.png'
@@ -35,7 +36,7 @@ module.exports = {
         //If there are no errors with signup
         try{
             //get team info and map that to fields for the embed
-            const fields = get_fields(await signup.signup_handler(input.args, input.guild))
+            const fields = fields.get_fields(await signup.signup_handler(input.args, input.guild))
 
             return new Discord.MessageEmbed()
                 .setTitle(check + check + ' Signup Successful ' + check + check)
@@ -56,55 +57,4 @@ module.exports = {
     }
 }
 
-/**
- * Maps team info into embed fields
- * @param response
- * @returns {[{inline: boolean, name: string, value: *}, {inline: boolean, name: string, value: *}, {inline: boolean, name: string, value: string}]}
- *
- * Team and tier are displayed. Then the players and subs. A blank field is used for spacing
- */
-function get_fields(response){
-    const [ids, team_name, tier] = response
-    let fields = [
-        {
-            name: 'Team',
-            value: team_name,
-            inline: true
-        },
-        {
-            name: 'Tier',
-            value: tier,
-            inline: true
-        }, {name: '\u200b', value: '\u200b', inline: true}] //blank field
 
-    for(let i = 0; i < 2; i++){
-        fields.push({
-            name: 'Player ' + (i + 1),
-            value: ids[i],
-            inline: true
-        })
-    }
-
-    fields.push({name: '\u200b', value: '\u200b', inline: true})
-
-    for(let i = 2; i < 4; i++){
-        fields.push({
-            name: 'Player ' + (i + 1),
-            value: ids[i],
-            inline: true
-        })
-    }
-
-    fields.push({name: '\u200b', value: '\u200b', inline: true})
-
-    for(let i = 4; i < 6; i++){
-        if(ids[i]) fields.push({
-            name: 'Sub ' + (i - 3),
-            value: ids[i],
-            inline: true
-        })
-    }
-    fields.push({name: '\u200b', value: '\u200b', inline: true})
-
-    return fields
-}

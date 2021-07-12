@@ -2,7 +2,14 @@
  * Google sheets functions.
  */
 
-module.exports = {append_line, get_num_signed_up, get_team_names, get_timer_data, get_maps}
+module.exports = {
+    append_line,
+    get_num_signed_up,
+    get_team_names,
+    get_timer_data,
+    get_maps,
+    get_diffs
+}
 
 const T1_NAMES = 'Tier1!B2:B300'
 const T1_TIMES = 'Tier1!I2:I300'
@@ -164,9 +171,7 @@ function get_timer_data(){
 }
 
 function get_maps(){
-    console.log('b4')
     return new Promise((resolve, reject) =>{
-        console.log('in')
         global.sheets.spreadsheets.values.get({
             spreadsheetId: process.env.score_spreadsheetID,
             auth: global.auth,
@@ -178,7 +183,26 @@ function get_maps(){
                 reject(err)
             }
             else{
-                resolve(res.data)
+                resolve(res.data.values.map(_ => _[0]))
+            }
+        })
+    })
+}
+
+function get_diffs(){
+    return new Promise((resolve, reject) =>{
+        global.sheets.spreadsheets.values.get({
+            spreadsheetId: process.env.score_spreadsheetID,
+            auth: global.auth,
+            key: process.env.GOOGLE_API_KEY,
+            range: 'Tables!D2:D100'
+        }, (err, res) => {
+            if(err){
+                console.log(err)
+                reject(err)
+            }
+            else{
+                resolve(res.data.values.map(_ => _[0]))
             }
         })
     })
