@@ -35,14 +35,11 @@ module.exports = {
 
         //If there are no errors with signup
         try{
-            //get team info and map that to fields for the embed
-            const fields = fields.get_fields(await signup.signup_handler(input))
-
             return new Discord.MessageEmbed()
                 .setTitle(check + check + ' Signup Successful ' + check + check)
                 .setThumbnail(logo_url)
                 .setFooter('Contact TOs if you want to change your timeslot or resign')
-                .addFields(fields)
+                .addFields(fields.get_fields(await signup.signup_handler(input)))
                 .setColor('GREEN')
         }
         //send error embed
