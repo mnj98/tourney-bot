@@ -36,7 +36,7 @@ module.exports = {
         //If there are no errors with signup
         try{
             //get team info and map that to fields for the embed
-            const fields = fields.get_fields(await signup.signup_handler(input.args, input.guild))
+            const fields = fields.get_fields(await signup.signup_handler(input))
 
             return new Discord.MessageEmbed()
                 .setTitle(check + check + ' Signup Successful ' + check + check)
