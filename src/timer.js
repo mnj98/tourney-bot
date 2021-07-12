@@ -5,6 +5,10 @@
 const SheetService = require('./sheets.js')
 const Stopwatch = require('./stopwatch.js')
 const Similarity = require('string-similarity')
+const Discord = require('discord.js')
+const fields = require('./fields.js')
+
+const clock = ':alarm_clock:'
 
 module.exports = {start_timers, update_time, get_timer_info}
 
@@ -64,12 +68,25 @@ function update_time(team, time){
 function time_up(team, client){
     client.channels.fetch(process.env.notification_channel_id).then(channel =>{
         let response = 'Team ' + team[0] + ', your time is up.'
-
         team[1].forEach(id => {
             response += ' <@' + id + '>'
         })
+        channel.send(time_up_embed(team))
         channel.send(response)
     })
+}
+
+function time_up_embed(team){
+    return new Discord.MessageEmbed()
+        .setTitle(clock + clock +' Time Up ' + clock + clock)
+        .setColor('DARK_AQUA')
+        .setFooter('Do not start any more runs')
+        .addFields(
+            fields.get_fields([
+                team[1].map(id => '<@' + id + '>'),
+                team[0],
+                null
+            ]))
 }
 
 /**
