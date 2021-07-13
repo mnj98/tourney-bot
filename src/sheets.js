@@ -8,7 +8,8 @@ module.exports = {
     get_team_names,
     get_timer_data,
     get_maps,
-    get_diffs
+    get_diffs,
+    get_score
 }
 
 const T1_NAMES = 'Tier1!B2:B300'
@@ -104,6 +105,15 @@ function append_line(tier, values){
  * @returns {Promise<unknown>}
  */
 function get_team_names(){
+    return new Promise((resolve, reject) =>{
+        get('BotLogic!A4', process.env.signup_spreadsheetID)
+            .then(teams => {
+                if(teams.length === 0) resolve(teams)
+                else resolve(teams[0].split('\n').map(teamName => teamName.toLowerCase()))
+            }).catch(reject)
+    })
+
+    /*
     //Returns a promise that can fail
     return new Promise((resolve, reject) => {
         //get a value BotLogic!A4
@@ -128,6 +138,7 @@ function get_team_names(){
             }
         })
     })
+    */
 }
 
 /**
@@ -170,41 +181,72 @@ function get_timer_data(){
     })
 }
 
-function get_maps(){
-    return new Promise((resolve, reject) =>{
-        global.sheets.spreadsheets.values.get({
+function get_score(maps, diffs, attempts){
+    return new Promise((resolve, reject) => {
+        global.sheets.spreadsheets.values.batchUpdate({
             spreadsheetId: process.env.score_spreadsheetID,
             auth: global.auth,
             key: process.env.GOOGLE_API_KEY,
-            range: 'Tables!A2:A100'
+            resource: {
+                valueInputOption: 'USER_ENTERED',
+                data: [
+                    {
+                        range: 'BotLogic!A2:A5',
+                        majorDimension: 'COLUMNS',
+                        values: [attempts]
+                    },
+                    {
+                        range: 'BotLogic!B2:B5',
+                        majorDimension: 'COLUMNS',
+                        values: [maps]
+                    },
+                    {
+                        range: 'BotLogic!D2:D5',
+                        majorDimension: 'COLUMNS',
+                        values: [diffs]
+                    }
+                ]
+            }
+        }, ((err, res) => {
+            if(err){
+                console.log(err)
+                reject(err)
+            }
+            else{
+                get('BotLogic!D10', process.env.score_spreadsheetID)
+                    .then(score => {
+                        resolve(score[0])
+                    }).catch(reject)
+            }
+        }))
+    })
+}
+
+function get(range, doc){
+    return new Promise((resolve, reject) =>{
+        global.sheets.spreadsheets.values.get({
+            spreadsheetId: doc,
+            auth: global.auth,
+            key: process.env.GOOGLE_API_KEY,
+            range: range
         }, (err, res) => {
             if(err){
                 console.log(err)
                 reject(err)
             }
             else{
-                resolve(res.data.values.map(_ => _[0]))
+                if(res.data.values) resolve(res.data.values.map(_ => _[0]))
+                else resolve([])
             }
         })
     })
 }
 
+function get_maps(){
+    return get('Tables!A2:A100', process.env.score_spreadsheetID)
+}
+
 function get_diffs(){
-    return new Promise((resolve, reject) =>{
-        global.sheets.spreadsheets.values.get({
-            spreadsheetId: process.env.score_spreadsheetID,
-            auth: global.auth,
-            key: process.env.GOOGLE_API_KEY,
-            range: 'Tables!D2:D100'
-        }, (err, res) => {
-            if(err){
-                console.log(err)
-                reject(err)
-            }
-            else{
-                resolve(res.data.values.map(_ => _[0]))
-            }
-        })
-    })
+    return get('Tables!D2:D100', process.env.score_spreadsheetID)
 }
 

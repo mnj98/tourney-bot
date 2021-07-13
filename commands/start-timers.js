@@ -4,7 +4,7 @@ const Discord = require('discord.js')
 
 const defeat_url = 'https://raw.githubusercontent.com/mnj98/tourney-bot/master/loss.png'
 const x = ':x:'
-const check = ':white_check_mark:'
+const check = ':stopwatch:'
 const rat = ':rat:'
 
 module.exports = {

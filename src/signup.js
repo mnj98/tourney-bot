@@ -32,7 +32,7 @@ function signup_handler(input) {
             if(team_names.includes(team_name.toLowerCase())) return reject('Team name \"' + team_name + '\" is already in use')
 
             //Make sure that tier is correct
-            const tier = args[1].toLowerCase()
+            const tier = args[1].toLowerCase().replace(/^\d?$/i, 'tier' + args[1])
             if (tier !== 'tier1' && tier !== 'tier2' && tier !== 'tier3') return reject('Invalid Tier')
 
             //Make sure that a player doesn't appear twice on same team
