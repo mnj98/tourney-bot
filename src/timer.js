@@ -18,8 +18,13 @@ module.exports = {start_timers, update_time, get_timer_info}
  * @param time, number of minutes
  * @param client
  */
-function start_timers(day, time, client){
+function start_timers(input){
+    const day = input.args[0]
+    const time = input.args[1]
+    const offset = input.args[2]
+    const client = input.client
     return new Promise((resolve, reject) => {
+        if(offset >= time) return reject('Offset: ' + offset + ' too large for time: ' + time)
         //Team names and ids of teams with timeslot day
         get_teams_and_ids(day).then(teams => {
             //Create and start the timers
@@ -27,7 +32,11 @@ function start_timers(day, time, client){
             if(teams.length === 0) reject('No teams scheduled for \'' + day + '\'')
             else {
                 teams.forEach(team => {
-                    new Stopwatch.Stopwatch(team[0].toLowerCase(), {seconds: time * 60}).on('end', () => time_up(team, client)).start()
+                    new Stopwatch.Stopwatch(
+                        team[0].toLowerCase(),
+                        {seconds: (time - offset) * 60})
+                        .on('end', () => time_up(team, client))
+                        .start()
                 })
                 resolve()
             }

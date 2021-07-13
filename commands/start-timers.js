@@ -12,13 +12,13 @@ module.exports = {
     testOnly: true,
     name: 'start-timers',
     description: 'Starts tournament timers for a timeslot with a given time',
-    minArgs: 2,
-    expectedArgs: '<time slot> <minutes>',
-    argTypes: [3, 4],
+    minArgs: 3,
+    expectedArgs: '<time slot> <minutes> <offset>',
+    argTypes: [3, 4, 4],
     callback: async input => {
         if(!role.is_admin(input)) return role.respond()
         try {
-            await timer.start_timers(input.args[0], input.args[1], input.client)
+            await timer.start_timers(input)
             return new Discord.MessageEmbed()
                 .setTitle(check + check + ' Timers Started ' + check + check)
                 .setFooter('Here we go!!')
