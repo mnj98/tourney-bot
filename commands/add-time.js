@@ -1,3 +1,7 @@
+/**
+ * Allows you to update a team's time as it runs
+ */
+
 const timer = require('../src/timer.js')
 const role = require('../src/check_role.js')
 const Discord = require('discord.js')
@@ -14,7 +18,15 @@ module.exports = {
     minArgs: 2,
     expectedArgs: '<team> <minutes>',
     argTypes: [3, 4],
+    /**
+     * Calls update time and sends response back to discord
+     * @param input
+     *      input contains fields [member, guild, channel, args, text, client, instance, interaction]
+     *      which also contain sub-fields. Console log to see the full details
+     * @returns {Promise<this|module:"discord.js".MessageEmbed>}
+     */
     callback: async input => {
+        //Ensure correct permission
         if(!role.is_admin(input)) return role.respond()
 
         try {
@@ -33,6 +45,11 @@ module.exports = {
     }
 }
 
+/**
+ * Formats the response in the event of an error
+ * @param err
+ * @returns {module:"discord.js".MessageEmbed}
+ */
 function err_response(err){
     return new Discord.MessageEmbed()
         .setTitle(face + face + ' Add Time Error ' + face + face)

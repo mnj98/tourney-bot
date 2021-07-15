@@ -49,5 +49,3 @@ sheets_setup.setup((sheet_auth) => {
     global.sheets = google.sheets({version: 'v4', sheet_auth})
     client.login(process.env.BOT_TOKEN)
 })
-
-

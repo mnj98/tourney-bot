@@ -1,3 +1,7 @@
+/**
+ * Clears all running timers
+ */
+
 const role = require('../src/check_role.js');
 const stopwatch = require('../src/stopwatch')
 const Discord = require('discord.js')
@@ -10,8 +14,17 @@ module.exports = {
     testOnly: true,
     name: 'clear-all-timers',
     description: 'Clears all timers',
-    callback: async (input) => {
+    /**
+     * @param input
+     *      input contains fields [member, guild, channel, args, text, client, instance, interaction]
+     *      which also contain sub-fields. Console log to see the full details
+     * @returns {this|module:"discord.js".MessageEmbed}
+     */
+    callback: input => {
+        //Ensures correct permissions
+
         if(!role.is_admin(input)) return role.respond()
+
         stopwatch.clear_watches()
         return new Discord.MessageEmbed()
             .setTitle(clock + clock + ' All Timers Cleared ' + clock + clock)

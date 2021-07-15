@@ -1,3 +1,7 @@
+/**
+ * Sends the link to the roster document
+ */
+
 const Discord = require('discord.js')
 
 const url = 'https://docs.google.com/spreadsheets/d/1SA0twJDK9mkc-zwIaSLfDIEfssxd7dMszWRfYwMKnzY/edit#gid=0'

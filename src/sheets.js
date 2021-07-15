@@ -106,39 +106,13 @@ function append_line(tier, values){
  */
 function get_team_names(){
     return new Promise((resolve, reject) =>{
+        //Use generic get function
         get('BotLogic!A4', process.env.signup_spreadsheetID)
             .then(teams => {
                 if(teams.length === 0) resolve(teams)
                 else resolve(teams[0].split('\n').map(teamName => teamName.toLowerCase()))
             }).catch(reject)
     })
-
-    /*
-    //Returns a promise that can fail
-    return new Promise((resolve, reject) => {
-        //get a value BotLogic!A4
-        //This cell contains all of the team names separated by new lines
-        //This is calculated by a spreadsheet function
-        global.sheets.spreadsheets.values.get({
-            spreadsheetId: process.env.signup_spreadsheetID,
-            auth: global.auth,
-            key: process.env.GOOGLE_API_KEY,
-            range: 'BotLogic!A4'
-        }, (err, res) => {
-            if(err){
-                console.log(err)
-                reject(err)
-            }
-            else{
-                if(res.data.values){
-                    //format return value and return it
-                    resolve(res.data.values[0][0].split('\n').map(teamName => teamName.toLowerCase()))
-                }
-                else resolve([])
-            }
-        })
-    })
-    */
 }
 
 /**
@@ -181,8 +155,17 @@ function get_timer_data(){
     })
 }
 
+/**
+ * First puts score info into the sheet. Then it gets the score value
+ * @param maps
+ * @param diffs
+ * @param attempts
+ * @returns {Promise<unknown>}
+ */
 function get_score(maps, diffs, attempts){
     return new Promise((resolve, reject) => {
+
+        //Update all the required info
         global.sheets.spreadsheets.values.batchUpdate({
             spreadsheetId: process.env.score_spreadsheetID,
             auth: global.auth,
@@ -212,6 +195,7 @@ function get_score(maps, diffs, attempts){
                 console.log(err)
                 reject(err)
             }
+            //After the update, read the score value and resolve
             else{
                 get('BotLogic!D10', process.env.score_spreadsheetID)
                     .then(score => {
@@ -222,6 +206,15 @@ function get_score(maps, diffs, attempts){
     })
 }
 
+/**
+ * Generic get function that gets from a range and doc
+ *
+ * Cannot be used for ranges of all formats since this function
+ *  specifically reduces the dimension of array returned
+ * @param range
+ * @param doc
+ * @returns {Promise<unknown>}
+ */
 function get(range, doc){
     return new Promise((resolve, reject) =>{
         global.sheets.spreadsheets.values.get({
@@ -235,18 +228,28 @@ function get(range, doc){
                 reject(err)
             }
             else{
+                //Map the 2 or more dimension array down
                 if(res.data.values) resolve(res.data.values.map(_ => _[0]))
+                //Sometimes res.data will have no values field, in this case
+                    //resolve with an empty array
                 else resolve([])
             }
         })
     })
 }
 
+/**
+ * Get the list of maps
+ * @returns {Promise<ChannelType.unknown>}
+ */
 function get_maps(){
     return get('Tables!A2:A100', process.env.score_spreadsheetID)
 }
 
+/**
+ * Get the list of difficulties
+ * @returns {Promise<ChannelType.unknown>}
+ */
 function get_diffs(){
     return get('Tables!D2:D100', process.env.score_spreadsheetID)
 }
-

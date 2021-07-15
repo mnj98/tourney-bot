@@ -1,9 +1,14 @@
+/**
+ * Parse and calculate score using the score sheet
+ */
+
 const Discord = require('discord.js')
 const ScoreHandler = require('../src/score.js')
 
 const defeat_url = 'https://raw.githubusercontent.com/mnj98/tourney-bot/master/loss.png'
 const x = ':x:'
 
+//TODO: Make it so that you don't have to type in 4 maps to get a score
 module.exports = {
     slash: true,
     testOnly: true,
@@ -16,6 +21,13 @@ module.exports = {
         '<map3> <difficulty3> <attempts3> ' +
         '<map4> <difficulty4> <attempts4>',
     argTypes: [3, 3, 4, 3, 3, 4, 3, 3, 4, 3, 3, 4],
+    /**
+     * Gets the scores using score.js and reports the score or an error
+     * @param input
+     *      input contains fields [member, guild, channel, args, text, client, instance, interaction]
+     *      which also contain sub-fields. Console log to see the full details
+     * @returns {Promise<module:"discord.js".MessageEmbed>}
+     */
     callback: async input => {
         try{
             return new Discord.MessageEmbed()
@@ -35,6 +47,11 @@ module.exports = {
     }
 }
 
+/**
+ * Format the fiels for the embed in the case that there is no error
+ * @param result
+ * @returns {[{name: string, value: *}]}
+ */
 function create_fields(result){
     const [maps, diffs, attempts, score] = result
     const adjusted_attempts = attempts.map(_ => _ === 0 ? 'Map Failed' : _)

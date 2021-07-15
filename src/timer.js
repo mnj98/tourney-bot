@@ -23,6 +23,7 @@ function start_timers(input){
     const time = input.args[1]
     const offset = input.args[2]
     const client = input.client
+
     return new Promise((resolve, reject) => {
         if(offset >= time) return reject('Offset: ' + offset + ' too large for time: ' + time)
         //Team names and ids of teams with timeslot day
@@ -31,9 +32,10 @@ function start_timers(input){
             //On event 'end' run time up
             if(teams.length === 0) reject('No teams scheduled for \'' + day + '\'')
             else {
+                //For each team start a timer with the time_up as callback
                 teams.forEach(team => {
                     new Stopwatch.Stopwatch(
-                        team[0].toLowerCase(),
+                        team[0],
                         {seconds: (time - offset) * 60})
                         .on('end', () => time_up(team, client))
                         .start()
@@ -51,10 +53,13 @@ function start_timers(input){
  */
 function update_time(team, time){
     return new Promise((resolve, reject) => {
+
+        //Get list of teams
         get_teams().then(team_names => {
-            const closest_team = Similarity.findBestMatch(
-                team.toLowerCase(), team_names.map(_ => _.toLowerCase())
-            ).bestMatch
+
+            //Use string similarity to determine the true name of the team
+                //This is so you don't have to spell the name correctly
+            const closest_team = Similarity.findBestMatch(team, team_names).bestMatch
 
             //Arbitrary threshold for similarity is 0.2, most matches are > 0.5
             if(closest_team.rating < 0.2) reject('Unknown team name: ' + team)
@@ -85,6 +90,11 @@ function time_up(team, client){
     })
 }
 
+/**
+ * Format and return the embed for when the timer has completed
+ * @param team
+ * @returns {module:"discord.js".MessageEmbed}
+ */
 function time_up_embed(team){
     return new Discord.MessageEmbed()
         .setTitle(clock + clock +' Time Up ' + clock + clock)
@@ -121,7 +131,7 @@ function get_timer_info(){
             //With team names from day timeslot make an array of objects
             //with fields [name, time_left, has_completed]
             return resolve(teams.map(team => {
-                const timer = Stopwatch.get(team.toLowerCase())
+                const timer = Stopwatch.get(team)
                 
                 if(timer){
                     const time = new Date(timer.seconds * 1000)
@@ -154,6 +164,10 @@ function get_teams(){
     })
 }
 
+/**
+ * Helper function that formats info from sheets.js
+ * @returns {Promise<unknown>}
+ */
 function get_formatted_timer_data(){
     return new Promise((resolve, reject) => {
         SheetService.get_timer_data().then(data => {

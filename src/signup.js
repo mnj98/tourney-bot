@@ -16,16 +16,19 @@ module.exports = {signup_handler}
  * This may truly be callback hell
  */
 function signup_handler(input) {
-    return new Promise((resolve, reject) => {
-        const args = input.args
-        const guild = input.guild
-        const requester = input.member.user
+    const args = input.args
+    const guild = input.guild
+    const requester = input.member.user
 
-        const team_name = args[0]
-        const player_ids = args.slice(2)
+    const team_name = args[0]
+    const player_ids = args.slice(2)
+
+    return new Promise((resolve, reject) => {
+        //You must be on the team you sign up for
         if(!player_ids.includes(requester.id)) return reject('You must be on the team')
 
-        if(team_name.length <= 1) return reject('Team name too short')
+        //For string similarity purposes you must have a team name longer than 2
+        if(team_name.length < 1) return reject('Team name too short')
 
         //Make sure that a team name has not been used already
         SheetService.get_team_names().then(team_names =>{

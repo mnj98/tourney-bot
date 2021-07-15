@@ -1,3 +1,7 @@
+/**
+ * Coordinate signup
+ */
+
 const signup = require('../src/signup.js')
 const Discord = require('discord.js')
 const fields = require('../src/fields.js')
@@ -29,8 +33,7 @@ module.exports = {
      *
      */
     callback: async input => {
-        //Check if you have the correct role and are using the correct channel
-            //Perhaps the roll requirement will be removed after testing
+        //Check if you are using the correct channel
         if(input.interaction.channel_id !== process.env.signup_channel_id) return 'Please use the signup channel'
 
         //If there are no errors with signup
@@ -39,6 +42,7 @@ module.exports = {
                 .setTitle(check + check + ' Signup Successful ' + check + check)
                 .setThumbnail(logo_url)
                 .setFooter('Contact TOs if you want to change your timeslot or resign')
+                //Use fields.js to format fields
                 .addFields(fields.get_fields(await signup.signup_handler(input)))
                 .setColor('GREEN')
         }
@@ -53,5 +57,3 @@ module.exports = {
         }
     }
 }
-
-

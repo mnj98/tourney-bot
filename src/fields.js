@@ -1,3 +1,8 @@
+/**
+ * This file exist because this get fields function is used in two places
+ *  so I didn't want to have duplicate code
+ */
+
 module.exports = {get_fields}
 
 /**

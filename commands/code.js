@@ -1,3 +1,7 @@
+/**
+ * Sends the link to this code
+ */
+
 const Discord = require('discord.js')
 
 const url = 'https://github.com/mnj98/tourney-bot'
