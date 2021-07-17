@@ -17,16 +17,14 @@ module.exports = {
     description: 'Gets info about running timers',
     /**
      * Runs when a correctly formatted timer-info command is issued
-     @param input
-     *      input contains fields [member, guild, channel, args, text, client, instance, interaction]
-     *      which also contain sub-fields. Console log to see the full details
-     * @returns {Promise<string|module:"discord.js".MessageEmbed>}
+     * @param interaction
+     *      interaction is a discord.js Interaction object
      *
      * Uses timer.js to get the currently active timers and displays them as embed(s)
      */
-    callback: async input => {
+    callback: async interaction => {
         //must be a specific role (TOs)
-        if(!role.is_admin(input)) return role.respond()
+        if(!role.is_admin(interaction)) return interaction.reply({embeds: [role.respond()]})
 
         //If getting the timers goes well
         try{
@@ -42,32 +40,19 @@ module.exports = {
                     .addFields(get_fields(teams))
             })
 
-            //Do different things based on the number of embeds
-            switch (embeds.length){
-                //No timer data
-                case 0: {
-                    return new Discord.MessageEmbed()
-                        .setTitle(face + face + ' No Timers ' + face + face)
-                        .setColor('LIGHT_GREY')
-                        .addFields([{name:'\u200b', value:':person_shrugging:', inline: true},
-                            {name:'\u200b', value: shrug, inline: true},
-                            {name:'\u200b', value: shrug, inline: true}])
-                }
-                //Only 1 embed
-                case 1: {
-                    return embeds[0]
-                }
-                //More than 1 embed
-                    //Just due to networking these embeds can appear in any order in the server
-                default: {
-                    for(let i = 1; i < embeds.length; i++){
-                        input.channel.send(embeds[i])
-                    }
-                    return embeds[0]
-                }
-            }
+            return embeds.length === 0 ?
+            interaction.reply({embeds: [new Discord.MessageEmbed()
+                .setTitle(face + face + ' No Timers ' + face + face)
+                .setColor('LIGHT_GREY')
+                .addFields([{name:'\u200b', value:':person_shrugging:', inline: true},
+                    {name:'\u200b', value: shrug, inline: true},
+                    {name:'\u200b', value: shrug, inline: true}])]}
+            )
+            :
+            interaction.reply({embeds: embeds})
+
         }catch(err){
-            return 'Error :(  ' + err
+            return interaction.reply('Error :(  ' + err)
         }
     }
 }

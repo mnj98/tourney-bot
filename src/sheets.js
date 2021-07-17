@@ -43,10 +43,7 @@ function get_num_signed_up(ids){
                 values: [ids]
             }
         }, (err, res) =>{
-            if (err) {
-                console.log(err)
-                reject(err)
-            }
+            if(err) reject(err)
             else{
                 //Once ids are populated, read the count
                 //the count is calculated by a spreadsheet function
@@ -56,11 +53,7 @@ function get_num_signed_up(ids){
                     key: process.env.GOOGLE_API_KEY,
                     range: 'BotLogic!A2:F2'
                 }, (err, res) =>{
-                    if(err){
-                        console.log(err)
-                        reject(err)
-                    }
-                    //return the counts
+                    if(err) reject(err)
                     else resolve(res.data.values[0])
                 })
             }
@@ -88,12 +81,7 @@ function append_line(tier, values){
                 values: values
             }
         }, (err, res) => {
-            if (err) {
-                console.log(err)
-                reject(err)
-            }
-            //nothing needs to return,
-                //as long as promise is not rejected we're cool
+            if(err) reject(err)
             else resolve()
         })
     })
@@ -143,10 +131,7 @@ function get_timer_data(){
                 T3_IDS
             ]
         }, (err, res) => {
-            if(err){
-                console.log(err)
-                reject(err)
-            }
+            if(err) reject(err)
             else{
                 //pull just the data
                 resolve(res.data.valueRanges.map(range => range.values))
@@ -191,11 +176,7 @@ function get_score(maps, diffs, attempts){
                 ]
             }
         }, ((err, res) => {
-            if(err){
-                console.log(err)
-                reject(err)
-            }
-            //After the update, read the score value and resolve
+            if(err) reject(err)
             else{
                 get('BotLogic!D10', process.env.score_spreadsheetID)
                     .then(score => {
@@ -223,10 +204,7 @@ function get(range, doc){
             key: process.env.GOOGLE_API_KEY,
             range: range
         }, (err, res) => {
-            if(err){
-                console.log(err)
-                reject(err)
-            }
+            if(err) reject(err)
             else{
                 //Map the 2 or more dimension array down
                 if(res.data.values) resolve(res.data.values.map(_ => _[0]))
@@ -240,7 +218,6 @@ function get(range, doc){
 
 /**
  * Get the list of maps
- * @returns {Promise<ChannelType.unknown>}
  */
 function get_maps(){
     return get('Tables!A2:A100', process.env.score_spreadsheetID)
@@ -248,7 +225,6 @@ function get_maps(){
 
 /**
  * Get the list of difficulties
- * @returns {Promise<ChannelType.unknown>}
  */
 function get_diffs(){
     return get('Tables!D2:D100', process.env.score_spreadsheetID)

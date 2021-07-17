@@ -15,22 +15,20 @@ module.exports = {
     name: 'clear-all-timers',
     description: 'Clears all timers',
     /**
-     * @param input
-     *      input contains fields [member, guild, channel, args, text, client, instance, interaction]
-     *      which also contain sub-fields. Console log to see the full details
-     * @returns {this|module:"discord.js".MessageEmbed}
+     * @param interaction
+     *      interaction is a discord.js Interaction object
      */
-    callback: input => {
+    callback: interaction => {
         //Ensures correct permissions
-
-        if(!role.is_admin(input)) return role.respond()
+        if(!role.is_admin(interaction)) return interaction.reply({embeds: [role.respond()]})
 
         stopwatch.clear_watches()
-        return new Discord.MessageEmbed()
+        interaction.reply({embeds: [new Discord.MessageEmbed()
             .setTitle(clock + clock + ' All Timers Cleared ' + clock + clock)
             .setColor('GREEN')
             .addField('\u200b', check, true)
             .addField('\u200b', check, true)
-            .addField('\u200b', check, true)
+            .addField('\u200b', check, true)]}
+        )
     }
 }

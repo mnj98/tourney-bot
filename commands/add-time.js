@@ -20,27 +20,28 @@ module.exports = {
     argTypes: [3, 4],
     /**
      * Calls update time and sends response back to discord
-     * @param input
-     *      input contains fields [member, guild, channel, args, text, client, instance, interaction]
-     *      which also contain sub-fields. Console log to see the full details
-     * @returns {Promise<this|module:"discord.js".MessageEmbed>}
+     * @param interaction
+     *      interaction is a discord.js Interaction object
      */
-    callback: async input => {
+    callback: async interaction => {
         //Ensure correct permission
-        if(!role.is_admin(input)) return role.respond()
+        if(!role.is_admin(interaction)) return interaction.reply({embeds: [role.respond()]})
+
+        const [team, time] = interaction.options.map(_ => _.value + '')
 
         try {
-            const response = await timer.update_time(input.args[0], input.args[1])
+            const response = await timer.update_time(team, time)
 
-            return new Discord.MessageEmbed()
-                .setTitle(clock + clock + ' Time Successfully Updated ' + clock + clock)
-                .addField('Team', response.team, true)
-                .addField('Amount', response.time + ' minutes', true)
-                .addField('\u200b', '\u200b', true)
-                .setColor('GREEN')
-                .setFooter('Use /timer-info to see remaining times')
+            interaction.reply({embeds: [new Discord.MessageEmbed()
+                        .setTitle(clock + clock + ' Time Successfully Updated ' + clock + clock)
+                        .addField('Team', response.team, true)
+                        .addField('Amount', response.time + ' minutes', true)
+                        .addField('\u200b', '\u200b', true)
+                        .setColor('GREEN')
+                        .setFooter('Use /timer-info to see remaining times')]}
+            )
         }catch(err){
-            return err_response(err)
+            interaction.reply({embeds: [err_response(err)]})
         }
     }
 }
@@ -48,7 +49,6 @@ module.exports = {
 /**
  * Formats the response in the event of an error
  * @param err
- * @returns {module:"discord.js".MessageEmbed}
  */
 function err_response(err){
     return new Discord.MessageEmbed()

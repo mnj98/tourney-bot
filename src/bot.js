@@ -16,7 +16,7 @@
 const Discord = require('discord.js');
 const {google} = require('googleapis');
 const sheets_setup = require('./sheets_setup.js')
-const WOKCommands = require('../CommandHandler')
+const CommandHandler = require('./command_handler.js')
 require('dotenv').config()
 
 process.env.signup_channel_id = '860309288529428480'
@@ -25,18 +25,16 @@ process.env.signup_spreadsheetID = '1SA0twJDK9mkc-zwIaSLfDIEfssxd7dMszWRfYwMKnzY
 process.env.score_spreadsheetID = '1hut-DtlaSebQmGqef9QSQdSodTjtm3ieroYnM0NVNdE'
 process.env.notification_channel_id = '861363394685435905'
 
-client = new Discord.Client()
+client = new Discord.Client({intents: new Discord.Intents()})
 
 //Runs when bot has logged in
 client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`)
+})
 
-    //Command handler, commands are defined in ../commands
-    new WOKCommands(client, {
-        commandsDir: '../commands',
-        testServers: [process.env.server_id],
-        showWarns: false
-    })
+//Handle Interactions (slash commands)
+client.on('interactionCreate', interaction => {
+    if (interaction.isCommand()) CommandHandler.handle(interaction)
 })
 
 /**

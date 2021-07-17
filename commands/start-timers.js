@@ -22,34 +22,35 @@ module.exports = {
     expectedArgs: '<time slot> <minutes> <offset>',
     argTypes: [3, 4, 4],
     /**
-     * @param input
-     *      input contains fields [member, guild, channel, args, text, client, instance, interaction]
-     *      which also contain sub-fields. Console log to see the full details
-     * @returns {Promise<this|module:"discord.js".MessageEmbed>}
+     * @param interaction
+     *      interaction is a discord.js Interaction object
      */
-    callback: async input => {
+    callback: async interaction => {
         //Ensure the user has the correct role
-        if(!role.is_admin(input)) return role.respond()
+        if(!role.is_admin(interaction)) return interaction.reply({embeds: [role.respond()]})
 
         //When there are no errors start_timers resolves to nothing
         try {
-            await timer.start_timers(input)
-            return new Discord.MessageEmbed()
+            await timer.start_timers(interaction)
+
+            interaction.reply({embeds: [new Discord.MessageEmbed()
                 .setTitle(check + check + ' Timers Started ' + check + check)
                 .setFooter('Here we go!!')
                 .addField('\u200b', rat, true)
                 .addField('\u200b', rat, true)
                 .addField('\u200b', rat, true)
-                .setColor('GREEN')
+                .setColor('GREEN')]}
+            )
         }
         //But if there is an error it rejects with that error
         catch(err){
-            return new Discord.MessageEmbed()
+            interaction.reply({embeds: [new Discord.MessageEmbed()
                 .setTitle(x + x + ' Timer Error ' + x + x)
                 .setFooter('Try Again')
                 .addField('Reason', err + '')
                 .setThumbnail(defeat_url)
-                .setColor('RED')
+                .setColor('RED')]}
+            )
         }
     }
 }

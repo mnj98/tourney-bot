@@ -16,8 +16,8 @@ module.exports = {signup_handler}
  * This may truly be callback hell
  */
 function signup_handler(input) {
-    const args = input.args
-    const guild = input.guild
+    const args = input.options.map(_ => _.value + '')
+    const guild = input.member.guild
     const requester = input.member.user
 
     const team_name = args[0]

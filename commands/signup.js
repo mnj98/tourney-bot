@@ -23,37 +23,38 @@ module.exports = {
 
     /**
      * Signup callback called when /signup is used with correct syntax
-     * @param input
-     *      input contains fields [member, guild, channel, args, text, client, instance, interaction]
-     *      which also contain sub-fields. Console log to see the full details
-     * @returns {Promise<string|module:"discord.js".MessageEmbed>}
+     * @param interaction
+     *      interaction is a discord.js Interaction object
      *
      * This function basically uses signup.js to authenticate and complete a signup request.
      * If that request goes through then the team info is forwarded back as an embed.
      *
      */
-    callback: async input => {
+    callback: async interaction => {
         //Check if you are using the correct channel
-        if(input.interaction.channel_id !== process.env.signup_channel_id) return 'Please use the signup channel'
+        if(interaction.channelId !== process.env.signup_channel_id)
+            return interaction.reply({content: 'Please use the signup channel'})
 
         //If there are no errors with signup
         try{
-            return new Discord.MessageEmbed()
+            interaction.reply({embeds: [new Discord.MessageEmbed()
                 .setTitle(check + check + ' Signup Successful ' + check + check)
                 .setThumbnail(logo_url)
                 .setFooter('Contact TOs if you want to change your timeslot or resign')
                 //Use fields.js to format fields
-                .addFields(fields.get_fields(await signup.signup_handler(input)))
-                .setColor('GREEN')
+                .addFields(fields.get_fields(await signup.signup_handler(interaction)))
+                .setColor('GREEN')]}
+            )
         }
         //send error embed
         catch(err){
-            return new Discord.MessageEmbed()
+            interaction.reply({embeds: [new Discord.MessageEmbed()
                 .setTitle(x + x + ' Signup Failed ' + x + x)
                 .setFooter('Try Again')
                 .addField('Reason', err + '')
                 .setThumbnail(defeat_url)
-                .setColor('RED')
+                .setColor('RED')]}
+            )
         }
     }
 }

@@ -12,12 +12,13 @@ module.exports = {
     testOnly: true,
     description: 'Provides link to source code',
     name: 'source-code',
-    callback: () => {
-        return new Discord.MessageEmbed()
+    callback: interaction => {
+        interaction.reply({embeds: [new Discord.MessageEmbed()
             .setTitle(cpu + cpu + ' Here\'s the Source Code')
             .setColor('BLURPLE')
             .addField('\u200b', '\u200b', true)
             .addField('URL', url, true)
-            .addField('\u200b', '\u200b', true)
+            .addField('\u200b', '\u200b', true)]}
+        )
     }
 }

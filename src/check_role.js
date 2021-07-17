@@ -1,7 +1,6 @@
 /**
  * This file exists because I didn't want to have a bunch of duplicate code
  *  for each command that has to check roles
- * @type {module:"discord.js"}
  */
 
 const Discord = require('discord.js')
@@ -15,19 +14,17 @@ const angry = ':angry:'
 
 /**
  * Makes sure that the user has the required role
- * @param input
- *      input contains fields [member, guild, channel, args, text, client, instance, interaction]
- *      which also contain sub-fields. Console log to see the full details
+ * @param interaction
+ *      interaction is a discord.js Interaction object
  * @returns boolean
  */
-function is_admin(input){
-    return input.interaction.member.roles.includes(admin_role)
+function is_admin(interaction){
+    return interaction.member._roles.includes(admin_role)
 }
 
 /**
  * Creates the embed in the case that a user doesn't have the correct
  *  permissions to use a command
- * @returns {module:"discord.js".MessageEmbed}
  */
 function respond(){
     return new Discord.MessageEmbed()

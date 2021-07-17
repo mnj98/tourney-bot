@@ -12,12 +12,13 @@ module.exports = {
     testOnly: true,
     description: 'Provides link to roster',
     name: 'roster',
-    callback: () => {
-        return new Discord.MessageEmbed()
-            .setTitle(paper + paper + ' Here\'s the Roster ' + paper + paper)
-            .setColor('ORANGE')
-            .addField('\u200b', '\u200b', true)
-            .addField('URL', url, true)
-            .addField('\u200b', '\u200b', true)
+    callback: interaction => {
+        interaction.reply({embeds: [new Discord.MessageEmbed()
+                    .setTitle(paper + paper + ' Here\'s the Roster ' + paper + paper)
+                    .setColor('ORANGE')
+                    .addField('\u200b', '\u200b', true)
+                    .addField('URL', url, true)
+                    .addField('\u200b', '\u200b', true)]}
+        )
     }
 }

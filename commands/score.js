@@ -23,29 +23,33 @@ module.exports = {
     argTypes: [3, 3, 4, 3, 3, 4, 3, 3, 4, 3, 3, 4],
     /**
      * Gets the scores using score.js and reports the score or an error
-     * @param input
-     *      input contains fields [member, guild, channel, args, text, client, instance, interaction]
-     *      which also contain sub-fields. Console log to see the full details
-     * @returns {Promise<module:"discord.js".MessageEmbed>}
+     * @param interaction
+     *      interaction is a discord.js Interaction object
      */
-    callback: async input => {
+    callback: async interaction => {
         try{
-            return new Discord.MessageEmbed()
+            interaction.reply({embeds: [new Discord.MessageEmbed()
                 .setTitle('Score')
                 .setFooter('Be more specific if the map name or difficulty is incorrect')
                 .setColor('NAVY')
-                .addFields(create_fields(await ScoreHandler.score_handler(input.args)))
+                .addFields(create_fields(
+                    //map options to string arguments
+                    await ScoreHandler.score_handler(interaction.options.map(_ => _.value + ''))
+                ))]}
+            )
         }
         catch(err){
-            return new Discord.MessageEmbed()
+            interaction.reply({embeds: [new Discord.MessageEmbed()
                 .setTitle(x + x + ' Score Calculation Failed ' + x + x)
                 .setFooter('Try Again')
                 .addField('Reason', err + '')
                 .setThumbnail(defeat_url)
-                .setColor('RED')
+                .setColor('RED')]}
+            )
         }
     }
 }
+
 
 /**
  * Format the fiels for the embed in the case that there is no error

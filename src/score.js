@@ -77,14 +77,12 @@ function validate(score_vals, get_function, fail_msg, diffs = false){
         //call respective get function
         get_function.then(vals => {
             //create list of similarity objects
+            //Search through the array of real values (map names, difficulties)
+                //gotten from the sheet to determine similarity
             const closest_vals = score_vals.map(val =>
                 similarity.findBestMatch(
                     //handle if diffs = true
-                    diffs ? val.replace(/c(?!ata)/i, 'cata') : val,
-
-                    //Search through the array of true values (map names, difficulties)
-                        //gotten from the sheet to determine similarity
-                    vals)
+                    diffs ? val.replace(/c(?!ata)/i, 'cata') : val, vals)
             )
 
             //Determine if any best match is less than 0.2, and reject
