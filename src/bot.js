@@ -2,7 +2,6 @@
  * This discord bot is designed for the Vermintide 2 Onslaught Series Discord
  *
  * Code written by Matthew Jackson except where noted.
- * CommandHandler is written by Worn Of Keys, but I have edited it slightly
  * stopwatch.js is based on the stopwatch node package but heavily edited for my use
  * sheets_setup is from https://developers.google.com/sheets/api/quickstart/nodejs with edits
  *
@@ -13,8 +12,8 @@
  */
 
 
-const Discord = require('discord.js');
-const {google} = require('googleapis');
+const Discord = require('discord.js')
+const {google} = require('googleapis')
 const sheets_setup = require('./sheets_setup.js')
 const CommandHandler = require('./command_handler.js')
 require('dotenv').config()
