@@ -14,13 +14,13 @@ const check = ':stopwatch:'
 const rat = ':rat:'
 
 module.exports = {
-    slash: true,
-    testOnly: true,
     name: 'start-timers',
     description: 'Starts tournament timers for a timeslot with a given time',
-    minArgs: 3,
-    expectedArgs: '<time slot> <minutes> <offset>',
-    argTypes: [3, 4, 4],
+    options: [
+        {type: 3, name: 'time-slot', description: 'Time Slot', required: true},
+        {type: 4, name: 'minutes', description: 'Minutes', required: true},
+        {type: 4, name: 'offset', description: 'Offset', required: true}
+    ],
     /**
      * @param interaction
      *      interaction is a discord.js Interaction object

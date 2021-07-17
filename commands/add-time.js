@@ -11,13 +11,12 @@ const clock = ':hourglass:'
 const shrug = ':person_shrugging:'
 
 module.exports = {
-    slash: true,
-    testOnly: true,
     name: 'add-time',
     description: 'Add time to a team\'s clock',
-    minArgs: 2,
-    expectedArgs: '<team> <minutes>',
-    argTypes: [3, 4],
+    options: [
+        {type: 3, name: 'team', description: 'Team Name', required: true},
+        {type: 4, name: 'minutes', description: 'Minutes', required: true}
+    ],
     /**
      * Calls update time and sends response back to discord
      * @param interaction

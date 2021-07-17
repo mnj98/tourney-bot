@@ -8,8 +8,6 @@ const url = 'https://github.com/mnj98/tourney-bot'
 const cpu = ':computer:'
 
 module.exports = {
-    slash: true,
-    testOnly: true,
     description: 'Provides link to source code',
     name: 'source-code',
     callback: interaction => {

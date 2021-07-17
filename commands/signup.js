@@ -12,15 +12,18 @@ const check = ':white_check_mark:'
 const x = ':x:'
 
 module.exports = {
-    slash: true,
-    testOnly: true,
     name: 'signup',
     description: 'Allows you to sign up for the tournament',
-    minArgs: 6,
-    maxArgs: 8,
-    expectedArgs: '<team name> <tier> <player1> <player2> <player3> <player4> [sub1] [sub2]',
-    argTypes: [3, 3, 9, 9, 9, 9, 9, 9],
-
+    options: [
+        {type: 3, name: 'team-name', description: 'Team Name', required: true},
+        {type: 4, name: 'tier', description: 'Tier', required: true},
+        {type: 9, name: 'player1', description: 'Player 1', required: true},
+        {type: 9, name: 'player2', description: 'Player 2', required: true},
+        {type: 9, name: 'player3', description: 'Player 3', required: true},
+        {type: 9, name: 'player4', description: 'Player 4', required: true},
+        {type: 9, name: 'sub1', description: 'Sub 1'},
+        {type: 9, name: 'sub2', description: 'Sub 2'}
+    ],
     /**
      * Signup callback called when /signup is used with correct syntax
      * @param interaction

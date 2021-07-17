@@ -11,8 +11,6 @@ const clock = ':hourglass:'
 const shrug = ':person_shrugging:'
 
 module.exports = {
-    slash: true,
-    testOnly: true,
     name: 'timer-info',
     description: 'Gets info about running timers',
     /**

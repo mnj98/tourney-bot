@@ -10,8 +10,6 @@ const clock = ':hourglass:'
 const check = ':white_check_mark:'
 
 module.exports = {
-    slash: true,
-    testOnly: true,
     name: 'clear-all-timers',
     description: 'Clears all timers',
     /**

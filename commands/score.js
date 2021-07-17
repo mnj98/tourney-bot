@@ -10,17 +10,25 @@ const x = ':x:'
 
 //TODO: Make it so that you don't have to type in 4 maps to get a score
 module.exports = {
-    slash: true,
-    testOnly: true,
     name: 'calculate-score',
     description: 'Calculates score. Use 0 attempts to represent a failed map',
-    minArgs: 12,
-    maxArgs: 12,
-    expectedArgs: '<map1> <difficulty1> <attempts1> ' +
-        '<map2> <difficulty2> <attempts2> ' +
-        '<map3> <difficulty3> <attempts3> ' +
-        '<map4> <difficulty4> <attempts4>',
-    argTypes: [3, 3, 4, 3, 3, 4, 3, 3, 4, 3, 3, 4],
+    options: [
+        {type: 3, name: 'map1', description: 'Map 1', required: true},
+        {type: 3, name: 'difficulty1', description: 'Difficulty', required: true},
+        {type: 4, name: 'attempts1', description: 'Number of Attempts', required: true},
+
+        {type: 3, name: 'map2', description: 'Map 2', required: true},
+        {type: 3, name: 'difficulty2', description: 'Difficulty', required: true},
+        {type: 4, name: 'attempts2', description: 'Number of Attempts', required: true},
+
+        {type: 3, name: 'map3', description: 'Map 3', required: true},
+        {type: 3, name: 'difficulty3', description: 'Difficulty', required: true},
+        {type: 4, name: 'attempts3', description: 'Number of Attempts', required: true},
+
+        {type: 3, name: 'map4', description: 'Map 4', required: true},
+        {type: 3, name: 'difficulty4', description: 'Difficulty', required: true},
+        {type: 4, name: 'attempts4', description: 'Number of Attempts', required: true},
+    ],
     /**
      * Gets the scores using score.js and reports the score or an error
      * @param interaction

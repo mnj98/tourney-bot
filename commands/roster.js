@@ -8,8 +8,6 @@ const url = 'https://docs.google.com/spreadsheets/d/1SA0twJDK9mkc-zwIaSLfDIEfssx
 const paper = ':newspaper:'
 
 module.exports = {
-    slash: true,
-    testOnly: true,
     description: 'Provides link to roster',
     name: 'roster',
     callback: interaction => {
