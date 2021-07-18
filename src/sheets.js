@@ -147,7 +147,7 @@ function get_timer_data(){
  * @param attempts
  * @returns {Promise<unknown>}
  */
-function get_score(maps, diffs, attempts){
+function get_score(maps, diffs, attempts, number_of_maps){
     return new Promise((resolve, reject) => {
 
         //Update all the required info
@@ -178,7 +178,7 @@ function get_score(maps, diffs, attempts){
         }, ((err, res) => {
             if(err) reject(err)
             else{
-                get('BotLogic!D10', process.env.score_spreadsheetID)
+                get('BotLogic!G' + number_of_maps, process.env.score_spreadsheetID)
                     .then(score => {
                         resolve(score[0])
                     }).catch(reject)

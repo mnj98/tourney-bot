@@ -17,12 +17,14 @@ module.exports = {score_handler}
  * @param args
  * @returns {Promise<unknown>}
  */
-function score_handler(args){
-    //Re-format the args
-    const maps = [args[0], args[3], args[6], args[9]]
-    const diffs = [args[1], args[4], args[7], args[10]]
-    const attempts = [args[2], args[5], args[8], args[11]]
+function score_handler(options){
+    const args = options.options.map(_ => _.value + '')
+    const number_of_maps = {
+        'one-map': 1, 'two-maps': 2, 'three-maps': 3, 'four-maps': 4
+    }[options.name]
 
+    //Re-format the args
+    const [maps, diffs, attempts] = format_args(args, number_of_maps)
 
     return new Promise((resolve, reject) => {
 
@@ -40,7 +42,7 @@ function score_handler(args){
                     num >= 0 && num <= 3 ? num : 0
                 )
                 //Use sheet service to get the score from the google sheet
-                SheetService.get_score(valid_maps, valid_diffs, valid_attempts).then(score =>{
+                SheetService.get_score(valid_maps, valid_diffs, valid_attempts, number_of_maps).then(score =>{
 
                     //Resolve with the data needed to format the embed
                     resolve([valid_maps, valid_diffs, valid_attempts, score])
@@ -48,6 +50,23 @@ function score_handler(args){
             }).catch(reject)
         }).catch(reject)
     })
+}
+
+/**
+ * Formats arguments
+ * @param args
+ * @param map_num
+ * @returns {[][]}
+ */
+function format_args(args, map_num){
+    let maps = [], diffs = [], attempts = []
+
+    for(let i = 0; i < map_num; i++){
+        maps.push(args[i * 3])
+        diffs.push(args[(i * 3) + 1])
+        attempts.push(args[(i * 3) + 2])
+    }
+    return [maps, diffs, attempts]
 }
 
 /**

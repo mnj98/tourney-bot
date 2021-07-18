@@ -29,6 +29,12 @@ client = new Discord.Client({intents: new Discord.Intents()})
 //Runs when bot has logged in
 client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`)
+
+    client.guilds.fetch(process.env.server_id).then(guild => {
+        CommandHandler.fetch_command_names(guild).then(cmds =>
+            console.log('Commands:\n' + cmds)
+        )
+    }).catch(console.log)
 })
 
 //Handle Interactions (slash commands)
