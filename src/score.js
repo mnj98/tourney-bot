@@ -2,8 +2,6 @@
  * Handles parsing and calculating scores through the google sheet
  */
 
-//TODO: Allow for less than 4 maps being entered
-
 const similarity = require('string-similarity')
 const SheetService = require('./sheets')
 
