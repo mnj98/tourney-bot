@@ -82,7 +82,8 @@ function time_up(team, guild){
         team[1].forEach(id => {
             response += ' <@' + id + '>'
         })
-        channel.send({comtent: response, embeds: [time_up_embed(team)]})
+        channel.send({embeds: [time_up_embed(team)]})
+        channel.send({content: response})
     })
 }
 
