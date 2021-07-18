@@ -32,7 +32,7 @@ client.on('ready', () => {
 
     client.guilds.fetch(process.env.server_id).then(guild => {
         CommandHandler.fetch_command_names(guild).then(cmds =>
-            console.log('Commands:\n' + cmds)
+            console.log('Commands:\n' + cmds.map(_ => _ + '\n'))
         )
     }).catch(console.log)
 })

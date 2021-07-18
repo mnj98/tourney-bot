@@ -71,12 +71,11 @@ function signup_handler(input) {
  * @returns []
  */
 function get_line(team_name, names, player_ids){
-    return [['', team_name,
-            names[0], names[1], names[2], names[3],
-            names[4] ? names[4] : '', names[5] ? names[5] : '',
-            '', '', player_ids[0], player_ids[1], player_ids[2],
-            player_ids[3], player_ids[4] ? player_ids[4] : '',
-            player_ids[5] ? player_ids[5] : '']]
+    return [['', team_name, names[0], names[1], names[2], names[3],
+            names[4] ?? '', names[5] ?? '', '', '', player_ids[0],
+            player_ids[1], player_ids[2],
+            player_ids[3], player_ids[4] ?? '',
+            player_ids[5] ?? '']]
 }
 
 /**
@@ -132,9 +131,14 @@ function get_names(ids, guild){
     return new Promise((resolve, reject) => {
         //Fetch from discord the users
         guild.members.fetch({user: ids}).then(players => {
-            resolve(players.map(player => {
+            resolve(players
+                //Needs to be sorted because the names are returned
+                    //increasing order of id.
+                    //This sort puts them in the same order as the ids parameter
+                .sort((a,b) => ids.indexOf(a.id) - ids.indexOf(b.id))
                 //If the user has not set a nickname for the server return their username
-                return player.nickname ? player.nickname : player.user.username}))
+                .map(player =>  player.nickname ?? player.user.username)
+                )
         }).catch(reject)
     })
 }
