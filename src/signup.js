@@ -62,7 +62,6 @@ function signup_handler(input) {
     })
 }
 
-//TODO: fix names
 /**
  * Formatts the row to be added to spreadsheet
  * @param team_name

@@ -8,7 +8,6 @@ const ScoreHandler = require('../src/score.js')
 const defeat_url = 'https://raw.githubusercontent.com/mnj98/tourney-bot/master/loss.png'
 const x = ':x:'
 
-//TODO: Make it so that you don't have to type in 4 maps to get a score
 module.exports = {
     name: 'calculate-score',
     description: 'Calculates score. Use 0 attempts to represent a failed map',
