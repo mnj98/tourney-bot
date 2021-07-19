@@ -54,7 +54,7 @@ module.exports = {
                     new Discord.MessageEmbed()
                         .setTitle(x + x + ' Signup Failed ' + x + x)
                         .setFooter('Try Again')
-                        .addField('Reason', err + '')
+                        .addField('Reason', 'Error: ' + err)
                         .setThumbnail(defeat_url)
                         .setColor('RED')
                     ]}
