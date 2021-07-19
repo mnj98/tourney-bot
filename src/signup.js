@@ -132,7 +132,7 @@ function get_names(ids, guild){
         guild.members.fetch({user: ids}).then(players => {
             resolve(players
                 //Needs to be sorted because the names are returned
-                    //increasing order of id.
+                    //in increasing order of id.
                     //This sort puts them in the same order as the ids parameter
                 .sort((a,b) => ids.indexOf(a.id) - ids.indexOf(b.id))
                 //If the user has not set a nickname for the server return their username

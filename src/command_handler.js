@@ -77,7 +77,6 @@ function get_matching_commands(guild, local_commands){
  * @param commands for create its an object of commands
  *          but for edit or delete its just the id string
  * @param msg
- * @param edit_cmds
  */
 function commands_operation(guild, operation, commands, msg){
     return new Promise((resolve, reject) => {
@@ -92,6 +91,7 @@ function commands_operation(guild, operation, commands, msg){
  *  Probably will be useful when changing to official server
  *
  *  For some reason commands.edit was not working
+ *      So I just delete and create
  * @param guild
  * @param commands
  */

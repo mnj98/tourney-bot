@@ -22,6 +22,7 @@ function start_timers(input){
     const [day, time, offset] = input.options.map(_ => _.value + '')
 
     return new Promise((resolve, reject) => {
+        //the + makes offset a number so that the comparison is made between numbers instead of strings
         if(+offset >= time) return reject('Offset: ' + offset + ' too large for time: ' + time)
         //Team names and ids of teams with timeslot day
         get_teams_and_ids(day).then(teams => {
