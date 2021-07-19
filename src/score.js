@@ -37,7 +37,7 @@ function score_handler(options){
                 //1-3 represent valid attempt numbers
                     //anything else is mapped to 0
                 const valid_attempts = attempts.map(num =>
-                    num >= 0 && num <= 3 ? num : 0
+                    num >= 0 && num <= 3 ? num : '0'
                 )
                 //Use sheet service to get the score from the google sheet
                 SheetService.get_score(valid_maps, valid_diffs, valid_attempts, number_of_maps).then(score =>{
