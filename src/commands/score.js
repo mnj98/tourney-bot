@@ -81,7 +81,7 @@ module.exports = {
  */
 function create_fields(result){
     const [maps, diffs, attempts, score] = result
-    const adjusted_attempts = attempts.map(_ => _ === '0' ? 'Map Failed' : _)
+    const adjusted_attempts = attempts.map(_ => _ ?? 'Map Failed')
 
     let fields = [{
         name: 'Total',
