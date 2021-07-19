@@ -20,37 +20,36 @@ module.exports = {
      *
      * Uses timer.js to get the currently active timers and displays them as embed(s)
      */
-    callback: async interaction => {
+    callback: interaction => {
         //must be a specific role (TOs)
-        if(!role.is_admin(interaction)) return interaction.reply({embeds: [role.respond()]})
-
-        //If getting the timers goes well
-        try{
-            //Get timers, split into 2d array with rows of length max 16
+        if(!role.is_admin(interaction)) interaction.reply({embeds: [role.respond()]})
+        else{
+            timer.get_timer_info().then(info => {
+                //Get timers, split into 2d array with rows of length max 16
                 //embeds have a limit of 25 fields,
                 //and with padding 16 is all I can get away with
-            //then map that 2d array into 1d array of embeds
-            const embeds = split_into_16s(await timer.get_timer_info()).map(teams => {
-                return new Discord.MessageEmbed()
-                    .setTitle(clock + clock + 'Tournament Clock Information' + clock + clock)
-                    .setColor('YELLOW')
-                    //map the array of teams into fields with padding
-                    .addFields(get_fields(teams))
-            })
-
-            return embeds.length === 0 ?
-            interaction.reply({embeds: [new Discord.MessageEmbed()
-                .setTitle(face + face + ' No Timers ' + face + face)
-                .setColor('LIGHT_GREY')
-                .addFields([{name:'\u200b', value:':person_shrugging:', inline: true},
-                    {name:'\u200b', value: shrug, inline: true},
-                    {name:'\u200b', value: shrug, inline: true}])]}
-            )
-            :
-            interaction.reply({embeds: embeds})
-
-        }catch(err){
-            return interaction.reply('Error :(  ' + err)
+                //then map that 2d array into 1d array of embeds
+                const embeds = split_into_16s(info).map(teams => {
+                    return new Discord.MessageEmbed()
+                        .setTitle(clock + clock + 'Tournament Clock Information' + clock + clock)
+                        .setColor('YELLOW')
+                        //map the array of teams into fields with padding
+                        .addFields(get_fields(teams))
+                })
+                //no timers
+                if(embeds.length === 0)
+                    interaction.reply({embeds: [
+                        new Discord.MessageEmbed()
+                            .setTitle(face + face + ' No Timers ' + face + face)
+                            .setColor('LIGHT_GREY')
+                            .addFields([{name:'\u200b', value:':person_shrugging:', inline: true},
+                                {name:'\u200b', value: shrug, inline: true},
+                                {name:'\u200b', value: shrug, inline: true}])
+                        ]}
+                    )
+                //timers sent
+                else interaction.reply({embeds: embeds})
+            }).catch(err => interaction.reply({content: 'Error :(  ' + err}))
         }
     }
 }

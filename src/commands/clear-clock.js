@@ -18,15 +18,18 @@ module.exports = {
      */
     callback: interaction => {
         //Ensures correct permissions
-        if(!role.is_admin(interaction)) return interaction.reply({embeds: [role.respond()]})
-
-        stopwatch.clear_watches()
-        interaction.reply({embeds: [new Discord.MessageEmbed()
-            .setTitle(clock + clock + ' All Timers Cleared ' + clock + clock)
-            .setColor('GREEN')
-            .addField('\u200b', check, true)
-            .addField('\u200b', check, true)
-            .addField('\u200b', check, true)]}
-        )
+        if(!role.is_admin(interaction)) interaction.reply({embeds: [role.respond()]})
+        else{
+            stopwatch.clear_watches()
+            interaction.reply(
+                {embeds: [new Discord.MessageEmbed()
+                    .setTitle(clock + clock + ' All Timers Cleared ' + clock + clock)
+                    .setColor('GREEN')
+                    .addField('\u200b', check, true)
+                    .addField('\u200b', check, true)
+                    .addField('\u200b', check, true)]
+                }
+            )
+        }
     }
 }

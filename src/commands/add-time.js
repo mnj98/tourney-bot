@@ -22,25 +22,23 @@ module.exports = {
      * @param interaction
      *      interaction is a discord.js Interaction object
      */
-    callback: async interaction => {
+    callback: interaction => {
         //Ensure correct permission
-        if(!role.is_admin(interaction)) return interaction.reply({embeds: [role.respond()]})
-
-        const [team, time] = interaction.options.map(_ => _.value + '')
-
-        try {
-            const response = await timer.update_time(team, time)
-
-            interaction.reply({embeds: [new Discord.MessageEmbed()
+        if(!role.is_admin(interaction)) interaction.reply({embeds: [role.respond()]})
+        else{
+            const [team, time] = interaction.options.map(_ => _.value + '')
+            timer.update_time(team, time).then(response => {
+                interaction.reply({
+                    embeds: [new Discord.MessageEmbed()
                         .setTitle(clock + clock + ' Time Successfully Updated ' + clock + clock)
                         .addField('Team', response.team, true)
                         .addField('Amount', response.time + ' minutes', true)
                         .addField('\u200b', '\u200b', true)
                         .setColor('GREEN')
-                        .setFooter('Use /timer-info to see remaining times')]}
-            )
-        }catch(err){
-            interaction.reply({embeds: [err_response(err)]})
+                        .setFooter('Use /timer-info to see remaining times')
+                    ]}
+                )
+            }).catch(err => interaction.reply({embeds: [err_response(err)]}))
         }
     }
 }

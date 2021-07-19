@@ -33,31 +33,33 @@ module.exports = {
      * If that request goes through then the team info is forwarded back as an embed.
      *
      */
-    callback: async interaction => {
+    callback: interaction => {
         //Check if you are using the correct channel
         if(interaction.channelId !== process.env.signup_channel_id)
-            return interaction.reply({content: 'Please use the signup channel'})
-
-        //If there are no errors with signup
-        try{
-            interaction.reply({embeds: [new Discord.MessageEmbed()
-                .setTitle(check + check + ' Signup Successful ' + check + check)
-                .setThumbnail(logo_url)
-                .setFooter('Contact TOs if you want to change your timeslot or resign')
-                //Use fields.js to format fields
-                .addFields(fields.get_fields(await signup.signup_handler(interaction)))
-                .setColor('GREEN')]}
-            )
-        }
-        //send error embed
-        catch(err){
-            interaction.reply({embeds: [new Discord.MessageEmbed()
-                .setTitle(x + x + ' Signup Failed ' + x + x)
-                .setFooter('Try Again')
-                .addField('Reason', err + '')
-                .setThumbnail(defeat_url)
-                .setColor('RED')]}
-            )
+            interaction.reply({content: 'Please use the signup channel'})
+        else{
+            signup.signup_handler(interaction).then(field_info => {
+                interaction.reply({embeds: [
+                    new Discord.MessageEmbed()
+                        .setTitle(check + check + ' Signup Successful ' + check + check)
+                        .setThumbnail(logo_url)
+                        .setFooter('Contact TOs if you want to change your timeslot or resign')
+                        //Use fields.js to format fields
+                        .addFields(fields.get_fields(field_info))
+                        .setColor('GREEN')
+                    ]}
+                )
+            }).catch(err => {
+                interaction.reply({embeds: [
+                    new Discord.MessageEmbed()
+                        .setTitle(x + x + ' Signup Failed ' + x + x)
+                        .setFooter('Try Again')
+                        .addField('Reason', err + '')
+                        .setThumbnail(defeat_url)
+                        .setColor('RED')
+                    ]}
+                )
+            })
         }
     }
 }

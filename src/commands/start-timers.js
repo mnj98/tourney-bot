@@ -25,32 +25,32 @@ module.exports = {
      * @param interaction
      *      interaction is a discord.js Interaction object
      */
-    callback: async interaction => {
+    callback: interaction => {
         //Ensure the user has the correct role
-        if(!role.is_admin(interaction)) return interaction.reply({embeds: [role.respond()]})
-
-        //When there are no errors start_timers resolves to nothing
-        try {
-            await timer.start_timers(interaction)
-
-            interaction.reply({embeds: [new Discord.MessageEmbed()
-                .setTitle(check + check + ' Timers Started ' + check + check)
-                .setFooter('Here we go!!')
-                .addField('\u200b', rat, true)
-                .addField('\u200b', rat, true)
-                .addField('\u200b', rat, true)
-                .setColor('GREEN')]}
-            )
-        }
-        //But if there is an error it rejects with that error
-        catch(err){
-            interaction.reply({embeds: [new Discord.MessageEmbed()
-                .setTitle(x + x + ' Timer Error ' + x + x)
-                .setFooter('Try Again')
-                .addField('Reason', err + '')
-                .setThumbnail(defeat_url)
-                .setColor('RED')]}
-            )
+        if(!role.is_admin(interaction)) interaction.reply({embeds: [role.respond()]})
+        else{
+            timer.start_timers(interaction).then(() => {
+                interaction.reply({embeds: [
+                    new Discord.MessageEmbed()
+                        .setTitle(check + check + ' Timers Started ' + check + check)
+                        .setFooter('Here we go!!')
+                        .addField('\u200b', rat, true)
+                        .addField('\u200b', rat, true)
+                        .addField('\u200b', rat, true)
+                        .setColor('GREEN')
+                    ]}
+                )
+            }).catch(err => {
+                interaction.reply({embeds: [
+                    new Discord.MessageEmbed()
+                        .setTitle(x + x + ' Timer Error ' + x + x)
+                        .setFooter('Try Again')
+                        .addField('Reason', err + '')
+                        .setThumbnail(defeat_url)
+                        .setColor('RED')
+                    ]}
+                )
+            })
         }
     }
 }
