@@ -75,7 +75,7 @@ module.exports = {
 
 
 /**
- * Format the fiels for the embed in the case that there is no error
+ * Format the fields for the embed in the case that there is no error
  * @param result
  * @returns {[{name: string, value: *}]}
  */
