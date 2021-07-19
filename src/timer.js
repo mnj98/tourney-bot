@@ -183,13 +183,13 @@ function get_formatted_timer_data(){
             let teams = []
 
             for(let i = 0; i < num_teams_t1; i++){
-                teams.push([data[0][i][0], data[1][i][0], data[2][i]])
+                teams.push([data[0][i][0], data[1] ? data[1][i][0] : 'default', data[2][i]])
             }
             for(let i = 0; i < num_teams_t2; i++){
-                teams.push([data[3][i][0], data[4][i][0], data[5][i]])
+                teams.push([data[3][i][0], data[4] ? data[4][i][0] : 'default', data[5][i]])
             }
             for(let i = 0; i < num_teams_t3; i++){
-                teams.push([data[6][i][0], data[7][i][0], data[8][i]])
+                teams.push([data[6][i][0], data[7] ? data[7][i][0] : 'default', data[8][i]])
             }
 
             return resolve(teams)

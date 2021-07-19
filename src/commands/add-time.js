@@ -51,7 +51,7 @@ function err_response(err){
     return new Discord.MessageEmbed()
         .setTitle(face + face + ' Add Time Error ' + face + face)
         .addField('\u200b', shrug, true)
-        .addField('Reason', err, true)
+        .addField('Reason', 'Error: ' + err, true)
         .addField('\u200b', shrug, true)
         .setColor('RED')
 }
