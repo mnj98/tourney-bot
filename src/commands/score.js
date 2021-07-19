@@ -30,7 +30,9 @@ const
         {type: 3, name: 'map4', description: 'Map 4', required: true},
         {type: 3, name: 'difficulty4', description: 'Difficulty', required: true},
         {type: 4, name: 'attempts4', description: 'Number of Attempts', required: true}
-        ])
+    ])
+
+
 
 module.exports = {
     name: 'calculate-score',
