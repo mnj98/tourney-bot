@@ -3,7 +3,7 @@
  */
 
 const Discord = require('discord.js')
-const ScoreHandler = require('../src/score.js')
+const ScoreHandler = require('../score.js')
 
 const defeat_url = 'https://raw.githubusercontent.com/mnj98/tourney-bot/master/loss.png'
 const x = ':x:'

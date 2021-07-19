@@ -2,8 +2,8 @@
  * Clears all running timers
  */
 
-const role = require('../src/check_role.js')
-const stopwatch = require('../src/stopwatch')
+const role = require('../check_role.js')
+const stopwatch = require('../stopwatch')
 const Discord = require('discord.js')
 
 const clock = ':hourglass:'

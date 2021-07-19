@@ -2,8 +2,8 @@
  * Gets info on all the running timers
  */
 
-const timer = require('../src/timer.js')
-const role = require('../src/check_role.js')
+const timer = require('../timer.js')
+const role = require('../check_role.js')
 const Discord = require('discord.js')
 
 const face = ':face_with_spiral_eyes:'

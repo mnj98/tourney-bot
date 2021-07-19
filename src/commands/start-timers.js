@@ -4,8 +4,8 @@
  *  start any new maps
  */
 
-const timer = require('../src/timer.js')
-const role = require('../src/check_role.js')
+const timer = require('../timer.js')
+const role = require('../check_role.js')
 const Discord = require('discord.js')
 
 const defeat_url = 'https://raw.githubusercontent.com/mnj98/tourney-bot/master/loss.png'

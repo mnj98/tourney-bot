@@ -2,21 +2,19 @@
  * Calls the correct command callback given the commands
  */
 
-
-
 /**
  * Collects all the commands to that only 1 require() is required to require all commands
  *  The field names don't really matter
  */
 const Commands = {
-    ADD_TIME: require('../commands/add-time.js'),
-    CLEAR_CLOCK: require('../commands/clear-clock.js'),
-    CODE: require('../commands/code.js'),
-    ROSTER: require('../commands/roster.js'),
-    SCORE: require('../commands/score.js'),
-    START_TIMERS: require('../commands/start-timers.js'),
-    TIMER_INFO: require('../commands/timer-info.js'),
-    SIGNUP: require('../commands/signup.js')
+    ADD_TIME: require('./commands/add-time.js'),
+    CLEAR_CLOCK: require('./commands/clear-clock.js'),
+    CODE: require('./commands/code.js'),
+    ROSTER: require('./commands/roster.js'),
+    SCORE: require('./commands/score.js'),
+    START_TIMERS: require('./commands/start-timers.js'),
+    TIMER_INFO: require('./commands/timer-info.js'),
+    SIGNUP: require('./commands/signup.js')
 }
 
 module.exports = {
