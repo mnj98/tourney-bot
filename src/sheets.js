@@ -2,6 +2,9 @@
  * Google sheets functions.
  */
 
+const {google} = require('googleapis')
+const {GoogleAuth} = require('google-auth-library')
+
 module.exports = {
     append_line,
     get_num_signed_up,
@@ -9,7 +12,8 @@ module.exports = {
     get_timer_data,
     get_maps,
     get_diffs,
-    get_score
+    get_score,
+    setup
 }
 
 const T1_NAMES = 'Tier1!B2:B300'
@@ -22,6 +26,30 @@ const T3_NAMES = 'Tier3!B2:B300'
 const T3_TIMES = 'Tier3!I2:I300'
 const T3_IDS = 'Tier3!K2:P300'
 
+//File scope vars
+let auth, sheets
+
+/**
+ * Setup the auth for google sheets
+ * @returns {Promise<unknown>}
+ */
+function setup(){
+    return new Promise((resolve, reject) => {
+        auth = new GoogleAuth({
+            keyFile: 'secret.json',
+            scopes: 'https://www.googleapis.com/auth/spreadsheets'
+        })
+
+        auth.getClient().then(authClient => {
+            sheets = google.sheets({
+                version: 'v4',
+                auth: authClient
+            })
+            resolve()
+        }).catch(reject)
+    })
+}
+
 /**
  * Gets the number of times an array of user ids appears in the BOT_HIDDEN
  * sections of the spreadsheet. What this is used for is to determine if a
@@ -33,10 +61,9 @@ function get_num_signed_up(ids){
     //Returns a promise that can fail
     return new Promise((resolve, reject) => {
         //First populate id row with ids
-        global.sheets.spreadsheets.values.update({
+        sheets.spreadsheets.values.update({
             spreadsheetId: process.env.signup_spreadsheetID,
-            auth: global.auth,
-            key: process.env.GOOGLE_API_KEY,
+            auth: auth,
             range: 'BotLogic!A1:F1',
             valueInputOption: 'USER_ENTERED',
             resource: {
@@ -47,10 +74,9 @@ function get_num_signed_up(ids){
             else{
                 //Once ids are populated, read the count
                 //the count is calculated by a spreadsheet function
-                global.sheets.spreadsheets.values.get({
+                sheets.spreadsheets.values.get({
                     spreadsheetId: process.env.signup_spreadsheetID,
-                    auth: global.auth,
-                    key: process.env.GOOGLE_API_KEY,
+                    auth: auth,
                     range: 'BotLogic!A2:F2'
                 }, (err, res) =>{
                     if(err) reject(err)
@@ -71,10 +97,9 @@ function append_line(tier, values){
     //Returns a promise that can fail
     return new Promise((resolve, reject) => {
         //appends values to tier page
-        global.sheets.spreadsheets.values.append({
+        sheets.spreadsheets.values.append({
             spreadsheetId: process.env.signup_spreadsheetID,
-            auth: global.auth,
-            key: process.env.GOOGLE_API_KEY,
+            auth: auth,
             range: tier + '!A:P',
             valueInputOption: 'USER_ENTERED',
             resource: {
@@ -114,10 +139,9 @@ function get_team_names(){
 function get_timer_data(){
     //Returns a promise that can fail
     return new Promise((resolve, reject) => {
-        global.sheets.spreadsheets.values.batchGet({
+        sheets.spreadsheets.values.batchGet({
             spreadsheetId: process.env.signup_spreadsheetID,
-            auth: global.auth,
-            key: process.env.GOOGLE_API_KEY,
+            auth: auth,
             //ranges defined above
             ranges: [
                 T1_NAMES,
@@ -151,10 +175,9 @@ function get_score(maps, diffs, attempts, number_of_maps){
     return new Promise((resolve, reject) => {
 
         //Update all the required info
-        global.sheets.spreadsheets.values.batchUpdate({
+        sheets.spreadsheets.values.batchUpdate({
             spreadsheetId: process.env.score_spreadsheetID,
-            auth: global.auth,
-            key: process.env.GOOGLE_API_KEY,
+            auth: auth,
             resource: {
                 valueInputOption: 'USER_ENTERED',
                 data: [
@@ -198,10 +221,9 @@ function get_score(maps, diffs, attempts, number_of_maps){
  */
 function get(range, doc){
     return new Promise((resolve, reject) =>{
-        global.sheets.spreadsheets.values.get({
+        sheets.spreadsheets.values.get({
             spreadsheetId: doc,
-            auth: global.auth,
-            key: process.env.GOOGLE_API_KEY,
+            auth: auth,
             range: range
         }, (err, res) => {
             if(err) reject(err)
