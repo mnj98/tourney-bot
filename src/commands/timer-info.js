@@ -49,7 +49,7 @@ module.exports = {
                     )
                 //timers sent
                 else interaction.reply({embeds: embeds})
-                //TODO: make this an embed, possble create handler file to reduce duplicate code
+                //TODO: make this an embed, possibly create handler file to reduce duplicate code
             }).catch(err => interaction.reply({content: 'Error :(  ' + err}))
         }
     }
