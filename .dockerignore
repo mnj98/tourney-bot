@@ -3,3 +3,9 @@ run_bot.sh
 stop_bot.sh
 logo.jpg
 loss.png
+src/commands/README.md
+Dockerfile
+.dockerignore
+.gitignore
+README.md
+.git
