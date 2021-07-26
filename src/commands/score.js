@@ -65,7 +65,7 @@ module.exports = {
                 new Discord.MessageEmbed()
                     .setTitle(x + x + ' Score Calculation Failed ' + x + x)
                     .setFooter('Try Again')
-                    .addField('Reason', 'Error: ' + err)
+                    .addField('Reason', '' + err)
                     .setThumbnail(defeat_url)
                     .setColor('RED')
                 ]}
