@@ -14,7 +14,8 @@ const Commands = {
     SCORE: require('./commands/score.js'),
     START_TIMERS: require('./commands/start-timers.js'),
     TIMER_INFO: require('./commands/timer-info.js'),
-    SIGNUP: require('./commands/signup.js')
+    SIGNUP: require('./commands/signup.js'),
+    HELP: require('./commands/help.js')
 }
 
 module.exports = {
