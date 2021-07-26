@@ -1,4 +1,4 @@
-###Commands
+### Commands
 
 - Commands for this bot are defined in this directory
 - All fields (except 'callback') of each file are data used to create or edit the commands using the discord.js API
