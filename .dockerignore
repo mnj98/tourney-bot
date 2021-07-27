@@ -9,3 +9,4 @@ Dockerfile
 .gitignore
 README.md
 .git
+.idea
