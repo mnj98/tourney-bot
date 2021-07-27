@@ -6,8 +6,8 @@ const signup = require('../signup.js')
 const Discord = require('discord.js')
 const fields = require('../fields.js')
 
-const logo_url = 'https://raw.githubusercontent.com/mnj98/tourney-bot/master/logo.jpg'
-const defeat_url = 'https://raw.githubusercontent.com/mnj98/tourney-bot/master/loss.png'
+const logo_url = 'https://raw.githubusercontent.com/mnj98/tourney-bot/master/photos/logo.jpg'
+const defeat_url = 'https://raw.githubusercontent.com/mnj98/tourney-bot/master/photos/loss.png'
 const check = ':white_check_mark:'
 const x = ':x:'
 
