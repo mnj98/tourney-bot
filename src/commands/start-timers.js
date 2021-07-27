@@ -8,7 +8,7 @@ const timer = require('../timer.js')
 const role = require('../check_role.js')
 const Discord = require('discord.js')
 
-const defeat_url = 'https://raw.githubusercontent.com/mnj98/tourney-bot/master/loss.png'
+const defeat_url = 'https://raw.githubusercontent.com/mnj98/tourney-bot/master/photos/loss.png'
 const x = ':x:'
 const check = ':stopwatch:'
 const rat = ':rat:'

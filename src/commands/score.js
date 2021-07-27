@@ -5,7 +5,7 @@
 const Discord = require('discord.js')
 const ScoreHandler = require('../score.js')
 
-const defeat_url = 'https://raw.githubusercontent.com/mnj98/tourney-bot/master/loss.png'
+const defeat_url = 'https://raw.githubusercontent.com/mnj98/tourney-bot/master/photos/loss.png'
 const x = ':x:'
 
 //All of this represents the 4 sub commands
