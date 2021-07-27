@@ -16,7 +16,12 @@ module.exports = {
     description: 'Allows you to sign up for the tournament',
     options: [
         {type: 3, name: 'team-name', description: 'Team Name', required: true},
-        {type: 4, name: 'tier', description: 'Tier', required: true},
+        {type: 4, name: 'tier', description: 'Tier', required: true, choices: [
+                {name: 'Tier 1', value: 1},
+                {name: 'Tier 2', value: 2},
+                {name: 'Tier 3', value: 3}
+            ]
+        },
         {type: 9, name: 'player1', description: 'Player 1', required: true},
         {type: 9, name: 'player2', description: 'Player 2', required: true},
         {type: 9, name: 'player3', description: 'Player 3', required: true},
