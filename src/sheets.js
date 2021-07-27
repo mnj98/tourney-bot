@@ -62,7 +62,7 @@ function get_num_signed_up(ids){
     return new Promise((resolve, reject) => {
         //First populate id row with ids
         sheets.spreadsheets.values.update({
-            spreadsheetId: process.env.signup_spreadsheetID,
+            spreadsheetId: process.env.SIGNUP_SPREADSHEET_ID,
             auth: auth,
             range: 'BotLogic!A1:F1',
             valueInputOption: 'USER_ENTERED',
@@ -75,7 +75,7 @@ function get_num_signed_up(ids){
                 //Once ids are populated, read the count
                 //the count is calculated by a spreadsheet function
                 sheets.spreadsheets.values.get({
-                    spreadsheetId: process.env.signup_spreadsheetID,
+                    spreadsheetId: process.env.SIGNUP_SPREADSHEET_ID,
                     auth: auth,
                     range: 'BotLogic!A2:F2'
                 }, (err, res) =>{
@@ -98,7 +98,7 @@ function append_line(tier, values){
     return new Promise((resolve, reject) => {
         //appends values to tier page
         sheets.spreadsheets.values.append({
-            spreadsheetId: process.env.signup_spreadsheetID,
+            spreadsheetId: process.env.SIGNUP_SPREADSHEET_ID,
             auth: auth,
             range: tier + '!A:P',
             valueInputOption: 'USER_ENTERED',
@@ -120,7 +120,7 @@ function append_line(tier, values){
 function get_team_names(){
     return new Promise((resolve, reject) =>{
         //Use generic get function
-        get('BotLogic!A4', process.env.signup_spreadsheetID)
+        get('BotLogic!A4', process.env.SIGNUP_SPREADSHEET_ID)
             .then(teams => {
                 if(teams.length === 0) resolve(teams)
                 else resolve(teams[0].split('\n').map(teamName => teamName.toLowerCase()))
@@ -140,7 +140,7 @@ function get_timer_data(){
     //Returns a promise that can fail
     return new Promise((resolve, reject) => {
         sheets.spreadsheets.values.batchGet({
-            spreadsheetId: process.env.signup_spreadsheetID,
+            spreadsheetId: process.env.SIGNUP_SPREADSHEET_ID,
             auth: auth,
             //ranges defined above
             ranges: [
@@ -176,7 +176,7 @@ function get_score(maps, diffs, attempts, number_of_maps){
 
         //Update all the required info
         sheets.spreadsheets.values.batchUpdate({
-            spreadsheetId: process.env.score_spreadsheetID,
+            spreadsheetId: process.env.SCORE_SPREADSHEET_ID,
             auth: auth,
             resource: {
                 valueInputOption: 'USER_ENTERED',
@@ -201,7 +201,7 @@ function get_score(maps, diffs, attempts, number_of_maps){
         }, ((err, res) => {
             if(err) reject(err)
             else{
-                get('BotLogic!G' + number_of_maps, process.env.score_spreadsheetID)
+                get('BotLogic!G' + number_of_maps, process.env.SCORE_SPREADSHEET_ID)
                     .then(score => {
                         resolve(score[0])
                     }).catch(reject)
@@ -242,12 +242,12 @@ function get(range, doc){
  * Get the list of maps
  */
 function get_maps(){
-    return get('Tables!A2:A100', process.env.score_spreadsheetID)
+    return get('Tables!A2:A100', process.env.SCORE_SPREADSHEET_ID)
 }
 
 /**
  * Get the list of difficulties
  */
 function get_diffs(){
-    return get('Tables!D2:D100', process.env.score_spreadsheetID)
+    return get('Tables!D2:D100', process.env.SCORE_SPREADSHEET_ID)
 }

@@ -40,7 +40,7 @@ module.exports = {
      */
     callback: interaction => {
         //Check if you are using the correct channel
-        if(interaction.channelId !== process.env.signup_channel_id)
+        if(interaction.channelId !== process.env.SIGNUP_CHANNEL_ID)
             interaction.reply({content: 'Please use the signup channel'})
         else{
             signup.signup_handler(interaction).then(field_info => {

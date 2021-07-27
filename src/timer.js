@@ -78,7 +78,7 @@ function update_time(team, time){
  * @param client
  */
 function time_up(team, guild){
-    guild.channels.fetch(process.env.notification_channel_id).then(channel =>{
+    guild.channels.fetch(process.env.NOTIFICATION_CHANNEL_ID).then(channel =>{
         let response = 'Team ' + team[0] + ', your time is up.'
         team[1].forEach(id => {
             response += ' <@' + id + '>'

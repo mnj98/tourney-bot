@@ -10,8 +10,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "custom-env": "^2.0.1",
     "discord.js": "^13.0.0-dev.f200f14.1626436969",
-    "dotenv": "^10.0.0",
     "googleapis": "^39.2.0",
     "string-similarity": "^4.0.4"
   },
