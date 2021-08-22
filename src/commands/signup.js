@@ -16,6 +16,7 @@ module.exports = {
     description: 'Allows you to sign up for the tournament',
     options: [
         {type: 3, name: 'team-name', description: 'Team Name', required: true},
+        {type: 3, name: 'vod_link', description: 'The link to your Twitch or YouTube', required: true},
         {type: 4, name: 'tier', description: 'Tier', required: true, choices: [
                 {name: 'Tier 1', value: 1},
                 {name: 'Tier 2', value: 2},

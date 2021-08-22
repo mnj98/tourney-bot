@@ -21,7 +21,8 @@ function signup_handler(input) {
     const requester = input.member.user
 
     const team_name = args[0]
-    const player_ids = args.slice(2)
+    const player_ids = args.slice(3)
+    const vod_link = args[1]
 
     return new Promise((resolve, reject) => {
         //You must be on the team you sign up for
@@ -35,7 +36,7 @@ function signup_handler(input) {
             if(team_names.includes(team_name.toLowerCase())) return reject('Team name \"' + team_name + '\" is already in use')
 
             //Make sure that tier is correct
-            const tier = args[1].toLowerCase().replace(/^\d?$/i, 'tier' + args[1])
+            const tier = args[2].toLowerCase().replace(/^\d?$/i, 'tier' + args[2])
             if (tier !== 'tier1' && tier !== 'tier2' && tier !== 'tier3') return reject('Invalid Tier')
 
             //Make sure that a player doesn't appear twice on same team
@@ -51,7 +52,7 @@ function signup_handler(input) {
                 get_names(player_ids, guild).then(names => {
 
                     //Sign team up
-                    SheetService.append_line(tier, get_line(team_name, names, player_ids)).then(() => {
+                    SheetService.append_line(tier, get_line(team_name, vod_link, names, player_ids)).then(() => {
 
                         //Give embed data back to command callback
                         return resolve([player_ids.map(id => '<@' + id + '>'), team_name, tier])
@@ -69,8 +70,8 @@ function signup_handler(input) {
  * @param player_ids
  * @returns []
  */
-function get_line(team_name, names, player_ids){
-    return [['', team_name, names[0], names[1], names[2], names[3],
+function get_line(team_name, vod_link, names, player_ids){
+    return [['', team_name, vod_link, names[0], names[1], names[2], names[3],
             names[4] ?? '', names[5] ?? '', '', '', player_ids[0],
             player_ids[1], player_ids[2],
             player_ids[3], player_ids[4] ?? '',
