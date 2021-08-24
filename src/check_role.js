@@ -7,7 +7,7 @@ const Discord = require('discord.js')
 
 module.exports = {is_admin, respond}
 
-const admin_role = '858883421731684382'
+const admin_role = '879750682100506644'
 const msg = ' You do not have permissions for this command '
 const bang = ':bangbang:'
 const angry = ':angry:'

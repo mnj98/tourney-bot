@@ -3,6 +3,7 @@
  */
 
 const SheetService = require('./sheets.js')
+const checkIf = require('./check_role.js')
 module.exports = {signup_handler}
 
 /**
@@ -24,9 +25,21 @@ function signup_handler(input) {
     const player_ids = args.slice(3)
     const vod_link = args[1]
 
+    let tier
+    switch(args[2]){
+        case 1:
+            tier = 'Tier 1- Cata1 Dwons'
+            break
+        case 2:
+            tier = 'Tier 2- Cata3 Dwons'
+            break
+        default:
+            tier = 'Tier 3- Cata3 Dwons+'
+    }
+
     return new Promise((resolve, reject) => {
         //You must be on the team you sign up for
-        if(!player_ids.includes(requester.id)) return reject('You must be on the team')
+        if(!player_ids.includes(requester.id) && !checkIf.is_admin(input)) return reject('You must be on the team')
 
         //For string similarity purposes you must have a team name longer than 2
         if(team_name.length < 1) return reject('Team name too short')
@@ -34,10 +47,6 @@ function signup_handler(input) {
         //Make sure that a team name has not been used already
         SheetService.get_team_names().then(team_names =>{
             if(team_names.includes(team_name.toLowerCase())) return reject('Team name \"' + team_name + '\" is already in use')
-
-            //Make sure that tier is correct
-            const tier = args[2].toLowerCase().replace(/^\d?$/i, 'tier' + args[2])
-            if (tier !== 'tier1' && tier !== 'tier2' && tier !== 'tier3') return reject('Invalid Tier')
 
             //Make sure that a player doesn't appear twice on same team
             const duplicates = get_duplicate_ids(player_ids)
@@ -72,7 +81,7 @@ function signup_handler(input) {
  */
 function get_line(team_name, vod_link, names, player_ids){
     return [['', team_name, vod_link, names[0], names[1], names[2], names[3],
-            names[4] ?? '', names[5] ?? '', '', '', player_ids[0],
+            names[4] ?? '', names[5] ?? '', '', '', '', player_ids[0],
             player_ids[1], player_ids[2],
             player_ids[3], player_ids[4] ?? '',
             player_ids[5] ?? '']]

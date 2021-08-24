@@ -1,3 +1,19 @@
 **Timing Help Page**
--   TEST
--   Lorum ipsum or some bs
+For Players:
+-   Players cannot use the timing commands, but you should be aware that the bot will @ your team in the bot-notification channel when you can no longer start a map.
+
+For TOs:
+-   Start the timers for a time slot using /start-timers <timeslot> 180 5.
+-       180 minutes is 3 hours, so using /start-timers <timeslot> 180 5 gives you 2h55m of playtime (following tourney-rules)
+-   Use /add-time to add/subtract time to/from a team. Use a negative number for subtraction.
+-       Team names shouldn't need to be spelled correctly. As long as you're close it should figure it out.
+-   Clear all timers with /clear-all-timers
+-   See the running timers with /timer-info
+
+Examples:
+/start-timers Tourney Time 180 5
+/start-timers September 4 180 5
+/add-time Gabex & Minions 15
+/add-time Gabex's Minions -15  . . . This subtracts time from Gabex & Minions
+
+

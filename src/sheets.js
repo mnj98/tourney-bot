@@ -16,15 +16,15 @@ module.exports = {
     setup
 }
 
-const T1_NAMES = 'Tier1!B3:B300'
-const T1_TIMES = 'Tier1!J3:J300'
-const T1_IDS = 'Tier1!L3:Q300'
-const T2_NAMES = 'Tier2!B3:B300'
-const T2_TIMES = 'Tier2!J3:J300'
-const T2_IDS = 'Tier2!L3:Q300'
-const T3_NAMES = 'Tier3!B3:B300'
-const T3_TIMES = 'Tier3!J3:IJ00'
-const T3_IDS = 'Tier3!L3:Q300'
+const T1_NAMES = 'Tier 1- Cata1 Dwons!B3:B300'
+const T1_TIMES = 'Tier 1- Cata1 Dwons!J3:J300'
+const T1_IDS = 'Tier 1- Cata1 Dwons!M3:R300'
+const T2_NAMES = 'Tier 2- Cata3 Dwons!B3:B300'
+const T2_TIMES = 'Tier 2- Cata3 Dwons!J3:J300'
+const T2_IDS = 'Tier 2- Cata3 Dwons!M3:R300'
+const T3_NAMES = 'Tier 3- Cata3 Dwons+!B3:B300'
+const T3_TIMES = 'Tier 3- Cata3 Dwons+!J3:J300'
+const T3_IDS = 'Tier 3- Cata3 Dwons+!M3:R300'
 
 //File scope vars
 let auth, sheets
@@ -100,7 +100,7 @@ function append_line(tier, values){
         sheets.spreadsheets.values.append({
             spreadsheetId: process.env.SIGNUP_SPREADSHEET_ID,
             auth: auth,
-            range: tier + '!A:Q',
+            range: tier + '!A:R',
             valueInputOption: 'USER_ENTERED',
             resource: {
                 values: values

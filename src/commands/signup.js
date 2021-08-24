@@ -18,9 +18,9 @@ module.exports = {
         {type: 3, name: 'team-name', description: 'Team Name', required: true},
         {type: 3, name: 'vod_link', description: 'The link to your Twitch or YouTube', required: true},
         {type: 4, name: 'tier', description: 'Tier', required: true, choices: [
-                {name: 'Tier 1', value: 1},
-                {name: 'Tier 2', value: 2},
-                {name: 'Tier 3', value: 3}
+                {name: 'Tier 1 - Cata1 Dwons', value: 1},
+                {name: 'Tier 2 - Cata3 Dwons', value: 2},
+                {name: 'Tier 3 - Cata3 Dwons+', value: 3}
             ]
         },
         {type: 9, name: 'player1', description: 'Player 1', required: true},

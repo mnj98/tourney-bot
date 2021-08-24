@@ -4,7 +4,7 @@
 
 const Discord = require('discord.js')
 
-const url = 'https://docs.google.com/spreadsheets/d/1SA0twJDK9mkc-zwIaSLfDIEfssxd7dMszWRfYwMKnzY/edit#gid=0'
+const url = 'https://docs.google.com/spreadsheets/d/1Jx3Yc-n8fGy8vwv9NE2l9e6hLBKlLYW-ghmOByhb9FE/edit?usp=sharing'
 const paper = ':newspaper:'
 
 module.exports = {

@@ -1,3 +1,13 @@
 **Scoring Help Page**
--   TEST
--   Lorum ipsum or some bs
+-   You can use the four scoring sub-commands to calculate the score for your runs. Each sub-command is for a different number of maps.
+-   The name of the map doesn't need to be spelled correctly as the bot should be able to figure it out if its close.
+-   The same goes for the difficulty. You can use c3, cata3, or cataclysm3 to represent the same thing. c+ indicates Cata Dwons with Onslaught Plus.
+-   The last parameter is the number of attempts it took to clear the map. Use 0 for a failed map.
+
+-   The scoring is currently based on Year 2 Season 1 scoring, but will be updated if Season 2's scoring is different.
+
+Examples:
+/calculate-score one-map fort berger c3+ 2
+/calculate-score two-maps fort berger c 0 convo c3 3
+/calculate-score four-maps engines c3+ 1 convo c3+ 1 grain c3+ 1 halescourge c3+ 1
+

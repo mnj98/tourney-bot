@@ -1,3 +1,11 @@
 **Signup Help Page**
--   TEST
--   Lorum ipsum or some bs
+-   To sign up use the /signup command
+-   Follow the given format, and optionally add two substitutes to your team.
+-   All members of a team must be members of this discord. This is enforced by requiring you to input players as mentionables (<@119530847786369026> instead of just Cousin Okri)
+-   Please use a valid vod link.
+-   The bot might complain to you about some part of your signup. For example you must be on the team that you sign up for and you can't have the same player twice on one team or on multiple teams. If you think that the bot is wrong to not accept a signup contact <@119530847786369026>.
+-   When your signup goes through it should appear on the roster spreadsheet under the correct tier.
+
+Examples:
+/signup Gabex & Minions twitch.tv/gabex Tier 3- Cata3 Dwons+ @Gabex @EXAN @Amber Baal @Ganji
+/signup Rats! youtube.com/rat Tier 1- Cata1 Dwons @Cousin Okri @Nice Guy @Esawo @incan @Lonk . . . With 1 substitute player
