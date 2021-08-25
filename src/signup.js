@@ -27,10 +27,10 @@ function signup_handler(input) {
 
     let tier
     switch(args[2]){
-        case 1:
+        case '1':
             tier = 'Tier 1- Cata1 Dwons'
             break
-        case 2:
+        case '2':
             tier = 'Tier 2- Cata3 Dwons'
             break
         default:
