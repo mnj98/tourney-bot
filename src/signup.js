@@ -18,12 +18,14 @@ module.exports = {signup_handler}
  */
 function signup_handler(input) {
     const args = input.options.map(_ => _.value + '')
-    const guild = input.member.guild
     const requester = input.member.user
 
     const team_name = args[0]
     const player_ids = args.slice(3)
     const vod_link = args[1]
+    const names = input.options.map(_ => _).slice(3).map(player =>
+        player.member.nickname ?? player.user.username
+    )
 
     let tier
     switch(args[2]){
@@ -57,18 +59,14 @@ function signup_handler(input) {
                 const conflicts = determine_conflicts(player_counts, player_ids)
                 if(conflicts.length > 0) return reject(notify_conflicts(conflicts))
 
-                //Get usernames to put in spreadsheet
-                get_names(player_ids, guild).then(names => {
-
                     //Sign team up
                     SheetService.append_line(tier, get_line(team_name, vod_link, names, player_ids)).then(() => {
 
                         //Give embed data back to command callback
-                        return resolve([player_ids.map(id => '<@' + id + '>'), team_name, tier])
+                        return resolve([names, team_name, tier])
                     }).catch(reject)
                 }).catch(reject)
             }).catch(reject)
-        }).catch(reject)
     })
 }
 

@@ -23,12 +23,12 @@ module.exports = {
                 {name: 'Tier 3 - Cata3 Dwons+', value: 3}
             ]
         },
-        {type: 9, name: 'player1', description: 'Player 1', required: true},
-        {type: 9, name: 'player2', description: 'Player 2', required: true},
-        {type: 9, name: 'player3', description: 'Player 3', required: true},
-        {type: 9, name: 'player4', description: 'Player 4', required: true},
-        {type: 9, name: 'sub1', description: 'Sub 1'},
-        {type: 9, name: 'sub2', description: 'Sub 2'}
+        {type: 6, name: 'player1', description: 'Player 1', required: true},
+        {type: 6, name: 'player2', description: 'Player 2', required: true},
+        {type: 6, name: 'player3', description: 'Player 3', required: true},
+        {type: 6, name: 'player4', description: 'Player 4', required: true},
+        {type: 6, name: 'sub1', description: 'Sub 1'},
+        {type: 6, name: 'sub2', description: 'Sub 2'}
     ],
     /**
      * Signup callback called when /signup is used with correct syntax
