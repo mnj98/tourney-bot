@@ -12,6 +12,7 @@
 
 const Discord = require('discord.js')
 const Sheets = require('./sheets.js')
+const Activity = require('./activity.js')
 const CommandHandler = require('./command_handler.js')
 
 //Load environment variables
@@ -23,7 +24,11 @@ client = new Discord.Client({intents: new Discord.Intents()})
 //Runs when bot has logged in
 client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`)
-    client.user.setActivity({type: "COMPETING", name: 'the Onslaught Series'})
+    client.user.setActivity(Activity.get_random_activity())
+    setInterval(() =>
+        client.user.setActivity(Activity.get_random_activity())
+    , 3 * 60 * 60 * 1000)
+
 })
 
 //Handle Interactions (slash commands)
