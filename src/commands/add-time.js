@@ -26,7 +26,7 @@ module.exports = {
         //Ensure correct permission
         if(!role.is_admin(interaction)) interaction.reply({embeds: [role.respond()]})
         else{
-            const [team, time] = interaction.options.map(_ => _.value + '')
+            const [team, time] = interaction.options.data.map(_ => _.value + '')
             timer.update_time(team, time).then(response => {
                 interaction.reply({
                     embeds: [new Discord.MessageEmbed()

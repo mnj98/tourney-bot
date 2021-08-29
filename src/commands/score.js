@@ -49,7 +49,7 @@ module.exports = {
      *      interaction is a discord.js Interaction object
      */
     callback: interaction => {
-        ScoreHandler.score_handler(interaction.options.map(_ => {
+        ScoreHandler.score_handler(interaction.options.data.map(_ => {
             return {name: _.name, options: _.options}
         })[0]).then(field_info => {
             interaction.reply({embeds: [

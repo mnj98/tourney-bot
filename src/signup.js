@@ -17,13 +17,13 @@ module.exports = {signup_handler}
  * This may truly be callback hell
  */
 function signup_handler(input) {
-    const args = input.options.map(_ => _.value + '')
+    const args = input.options.data.map(_ => _.value + '')
     const requester = input.member.user
 
     const team_name = args[0]
     const player_ids = args.slice(3)
     const vod_link = args[1]
-    const names = input.options.map(_ => _).slice(3).map(player =>
+    const names = input.options.data.map(_ => _).slice(3).map(player =>
         player.member.nickname ?? player.user.username
     )
 

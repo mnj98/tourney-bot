@@ -19,7 +19,7 @@ module.exports = {start_timers, update_time, get_timer_info}
  * @param client
  */
 function start_timers(input){
-    const [day, time, offset] = input.options.map(_ => _.value + '')
+    const [day, time, offset] = input.options.data.map(_ => _.value + '')
 
     return new Promise((resolve, reject) => {
         //the + makes offset a number so that the comparison is made between numbers instead of strings
