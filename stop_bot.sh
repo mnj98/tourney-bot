@@ -1,1 +1,2 @@
-docker stop $(docker ps -q)
+NAME="t-bot"
+docker rm $(docker stop $NAME)
